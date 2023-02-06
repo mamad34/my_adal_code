@@ -1,0 +1,108 @@
+{
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/server/dius/sku-generator/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "rover subgraph publish adalpro-lktt5 --name sku-generator --routing-url http://localhost:4006/graphql --schema ./src/schema/schema.graphql",
+          "nx run server-dius-sku-generator:ts-build"
+        ],
+        "cwd": "apps/server/dius/sku-generator",
+        "parallel": false
+      }
+    },
+    "ts-build": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "tsc -p tsconfig.app.json",
+          "tsc-alias -p tsconfig.app.json",
+          "ncp src/schema ../../../../dist/apps/server/dius/sku-generator/src/schema",
+          "ncp .env ../../../../dist/apps/server/dius/sku-generator/src/.env"
+        ],
+        "cwd": "apps/server/dius/sku-generator",
+        "parallel": false
+      }
+    },
+    "build-base": {
+      "executor": "@nrwl/node:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/server/dius/sku-generator",
+        "main": "apps/server/dius/sku-generator/src/index.ts",
+        "tsConfig": "apps/server/dius/sku-generator/tsconfig.app.json",
+        "webpackConfig": "custom-graphql-webpack.config.js"
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/server/dius/sku-generator/src/environments/environment.ts",
+              "with": "apps/server/dius/sku-generator/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "start-dev": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "rover subgraph publish adalpro-dev --name sku-generator --routing-url http://localhost:4006/graphql --schema ./src/schema/schema.graphql",
+          "nx run server-dius-sku-generator:start"
+        ],
+        "cwd": "apps/server/dius/sku-generator",
+        "parallel": false
+      }
+    },
+    "start": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "nodemon -e ts,graphql --exec \"nx run server-dius-sku-generator:start-nodemon\""
+        ],
+        "cwd": "apps/server/dius/sku-generator",
+        "parallel": false
+      }
+    },
+    "start-nodemon": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "nx run server-dius-sku-generator:ts-build",
+          "node ../../../../dist/apps/server/dius/sku-generator/src/index.js"
+        ],
+        "cwd": "apps/server/dius/sku-generator",
+        "parallel": false
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/node:node",
+      "options": {
+        "buildTarget": "server-dius-sku-generator:build-base"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/server/dius/sku-generator/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/server/dius/sku-generator"],
+      "options": {
+        "jestConfig": "apps/server/dius/sku-generator/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
