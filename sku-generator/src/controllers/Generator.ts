@@ -103,7 +103,6 @@ const generator: IResolvers = {
         throw new Error(accessTokenFailedMessage);
       }
       try {
-        ['02/05/2023', '02/14/2022'];
         const startDate = DateTime.fromFormat(
           details.startDate,
           dateShortFormat
@@ -176,6 +175,7 @@ const generator: IResolvers = {
             },
           });
         }
+        return cogs;
       } catch (error: any) {
         throw new Error(error);
       }

@@ -167,7 +167,8 @@ export const mamadGetAllCogsSql = ({
           ON ga.sku = p.sku 
           LEFT JOIN get_cogs AS gc 
           ON gc.sku_id = p.id
-          WHERE p.store_id = $1;`;
+          WHERE p.store_id = $1
+          `;
 
   if (details.searchTerm) {
     sql += `AND (p.sku ILIKE '%${details.searchTerm}%')`;
@@ -175,17 +176,21 @@ export const mamadGetAllCogsSql = ({
 
   details.filters.forEach((item) => {
     if (item.biggerThan !== null && item.lessThan !== null) {
-      sql += `AND ${item.columnName} BETWEEN ${item.biggerThan} AND ${item.lessThan}`;
+      sql += `AND ${item.columnName} BETWEEN ${item.biggerThan} AND ${item.lessThan}
+              `;
     } else if (item.biggerThan !== null) {
-      sql += `AND ${item.columnName} >= ${item.biggerThan}`;
+      sql += `AND ${item.columnName} >= ${item.biggerThan}
+              `;
     } else {
-      sql += `AND ${item.columnName} <= ${item.lessThan}`;
+      sql += `AND ${item.columnName} <= ${item.lessThan}
+              `;
     }
   });
-  sql += ` ORDER BY ${details.sort.columnName} ${details.sort.sortBy} NULLS LAST, p.id `;
+  sql += `ORDER BY ${details.sort.columnName} ${details.sort.sortBy} NULLS LAST, p.id
+          `;
 
   if (first !== null && after !== null) {
-    sql += `OFFSET ${after} ROWS FETCH FIRST ${first} ROWS ONLY `;
+    sql += `OFFSET ${after} ROWS FETCH FIRST ${first} ROWS ONLY`;
   }
   return sql;
 };
