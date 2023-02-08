@@ -4,8 +4,7 @@
   "include": [],
   "compilerOptions": {
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict":true
+    "allowSyntheticDefaultImports": true
   },
   "references": [
     {
