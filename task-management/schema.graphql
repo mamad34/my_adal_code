@@ -1,0 +1,7350 @@
+scalar Upload
+scalar DateMillisecond
+scalar DateShort
+scalar ISO8601
+extend schema
+  @link(
+    url: "https://specs.apollo.dev/federation/v2.0"
+    import: ["@key", "@shareable"]
+  )
+
+type Query {
+  salesReport(details: SalesReportInput!): SalesConnection!
+  salesWithChart(
+    first: Int!
+    after: Int!
+    details: SalesWithChartInput!
+  ): SalesWithChartConnection!
+  dashboardProfiles: [Profile]!
+  dashboard(details: DashboardDetailsInput!): DashboardConnection!
+  warehouses(
+    first: Int
+    after: Int
+    details: WarehousesInput!
+  ): WarehousesConnection!
+  transfers(
+    first: Int!
+    after: Int!
+    details: TransfersInput!
+  ): TransfersConnection!
+  getStoresName: [String]!
+  purchases(
+    first: Int!
+    after: Int!
+    details: PurchasesInput!
+  ): PurchasesConnection!
+  getStateCode: String!
+  trends(first: Int!, after: Int!, details: TrendsInput!): TrendsConnection!
+  getChartDetails(sku: String!): [chartResponse]!
+  getUserInfo(storeId: ID!): UserProps!
+  riskySkus(
+    first: Int!
+    after: Int!
+    details: RiskySkusInput!
+  ): RiskySkusConnection!
+  getAllStores: [StoresResult]!
+  getRiskyWarehouseAndStore: RiskyWarehouseAndStore!
+  cogsAndInventory(
+    fromDate: DateShort!
+    toDate: DateShort!
+  ): CogsAndInventoryConnection!
+  hiddenSkus(
+    first: Int!
+    after: Int!
+    details: HiddenSkusInput!
+  ): HiddenSkusConnection!
+  shipments(
+    first: Int!
+    after: Int!
+    details: ShipmentInput!
+  ): ShipmentConnection!
+  shipmentDetails(id: ID!): ShipmentDetails!
+  searchProducts(searchTerm: String!): SearchProductsConnection!
+  warehouseUsers(
+    first: Int!
+    after: Int!
+    details: WarehouseUsersInput!
+  ): WarehouseUsersConnection!
+  riskyReorders(
+    first: Int!
+    after: Int!
+    details: RiskyReordersInput!
+  ): RiskyReordersConnection!
+  multipleAccountDashboard(
+    first: Int!
+    after: Int!
+    details: MultipleAccountDashboardInput!
+  ): MultipleAccountDashboardConnection!
+  getMultipleAccountStores(
+    marketplaceId: MarketplaceIds!
+  ): [MultipleAccountStore]!
+  multipleAccountSales(
+    first: Int!
+    after: Int!
+    details: MultipleAccountSalesInput!
+  ): MultipleAccountSalesConnection!
+  searchWarehouseSkus(searchTerm: String!): SkusConnection!
+  chinaSuppliers: [ChinaSupplier]!
+  warehouseSkus(
+    first: Int!
+    after: Int!
+    details: WarehouseSkusInput!
+  ): WarehouseSkusConnection!
+  inventoryChinaPurchases(
+    first: Int!
+    after: Int!
+    details: InventoryChinaPurchasesInput!
+  ): ChinaPurchasesConnection!
+  inventoryChinaAirTransfers(
+    first: Int!
+    after: Int!
+    details: InventoryChinaAirTransfersInput!
+  ): ChinaAirTransfersConnection!
+  inventoryChinaSeaTransfers(
+    first: Int!
+    after: Int!
+    details: InventoryChinaSeaTransfersInput!
+  ): InventoryChinaSeaTransfersConnection!
+  searchInventoryChinaTransferSkus(
+    details: SearchInventoryChinaTransferSkusInput!
+  ): SearchChinaTransferSkusConnection!
+  inventoryChinaTransferSkuActivePurchases(
+    details: InventoryChinaTransferSkuActivePurchasesInput!
+  ): ChinaTransferSkuActivePurchasesConnection!
+  inventoryChinaAirTransferDetails(
+    details: InventoryChinaAirTransferDetailsInput!
+  ): InventoryChinaAirTransferDetails!
+  inventoryChinaSeaTransferDetails(
+    details: InventoryChinaSeaTransferDetailsInput!
+  ): InventoryChinaSeaTransferDetails!
+  skuDraftPurchases(
+    sku: String!
+    warehouseId: ID!
+  ): SearchSkuDraftPurchasesConnection!
+  chinaInvoiceTransfers(
+    first: Int!
+    after: Int!
+    details: ChinaInvoiceTransfersInput!
+  ): ChinaInvoiceTransfersConnection!
+  warehouseCompanies: WarehouseCompaniesConnection!
+  inventoryChinaFollowReorders(
+    first: Int!
+    after: Int!
+    details: InventoryChinaFollowReorderInput!
+  ): ChinaFollowReorderConnection!
+  inventoryChinaFollowReorderDetails(
+    id: ID!
+  ): ChinaFollowReorderDetailsConnection!
+  skuPurchaseHistory(
+    first: Int!
+    after: Int!
+    details: SkuPurchaseHistoryInput!
+  ): SkuPurchaseHistoryConnection!
+  postLaunch(
+    first: Int!
+    after: Int!
+    details: PostLaunchInput!
+  ): PostLaunchConnection!
+  beforeLaunch(
+    first: Int!
+    after: Int!
+    details: BeforeLaunchInput!
+  ): BeforeLaunchConnection!
+  launch(first: Int!, after: Int!, details: LaunchInput!): LaunchConnection!
+  newCogsAndInventory(
+    first: Int!
+    after: Int!
+    details: NewCogsAndInventoryInput!
+  ): NewCogsAndInventoryConnection!
+  totalNewCogsAndInventory(
+    details: TotalNewCogsAndInventoryInput!
+  ): [TotalNewCogsAndInventory]!
+  newShipmentLog(
+    first: Int!
+    after: Int!
+    details: NewShipmentLogInput!
+  ): NewShipmentLogConnection!
+  searchNewShipmentSku(searchTerm: String!): SearchNewShipmentSkuConnection!
+  newShipmentDetails(id: ID!): NewShipmentDetails!
+  fbaFeeConflict: FbaFeeConflictConnection!
+  inventoryProductSize(
+    first: Int!
+    after: Int!
+    details: InventoryProductSizeInput!
+  ): ChinaProductSizeConnection!
+  getNewShipmentWarehouseShippingSchedules(
+    id: ID!
+  ): [NewShipmentWarehouseShippingSchedules]!
+  fbaFeeConflictHiddenSkus: FbaFeeConflictConnection!
+  otherInventoryChinaPurchases(
+    first: Int!
+    after: Int!
+    details: OtherInventoryChinaPurchasesInput!
+  ): OtherChinaPurchasesConnection!
+  priceChangeLog(
+    first: Int!
+    after: Int!
+    details: PriceChangeLogInput!
+  ): PriceChangeLogConnection!
+  optimize(
+    first: Int!
+    after: Int!
+    details: OptimizeInput!
+  ): OptimizeConnection!
+  financial(details: FinancialInput!): FinancialConnection!
+  getTotalFinancial(details: GetTotalFinancialInput!): Float!
+  inventoryAvaialbleStores(
+    details: InventoryAvaialbleStoresInput!
+  ): [StoreInfo]!
+  getAllStoresAndMarketplaces: GetAllStoresAndMarketplacesConnection!
+  productPrices(
+    first: Int!
+    after: Int!
+    details: ProductPricesInput!
+  ): ProductPricesConnection!
+  productPriceStatusChange(
+    first: Int!
+    after: Int!
+    details: ProductPriceStatusChangeInput!
+  ): ProductPriceStatusChangeConnection!
+  otherSalesChartDetails(skuId: ID!, date: DateShort!): OtherSalesChartDetails!
+  dashboardHistory(details: DashboardHistoryInput!): DashboardConnection!
+  chinaSupplierScores(
+    first: Int!
+    after: Int!
+    details: ChinaSupplierScoresInput!
+  ): ChinaSupplierScoresConnection!
+  getSkuOtherMarketplaces(
+    details: GetSkuOtherMarketplacesInput!
+  ): [GetSkuOtherMarketplaces]!
+  chinaInvoiceTransfersTotalCosts(
+    details: ChinaInvoiceTransfersTotalCostsInput!
+  ): ChinaInvoiceTransfersTotalCosts!
+  productHistory(
+    first: Int!
+    after: Int!
+    details: ProductHistoryInput!
+  ): ProductHistoryConnection!
+  chinaSuppliersWarehouses: [ChinaSuppliersWarehouses]!
+  chinaSupplierWarehouseStores(warehouseId: ID!): [ChinaSuppliersWarehouses]!
+  inventoryInUS(
+    first: Int!
+    after: Int!
+    details: NewCogsAndInventoryInput!
+  ): InventoryInUSConncetion!
+  inventoryInUSByDate(
+    first: Int!
+    after: Int!
+    details: InventoryInUSByDateInput!
+  ): InventoryInUSByDateConncetion!
+  sumOfInventoryInUSByDate(
+    details: SumOfInventoryInUSByDateInput!
+  ): SumOfInventoryInUSByDate!
+  riskyUnder200Days(
+    first: Int!
+    after: Int!
+    details: RiskyUnder200DaysInput!
+  ): RiskyUnder200DaysConnection!
+  chinaInventoryCheck(
+    first: Int!
+    after: Int!
+    details: ChinaInventoryCheckInput!
+  ): ChinaInventoryCheckConnection!
+  usInventoryCheck(
+    first: Int!
+    after: Int!
+    details: USInventoryCheckInput!
+  ): USInventoryCheckConnection!
+  ratingConflicts(
+    first: Int!
+    after: Int!
+    details: RatingConflictsInput!
+  ): RatingConflictsConnection!
+  amazonNewProducts(
+    first: Int!
+    after: Int!
+    details: AmazonNewProductsInput!
+  ): AmazonNewProductsConnection!
+  getFbaFeeAndShippingFromChinaToAmazon(
+    details: GetFbaFeeAndShippingFromChinaToAmazonInput!
+  ): GetFbaFeeAndShippingFromChinaToAmazon!
+  inventoryUsers(
+    first: Int!
+    after: Int!
+    details: InventoryUsersInput!
+  ): InventoryUsersConnection!
+  inventoryUserProfileInfo: InventoryUserProfileInfo!
+  launchedProductsPnL(
+    details: LaunchedProductsPnLInput!
+  ): LaunchedProductsPnLConnection!
+  inventoryNotifications(
+    first: Int!
+    after: Int!
+    details: InventoryNotificationsInput!
+  ): InventoryNotificationsConnection!
+  marketTrackers(
+    first: Int!
+    after: Int!
+    details: MarketTrackersInput!
+  ): MarketTrackersConnection!
+  marketTrackerDetails(id: ID!): MarketTrackerDetails!
+  marketProductChartDetails(
+    details: MarketProductChartDetailsInput!
+  ): MarketProductChartDetails!
+  inventoryChinaDashboard(
+    first: Int!
+    after: Int!
+    details: InventoryChinaDashboardInput!
+  ): ChinaDashboardConnection!
+  inventoryChinaSkuActivePurchases(
+    details: InventoryChinaSkuActivePurchasesInput!
+  ): [ChinaSkuActivePurchase]!
+  inventoryOnTheSeaSkuActiveTransfers(
+    details: InventoryChinaSkuActivePurchasesInput!
+  ): [OnTheSeaSkuActiveTransfer]!
+  airbnbHouses(
+    first: Int
+    after: Int
+    details: AirbnbHousesInput!
+  ): AirbnbHousesConnection!
+  airbnbPriceHistory(details: AirbnbPriceHistoryInput!): [AirbnbPriceHistory]!
+  airbnbSelectedYearPriceHistory(
+    details: AirbnbSelectedYearPriceHistoryInput!
+  ): AirbnbSelectedYearPriceHistory!
+  inventoryAuditReport(
+    first: Int
+    after: Int
+    details: InventoryAuditReportInput!
+  ): InventoryAuditReportConnection!
+  launchedProductsReorder(
+    first: Int
+    after: Int
+    details: LaunchedProductsReorderInput!
+  ): LaunchedProductsReorderConnection!
+  getTotalReorderlaunchedProductsReorder(
+    details: GetTotalReorderlaunchedProductsReorderInput!
+  ): TotalReorderlaunchedProductsReorder!
+  canadaShipmentLog(
+    first: Int!
+    after: Int!
+    details: NewShipmentLogInput!
+  ): NewShipmentLogConnection!
+  canadaShipmentDetails(id: ID!): CanadaShipmentDetails!
+  searchCanadaShipmentSku(
+    searchTerm: String!
+  ): SearchCanadaShipmentSkuConnection!
+  getCanadaShipmentDownloadLink(
+    details: CanadaShipmentDownloadLinkInput!
+  ): String!
+  getCanadaShipmentWarehouseShippingSchedules(
+    id: ID!
+  ): [NewShipmentWarehouseShippingSchedules]!
+  getNewShipmentPackingList(id: ID!): [NewShipmentPackingList]!
+  amazonLockToSendSkus(
+    first: Int!
+    after: Int!
+    details: AmazonLockToSendSkusInput!
+  ): AmazonLockToSendSkusConnection!
+  amazonTTM(
+    first: Int!
+    after: Int!
+    details: AmazonTTMInput!
+  ): AmazonTTMConnection!
+  getAmazonTotalTTM(selectedYear: Int!): AmazonTotalTTM!
+  taskManagementEmployeesScores(
+    firts: Int!
+    after: Int!
+    details: TaskManagementEmployeesScoresInput!
+  ): TaskManagementEmployeesScoresConnection!
+  getTaskManagementEmployeeScores(
+    firts: Int!
+    after: Int!
+    details: TaskManagementEmployeeScoresInput!
+  ): TaskManagementEmployeeScoresConnection!
+}
+
+type Mutation {
+  logout: Boolean!
+  signup(userInfo: signUpInfo!): Boolean!
+  validateSignUp(email: String!, shopName: String!): Boolean!
+  authorizeUser(details: AuthorizeUserInput!): Boolean!
+  createDashboardProfile(name: String!, setting: [String]!): Profile!
+  editDashboardProfile(details: EditDashboardProfileInput!): Profile!
+  deleteDashboardProfile(id: ID!): Boolean!
+  uploadWarehouseInventory(
+    file: Upload!
+    country: String!
+    warehouseId: ID!
+  ): Boolean!
+  createWarehouse(warehouseInfo: CreateWarehouseInput!): Boolean!
+  editWarehouse(warehouseInfo: EditWarehouseInput!): Warehouse!
+  deleteWarehouse(id: ID!): Boolean!
+  editDashboardDetails(
+    dashboardInfoVariables: DashboardDetailsInput!
+    updateInfo: UpdateDashboardDetail!
+  ): Dashboard!
+  createWarehouseTemplate: String!
+  createDashboardTemplate(storeId: ID!): String!
+  uploadDashboardDetails(file: Upload!): Boolean!
+  downloadDashboard(details: DownloadDashboardInput!): String!
+  downloadWarehouseData(details: WarehousesInput!): String!
+  downloadTransferData(details: TransfersInput!): String!
+  downloadPurchasesData(details: PurchasesInput!): String!
+  downloadSalesData(details: DownloadSalesDataInput!): String!
+  downloadSalesWithChartData(details: SalesWithChartInput!): String!
+  downloadTrend(details: TrendsInput!): String!
+  transferWarehouseInventory(
+    transferInfo: TransferWarehouse!
+    dashboardInfoVariables: DashboardDetailsInput!
+  ): [Dashboard]!
+  createTransferTemplate(fromWarehouse: String!, toWarehouse: String!): String!
+  uploadTransferInventory(file: Upload!): Boolean!
+  orderNewPurchase(purchaseInfo: NewPurchase!): Boolean!
+  editPurchase(editPurchaseInfo: EditPurchaseInput!): Purchase!
+  editProfile(details: ProfileEdit!): UserProps!
+  editRiskySkus(details: EditRiskySkusInput!): EditRiskySkusResponse!
+  addToRisky(skus: [String!]!): Boolean!
+  downloadRiskySkus(details: RiskySkusInput!): String!
+  deleteRiskyItem(skusId: [ID!]!): [ID]!
+  setWarehouseAndStore(warehouseId: ID, storeId: ID): RiskyWarehouseAndStore!
+  deleteColumnFromProfiles(names: [String]): Boolean!
+  editCogsAndInventory(details: EditCogsAndInventoryInput!): CogsAndInventory!
+  downloadCogsAndInventory(details: DownloadCogsAndInventory!): String!
+  hideSkus(skusId: [ID]!, storeId: ID!): [ID]!
+  unhideSkus(skusId: [ID]!, storeId: ID!): [ID]!
+  changePassword(oldPassword: String!, newPassword: String!): Boolean!
+  uploadShipmentProducts(
+    file: Upload!
+    packingType: PackingType!
+  ): [UploadShipmentResponse]!
+  createShipmentTemplate(packingType: PackingType!): String!
+  downloadShipmentDetails(id: ID!): String!
+  createShipmentPlan(details: CreateShipmentPlanInputs!): [ShipmentPlanResult]!
+  createInboundShipment(details: CreateInboundShipmentInput!): Boolean!
+  signUpWarehouseUser(details: SignUpWarehouseUserInput!): Boolean!
+  deleteWarehouseUser(id: ID!): ID!
+  downloadRiskyReorders(details: RiskyReordersInput!): String!
+  uploadShippingPackageDetails(file: Upload!): [UploadShippingPackageDetails]!
+  uploadShippingLabels(
+    file: Upload!
+    shippingPackageDetails: [ShippingLabelsPackingDetailsInput!]!
+  ): String!
+  authorizeAmazonAds(authCode: String!): UserProps!
+  signUpChinaSupplier(signUpInfo: ChinaSignUpInput!): Boolean!
+  addSkuToWarehouse(warehouseId: ID!, skusId: [ID]!): Boolean!
+  deleteSkuFromWarehouse(warehouseId: ID!, skusId: [ID]!): Boolean!
+  deleteChinaSupplier(id: ID!): Boolean!
+  chinaSupplierChangePassword(
+    details: ChinaSupplierChangePasswordInput!
+  ): Boolean!
+  editChinaSupplier(warehouseId: ID!, supplierId: ID!): ChinaSupplier!
+  createWarehouseSkusTemplate: String!
+  uploadWarehouseSkusData(file: Upload!, warehouseId: ID!): Boolean!
+  editInventoryChinaPurchase(
+    details: EditInventoryChinaPurchaseInput!
+  ): ChinaPurchase!
+  rejectInventoryChinaPurchase(
+    details: RejectInventoryChinaPurchaseInput
+  ): ChinaPurchase!
+  downloadInventoryChinaPurchases(
+    details: InventoryChinaPurchasesInput!
+  ): String!
+  editInventoryChinaAirTransfer(
+    details: EditInventoryChinaAirTransferInput!
+  ): ChinaAirTransfer!
+  rejectInventoryChinaAirTransfer(
+    details: RejectInventoryChinaAirTransferInput!
+  ): ChinaAirTransfer!
+  rejectInventoryChinaSeaTransfer(
+    details: RejectInventoryChinaSeaTransferInput!
+  ): InventoryChinaRegularSeaTransfer!
+  editInventoryChinaSeaTransfer(
+    details: EditInventoryChinaSeaTransferInput!
+  ): InventoryChinaRegularSeaTransfer!
+  rejectInventoryChinaDiusSeaTransfer(
+    details: RejectInventoryChinaDiusSeaTransferInput!
+  ): InventoryChinaRegularSeaTransfer!
+  downloadInventoryChinaAirTransfers(
+    details: InventoryChinaAirTransfersInput!
+  ): String!
+  downloadInventoryChinaSeaTransfers(
+    details: InventoryChinaSeaTransfersInput!
+  ): String!
+  editInventoryChinaDiusSeaTransfer(
+    details: EditInventoryChinaDiusSeaTransferInput!
+  ): InventoryChinaSeaTransfer!
+  downloadChinaInvoice(details: ChinaInvoiceTransfersInput!): String!
+  editInventoryFollowReorder(
+    details: EditInventoryFollowReorderInput!
+  ): ChinaFollowReorder!
+  archiveInventoryFollowReorder(id: ID!): Boolean!
+  downloadInventoryChinaFollowReorders(
+    details: InventoryChinaFollowReorderInput!
+  ): String!
+  downloadSkuPurchaseHistory(details: SkuPurchaseHistoryInput!): String!
+  addSkuToPostLaunch(skuId: ID!): Boolean!
+  deleteSkuFromPostLaunch(id: ID!): ID!
+  uploadConvergentRate(file: Upload!, date: DateShort!): Boolean!
+  downloadPostLaunch(details: PostLaunchInput!): String!
+  addSkuToBeforeLaunch(skuId: ID!): Boolean!
+  downloadBeforeLaunch(details: BeforeLaunchInput!): String!
+  editBeforeLaunch(details: EditBeforeLaunchInput!): BeforeLaunch!
+  editBeforeLaunchNote(details: EditBeforeLaunchNoteInput!): BeforeLaunch!
+  createBeforeLaunchTemplate(templateType: LaunchTemplateType!): String!
+  createLaunchTemplate: String!
+  uploadBeforeLaunchData(file: Upload!): Boolean!
+  deleteSkuFromBeforeLaunch(id: ID!): ID!
+  addSkuToLaunch(skuId: ID!): Boolean!
+  editLaunch(details: EditLaunchInput!): Launch!
+  editLaunchNote(details: EditLaunchNoteInput!): Launch!
+  editLaunchTargetNote(details: EditLaunchTargetNoteInput!): Launch!
+  downloadLaunch(details: LaunchInput!): String!
+  uploadLaunchData(file: Upload!): Boolean!
+  deleteSkuFromLaunch(id: ID!): ID!
+  downloadNewCogsAndInventory(details: NewCogsAndInventoryInput!): String!
+  uploadFulfillmentReport(file: Upload!): [UploadFulfillmentReport]!
+  uploadSalesReport(file: Upload!): [UploadSalesReport]!
+  uploadDirectContainerReport(file: Upload!): [UploadDirectContainerReport]!
+  requestShipmentDetails(
+    details: RequestShipmentDetailsInput!
+  ): RequestShipmentDetailsConnection!
+  editNewShipmentSkus(
+    details: EditNewShipmentSkusInput!
+  ): [RequestShipmentDetails]!
+  addShipmentId(id: ID!, shipmentId: String!): Boolean!
+  addTransferToShipment(details: AddTransferToShipmentInput!): Boolean!
+  getNewShipmentDownloadLink(details: GetNewShipmentDownloadLinkInput!): String!
+  createOrUpdateManualNewShipment(
+    details: CreateManualNewShipmentInput!
+  ): RequestShipmentDetailsConnection!
+  sendNewShipmentToOutbound(details: SendNewShipmentToOutboundInput!): ID!
+  downloadFbaFeeConflict(details: DownloadFbaFeeConflictInput!): String!
+  editInventoryProductSize(
+    details: EditChinaProductSizeInput!
+  ): ChinaProductSize!
+  createInventoryProductSizeTemplate(
+    warehouseId: ID!
+    warehouseName: String!
+  ): String!
+  uploadInventoryProductSize(file: Upload!): Boolean!
+  downloadInventoryProductSize(details: InventoryProductSizeInput!): String!
+  chinaSeaTransferApprovePreReceivingSchedule(
+    id: ID!
+    warehouseId: ID!
+  ): InventoryChinaRegularSeaTransfer!
+  hideFbaFeeConflictSkus(ids: [ID!]!): [ID]!
+  unhideFbaFeeConflictSkus(ids: [ID!]!): [ID]!
+  editFbaFeeConflict(details: EditFbaFeeConflictInput!): FbaFeeConflict!
+  addOtherInventoryChinaPurchase(
+    details: AddOtherInventoryChinaPurchaseInput!
+  ): Boolean!
+  editOtherInventoryChinaPurchase(
+    details: EditOtherInventoryChinaPurchaseInput!
+  ): OtherChinaPurchase!
+  deleteOtherInventoryChinaPurchase(id: ID!): ID!
+  addSkuToPriceChangeLog(skuId: ID!): Boolean!
+  editPriceChangeLogTarget(details: EditPriceChangeLogInput!): PriceChangeLog!
+  submitPriceChangeLog(details: SubmitPriceChangeLogInput!): [PriceChangeLog]!
+  editPriceChangeLogStartDate(
+    details: EditPriceChangeLogStartDateInput!
+  ): PriceChangeLog!
+  deleteSkuFromPriceChangeLog(id: ID!): ID!
+  downloadPriceChangeLog(details: PriceChangeLogInput!): String!
+  addSkuToOptimize(skuId: ID!): Boolean!
+  editDateOfOptimize(details: EditDateOfOptimizeInput!): Optimize!
+  editOptimizeList(details: EditOptimizeListInput!): Optimize!
+  deleteSkuFromOptimize(id: ID!): ID!
+  downloadOptimize(details: OptimizeInput!): String!
+  downloadFinancial(details: DownloadFinancialInput!): String!
+  addMarketplaceToStore(
+    marketplaceId: MarketplaceIds!
+  ): GetAllStoresAndMarketplaces!
+  deleteMarketplaceFromStore(id: ID!): ID!
+  authorizeOtherMarketplaceAds(storeId: ID!): UserProps!
+  editProductPrice(details: EditProductPriceInput!): ProductPrices!
+  createProductPriceTemplate(storeId: ID!): String!
+  uploadProductPriceChange(file: Upload!, storeId: ID!): Boolean!
+  downloadProductPrices(details: ProductPricesInput!): String!
+  downloadDashboardHistory(details: DownloadDashboardHistoryInput!): String!
+  downloadChinaSupplierScore(details: ChinaSupplierScoresInput!): String!
+  editSalesOptimizationDate(details: EditSalesOptimizationDateInput!): Sales!
+  downloadMultipleAccountDashboard(
+    details: MultipleAccountDashboardInput!
+  ): String!
+  downloadMultipleAccountSales(details: MultipleAccountSalesInput!): String!
+  editChinaOtherMonthCost(
+    details: EditChinaOtherMonthCostInput!
+  ): ChinaInvoiceTransfer!
+  editProductHistory(
+    details: EditProductHistoryInput!
+  ): EditProductHistoryResponse!
+  downloadProductHistory(details: ProductHistoryInput!): String!
+  downloadInventoryInUS(details: NewCogsAndInventoryInput!): String!
+  downloadInventoryInUSByDate(details: InventoryInUSByDateInput!): String!
+  downloadRiskyUnder200Days(details: RiskyUnder200DaysInput!): String!
+  downloadChinaInventoryCheck(details: ChinaInventoryCheckInput!): String!
+  downloadUSInventoryCheck(details: USInventoryCheckInput!): String!
+  editRatingConflicts(
+    details: EditRatingConflictsInput!
+  ): EditRatingConflictsResponse!
+  downloadRatingConflicts(details: RatingConflictsInput!): String!
+  editRiskyReorders(details: EditRiskyReordersInput!): RiskyReorders!
+  createRiskyReordersTemplate: String!
+  uploadRiskyReordersData(file: Upload!): Boolean!
+  addAmazonNewProduct(details: AddAmazonNewProductInput!): ID!
+  editAmazonNewProduct(details: EditAmazonNewProductInput!): AmazonNewProduct!
+  createNewProductExportFile(id: ID!): String!
+  downloadAmazonNewProducts(details: AmazonNewProductsInput!): String!
+  signUpInventoryUser(details: SignUpInventoryUserInput!): Boolean!
+  editInventoryUserPermissions(
+    details: EditInventoryUserPermissionsInput!
+  ): InventoryUser!
+  deleteInventoryUser(id: ID!): ID!
+  setInventoryUserHeaderbarItems(
+    details: InventoryUserHeaderbarItemsInput!
+  ): [InventoryUserHeaderbarItem!]!
+  downloadOtherInventoryChinaPurchases(
+    details: OtherInventoryChinaPurchasesInput!
+  ): String!
+  editSnl(details: EditSnlInput!): Sales!
+  approveInventoryChinaSeaTransferCustoms(
+    details: ApproveInventoryChinaSeaTransferCustomsInput!
+  ): InventoryChinaRegularSeaTransfer!
+  editInventoryChinaFastBoatTransfer(
+    details: EditInventoryChinaFastBoatTransferInput!
+  ): InventoryChinaFastBoatTransfer!
+  rejectInventoryChinaFastBoatTransfer(
+    details: RejectInventoryChinaFastBoatTransferInput!
+  ): InventoryChinaFastBoatTransfer!
+  rejectInventoryChinaDiusFastBoatTransfer(
+    details: RejectInventoryChinaDiusFastBoatTransferInput!
+  ): InventoryChinaFastBoatTransfer!
+  chinaFastBoatTransferApprovePreReceivingSchedule(
+    details: ChinaFastBoatTransferApprovePreReceivingScheduleInput!
+  ): InventoryChinaFastBoatTransfer!
+  editInventoryUserProfile(
+    details: EditInventoryUserProfileInput!
+  ): InventoryUserProfileInfo!
+  downloadLaunchedProductsPnL(
+    details: DownloadLaunchedProductsPnLInput!
+  ): String!
+  changeWarehouseUserPassword(
+    details: ChangeWarehouseUserPasswordInput!
+  ): Boolean!
+  editProductHistorySeasonalDecisions(
+    details: EditProductHistorySeasonalDecisionsInput!
+  ): EditProductHistoryResponse!
+  markNotificationAsRead(
+    details: MarkNotificationAsReadInput!
+  ): InventoryNotification!
+  markAllNotificationsAsRead: Boolean!
+  editStoreNotificationEmails(notificationEmails: [String]!): UserProps!
+  editInventoryUserNotificationAccess(
+    details: EditInventoryUserNotificationAccessInput!
+  ): InventoryUser!
+  createAllAmazonReports(details: CreateAllAmazonReportsInput!): String!
+  createMarketTracker(details: CreateMarketTrackerInput!): Boolean!
+  deleteMarketTracker(id: ID!): ID!
+  editMarketTrackerDetails(
+    details: EditMarketTrackerDetailsInput!
+  ): MarketTrackerDetails!
+  addCustomAsinToMarketTracker(
+    details: AddCustomAsinToMarketTrackerInput!
+  ): MarketTrackerDetails!
+  addOwnProductToMarketTracker(
+    details: AddOwnProductToMarketTrackerInput!
+  ): MarketTrackerDetails!
+  removeAsinFromTracking(
+    details: RemoveAsinFromTrackingInput!
+  ): MarketTrackerDetails!
+  addSuggestedProductToTracking(
+    details: AddSuggestedProductToTrackingInput!
+  ): MarketTrackerDetails!
+  addOrEditRivalForSku(details: AddRivalForSkuInput!): Sales!
+  removeSkuRival(details: RemoveSkuRivalInput!): Sales!
+  editInventoryChinaDiusFastBoatTransfer(
+    details: EditInventoryChinaDiusSeaTransferInput!
+  ): InventoryChinaFastBoatTransfer!
+  downloadInventoryChinaDashboard(
+    details: InventoryChinaDashboardInput!
+  ): String!
+  addAirbnbHouse(details: AddOrEditAirbnbHouseInput!): Boolean!
+  editAirbnbHouse(details: AddOrEditAirbnbHouseInput!): AirbnbHouse!
+  deleteAirbnbHouse(id: ID!): ID!
+  createAirbnbHousesTemplate: String!
+  uploadAirbnbHouses(file: Upload!): Boolean!
+  addAirbnbPriceHistory(details: AddAirbnbPriceHistoryInput!): Boolean!
+  editAirbnbPriceHistory(details: EditAirbnbPriceHistoryInput!): Boolean!
+  createAirbnbHousePriceHistoryDetailsTemplate: String!
+  uploadAirbnbHousePriceHistoryDetails(
+    details: UploadAirbnbHousePriceHistoryDetailsInput!
+  ): Boolean!
+  createAirbnbHousePriceListTemplate: String!
+  uploadAirbnbHousePriceList(
+    details: UploadAirbnbHousePriceListInput!
+  ): AirbnbPriceHistory!
+  createInventoryAuditReportTemplate: String!
+  uploadInventoryAuditReport(file: Upload!): Boolean!
+  downloadInventoryAuditReport(details: InventoryAuditReportInput!): String!
+  deleteInventoryAuditReport(id: ID!): ID!
+  downloadLaunchedProductsReorder(
+    details: LaunchedProductsReorderInput!
+  ): String!
+  createAirbnbHouseOpenPriceTemplate: String!
+  uploadAirbnbHouseOpenPrice(
+    details: UploadAirbnbHouseOpenPriceInput!
+  ): Boolean!
+  createNewShipmentProductTemplate: String!
+  uploadNewShipmentProduct(file: Upload!): [SearchNewShipmentSku]!
+  createOrUpdateAutomateCanadaShipment(
+    details: RequestShipmentDetailsInput!
+  ): CreateOrUpdateCanadaShipment!
+  createOrUpdateManualCanadaShipment(
+    details: CreateManualNewShipmentInput!
+  ): CreateOrUpdateCanadaShipment!
+  editCanadaShipmentSkus(
+    details: EditNewShipmentSkusInput!
+  ): [CanadaShipmentSkuDetails]!
+  addShipmentIdToCanadaShipment(
+    details: AddShipmentIdToCanadaShipmentInput!
+  ): Boolean!
+  addTransferToCanadaShipment(details: AddTransferToShipmentInput!): Boolean!
+  editCanadaShipmentSkusTransferType(
+    details: EditCanadaShipmentSkusTransferTypeInput!
+  ): [CanadaShipmentSkuDetails]!
+  sendCanadaShipmentToOutbound(details: SendNewShipmentToOutboundInput!): ID!
+  createCanadaShipmentProductTemplate: String!
+  uploadCanadaShipmentProduct(file: Upload!): [SearchCanadaShipmentSku]!
+  editCanadaShipmentShippingAddress(
+    details: EditCanadaShipmentShippingAddressInput!
+  ): Boolean!
+  getNewShipmentShippingLabelsUploadLink(
+    details: GetNewShipmentShippingLabelsUploadLinkInput!
+  ): String!
+  downloadNewShipmentModifiedShippingLabels(
+    details: DownloadNewShipmentModifiedShippingLabelsInput!
+  ): String!
+  downloadAmazonLockToSendSkus(details: AmazonLockToSendSkusInput!): String!
+  editCanadaShipmentSkusShipToAddress(
+    details: EditCanadaShipmentSkusShipToAddressInput!
+  ): Boolean!
+  downloadAmazonTTM(details: AmazonTTMInput!): String!
+}
+
+input AuthorizeUserInput {
+  authCode: String!
+  state: String!
+  sellingPartnerId: String!
+}
+
+input CreateInboundShipmentInput {
+  shipmentId: String!
+  shipmentName: String!
+  shipFrom: AddressInput!
+  destination: String!
+  shipTo: AddressInput!
+  distance: String!
+  driveTime: String!
+  packingType: PackingType!
+  labelPrepPreference: LabelPrepPreference!
+  shipments: [ShipmentsInput]!
+}
+
+input ShipmentsInput {
+  shipmentId: String!
+  skuList: [SkuListInput]!
+}
+
+input SkuListInput {
+  sku: String!
+  totalUnits: Int!
+}
+
+input InboundShipmentItem {
+  sku: String!
+  totalUnits: Int!
+  unitsPerCase: Int!
+}
+
+input CreateShipmentPlanInputs {
+  shipFrom: AddressInput!
+  labelPrepPreference: LabelPrepPreference!
+  shipToCountryCode: ShipToCountryCode!
+  inboundShipmentPlanRequestItems: [InboundShipmentPlanRequestItems]!
+  packingType: PackingType!
+}
+
+input InboundShipmentPlanRequestItems {
+  sku: String!
+  asin: String!
+  condition: Condition!
+  totalUnits: Int!
+  unitsPerCase: Int!
+}
+
+input AddressInput {
+  id: String
+  name: String!
+  address1: String!
+  address2: String
+  city: String!
+  state: String!
+  countryCode: CountryCode!
+  postalCode: String!
+}
+
+input EditCogsAndInventoryInput {
+  fromDate: DateShort!
+  toDate: DateShort!
+  id: ID!
+  costOfUnit: Float!
+}
+
+input ProfileEdit {
+  storeId: ID!
+  containerCost: Float
+  airShippingCost: Float
+  containerVolume: Float
+  amazonCommission: Float
+  palletLength: Float
+  palletWidth: Float
+  containerCostGoingToAmazon: Float
+  containerVolumeGoingToAmazon: Float
+  fastBoatShippingCost: Float
+  fastBoatToBeanFactory: Float
+  currencyToUSDollarRate: Float
+}
+
+input WarehouseRisky {
+  name: String
+  inventoryName: String
+}
+
+input EditPurchaseInput {
+  id: ID!
+  amount: Int!
+  price: Float
+  etd: DateShort
+  invoiceNumber: String
+  status: PurchaseStatus!
+  notes: String
+}
+
+input InputImageType {
+  smallImage: String!
+  bigImage: String!
+}
+
+input NewPurchase {
+  vendorEmails: [String]!
+  vendorName: String!
+  sku: String!
+  asin: String!
+  warehouseId: String!
+  count: Int!
+  notes: String
+  image: InputImageType!
+  etd: DateShort
+}
+
+input signUpInfo {
+  name: String!
+  email: String!
+  password: String!
+  shopName: String!
+  marketplaceId: String!
+}
+
+input UpdateDashboardDetail {
+  id: ID!
+  sku: String!
+  asin: String!
+  costOfUnit: Float!
+  custom: Float!
+  shippingCostToAmazon: Float!
+  boxUpc: [BoxUPCInput]!
+  comments: String!
+  warehouses: [DashboardWarehouseEdit]!
+  unitLength: Float
+  unitWidth: Float
+  unitHeight: Float
+  unitWeight: Float
+  isFragile: Boolean!
+  customUpc: String
+  caseBarcodeLink: String
+  rework: Boolean!
+  containerCost: Float
+  otherCost: Float
+  lockToSend: Boolean!
+  storageMultiple: Float
+}
+
+input DashboardWarehouseEdit {
+  warehouseId: String!
+  name: String!
+  inventory: Int
+}
+
+input TransferWarehouse {
+  fromWarehouse: String!
+  toWarehouse: String!
+  fromWarehouseId: ID!
+  toWarehouseId: ID!
+  transfer: [SkuTransfer]!
+}
+
+input SkuTransfer {
+  id: ID!
+  sku: String!
+  amount: Int!
+  notes: String!
+}
+
+input CreateWarehouseInput {
+  name: String!
+  street1: String
+  street2: String
+  city: String
+  state: String
+  country: String!
+  zip: String
+  contactName: String
+  contactEmail: String
+  contactPhone: String
+}
+
+input EditWarehouseInput {
+  id: ID!
+  name: String!
+  street1: String
+  street2: String
+  city: String
+  state: String
+  country: String
+  zip: String
+  contactName: String
+  contactEmail: String
+  contactPhone: String
+}
+
+input BoxUPCInput {
+  boxUpc: String
+  outerBoxLength: Float
+  outerBoxWidth: Float
+  outerBoxHeight: Float
+  outerBoxVolume: Float
+  outerBoxWeight: Float
+  unitPerOuterBox: Int
+  unitPerInnerBox: Int
+  boxPerPallet: Int
+}
+
+input RemovedDirectTransferDetails {
+  id: ID!
+  transferType: RiskyDirectTransferType!
+}
+
+input EditRiskySkusInput {
+  id: ID!
+  salesPerDay: Int
+  onTheAir1: Int
+  dateOnAir1: DateShort
+  onTheAir2: Int
+  dateOnAir2: DateShort
+  removedDirectTransfers: [RemovedDirectTransferDetails]!
+}
+
+input SignUpWarehouseUserInput {
+  name: String!
+  email: String!
+  password: String!
+  privilegeLevel: PrivilegeLevel!
+}
+
+input RiskyReorderSortInput {
+  columnName: RiskyReorderSortableColumns!
+  sortBy: SortBy!
+}
+
+input RiskyReorderFilterInput {
+  columnName: RiskyReorderFilterableColumns!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input RiskyReordersInput {
+  fromDate: DateShort!
+  toDate: DateShort!
+  searchTerm: String!
+  selectedDays: Int!
+  sort: RiskyReorderSortInput!
+  filters: [RiskyReorderFilterInput]!
+}
+
+input MultipleAccountDashboardSortInput {
+  columnName: MultipleAccountDashboardSortableColumns!
+  sortBy: SortBy!
+}
+
+input MultipleAccountDashboardFilterInput {
+  columnName: MultipleAccountDashboardFilterableColumns!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input MultipleAccountDashboardInput {
+  searchTerm: String!
+  activeStores: [MultipleAccountStoreInput]!
+  sort: MultipleAccountDashboardSortInput!
+  filters: [MultipleAccountDashboardFilterInput]!
+  marketplaceId: MarketplaceIds!
+}
+
+input MultipleAccountStoreInput {
+  id: ID!
+  name: String!
+}
+
+input MultipleAccountSalesSortInput {
+  columnName: MultipleAccountSalesSortableColumns!
+  sortBy: SortBy!
+}
+
+input MultipleAccountSalesFilterInput {
+  columnName: MultipleAccountSalesFilterableColumns!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input MultipleAccountSalesInput {
+  searchTerm: String!
+  activeStores: [MultipleAccountStoreInput]!
+  sort: MultipleAccountSalesSortInput!
+  filters: [MultipleAccountSalesFilterInput]!
+  marketplaceId: MarketplaceIds!
+}
+
+input ChinaSignUpInput {
+  name: String!
+  email: String!
+  password: String!
+  warehouseId: ID!
+}
+
+input WarehouseSkusSortInput {
+  columnName: WarehouseSkusSortableColumns!
+  sortBy: SortBy!
+}
+
+input WarehouseSkusInput {
+  searchTerm: String!
+  warehouseId: String!
+  sort: WarehouseSkusSortInput!
+}
+
+input ChinaSupplierChangePasswordInput {
+  userId: ID!
+  oldPassword: String!
+  newPassword: String!
+}
+
+input InventoryChinaPurchasesSortInput {
+  columnName: InventoryChinaPurchasesSortableColumns!
+  sortBy: SortBy!
+}
+
+input InventoryChinaPurchasesFilterInput {
+  columnName: InventoryChinaPurchasesFilterableColumns!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input InventoryChinaPurchasesInput {
+  fromDate: DateShort
+  toDate: DateShort
+  searchTerm: String!
+  warehouseId: ID!
+  onlyNewPacks: Boolean!
+  sort: InventoryChinaPurchasesSortInput!
+  filters: [InventoryChinaPurchasesFilterInput]!
+}
+
+input EditInventoryChinaPurchaseInput {
+  id: ID!
+  piNumber: String!
+  orderDate: DateShort!
+  price: Float!
+  units: Int!
+  boxes: Int!
+  estimateDate: DateShort!
+  note: String
+  warehouseId: ID!
+  editType: ChinaPurchaseEditType!
+  inventoryPurchaseId: ID
+}
+
+input RejectInventoryChinaPurchaseInput {
+  id: ID!
+  piNumber: String!
+  orderDate: DateShort!
+  price: Float!
+  units: Int!
+  boxes: Int!
+  estimateDate: DateShort!
+  note: String
+  warehouseId: ID!
+  rejectionNote: String!
+  inventoryPurchaseId: ID
+}
+
+input ChinaAirTransfersSortInput {
+  columnName: ChinaAirTransfersSortableColumns!
+  sortBy: SortBy!
+}
+
+input ChinaAirTransfersFilterInput {
+  columnName: ChinaAirTransfersFilterableColumns!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input InventoryChinaAirTransfersInput {
+  searchTerm: String!
+  warehouseId: ID!
+  sort: ChinaAirTransfersSortInput!
+  filters: [ChinaAirTransfersFilterInput]!
+}
+
+input ChinaSeaTransfersSortInput {
+  columnName: ChinaSeaTransfersSortableColumns!
+  sortBy: SortBy!
+}
+
+input ChinaSeaTransfersFilterInput {
+  columnName: ChinaSeaTransfersFilterableColumns!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input InventoryChinaSeaTransfersInput {
+  searchTerm: String!
+  warehouseId: ID!
+  onlyDius: Boolean!
+  sort: ChinaSeaTransfersSortInput!
+  filters: [ChinaSeaTransfersFilterInput]!
+}
+
+input ChinaTransferPurchase {
+  id: ID!
+  units: Int!
+  note: String!
+}
+
+input SkuInput {
+  id: ID!
+  sku: String!
+}
+
+input ChinaTransferSku {
+  sku: SkuInput!
+  unitsPerBox: Int!
+  dimensions: String!
+  weight: Float!
+  totalUnits: Int!
+  purchases: [ChinaTransferPurchase]!
+  gw: Float!
+  nw: Float!
+  vol: Float!
+}
+
+input InventoryChinaSeaTransferSku {
+  sku: SkuInput!
+  unitsPerBox: Int!
+  dimensions: String!
+  weight: Float!
+  totalUnits: Int!
+  newPacked: Boolean!
+  purchases: [ChinaTransferPurchase]!
+  gw: Float!
+  nw: Float!
+  vol: Float!
+}
+
+input EditInventoryChinaAirTransferInput {
+  id: ID!
+  airNumber: String!
+  etd: DateShort!
+  airFreightCost: Float!
+  otherCost: Float!
+  skus: [ChinaTransferSku]!
+  warehouseId: ID!
+  editType: ChinaPurchaseEditType!
+}
+
+input RejectInventoryChinaAirTransferInput {
+  id: ID!
+  airNumber: String!
+  etd: DateShort!
+  airFreightCost: Float!
+  otherCost: Float!
+  skus: [ChinaTransferSku]!
+  warehouseId: ID!
+  rejectionNote: String!
+}
+
+input RejectInventoryChinaSeaTransferInput {
+  id: ID!
+  invoiceNumber: String!
+  etd: DateShort!
+  eta: DateShort!
+  mbl: String!
+  containerNumber: String!
+  trackingLink: String!
+  port: String!
+  seaFreightCost: Float!
+  otherCost: Float!
+  skus: [InventoryChinaSeaTransferSku]!
+  warehouseId: ID!
+  rejectionNote: String!
+  carrierEmail: String
+  carrierPhone: String
+  otherCarrierContactInfo: String
+  comesOnPallet: Boolean
+}
+
+input EditInventoryChinaSeaTransferInput {
+  id: ID!
+  invoiceNumber: String!
+  etd: DateShort!
+  eta: DateShort!
+  mbl: String!
+  containerNumber: String!
+  trackingLink: String!
+  transferor: String
+  port: String!
+  seaFreightCost: Float!
+  otherCost: Float!
+  customs: Float
+  fromPortToWarehouseCost: Float
+  other: Float
+  skus: [InventoryChinaSeaTransferSku]!
+  companyId: ID
+  warehouseId: ID!
+  editType: ChinaPurchaseEditType!
+  carrierEmail: String
+  carrierPhone: String
+  otherCarrierContactInfo: String
+  comesOnPallet: Boolean
+}
+
+input RejectInventoryChinaDiusSeaTransferInput {
+  id: ID!
+  invoiceNumber: String!
+  etd: DateShort!
+  eta: DateShort!
+  mbl: String!
+  containerNumber: String!
+  trackingLink: String!
+  port: String!
+  seaFreightCost: Float!
+  otherCost: Float!
+  transferor: String!
+  customs: Float
+  fromPortToWarehouseCost: Float
+  other: Float
+  skus: [InventoryChinaSeaTransferSku]!
+  warehouseId: ID!
+  rejectionNote: String!
+  carrierEmail: String
+  carrierPhone: String
+  otherCarrierContactInfo: String
+  comesOnPallet: Boolean
+}
+
+input ChinaInvoiceTransfersSort {
+  columnName: ChinaInvoiceTransfersSortableColumns!
+  sortBy: SortBy!
+}
+
+input ChinaInvoiceTransfersFilter {
+  columnName: ChinaInvoiceTransfersFilterableColumns!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input ChinaInvoiceTransfersInput {
+  date: DateShort!
+  warehouseId: ID!
+  storeId: ID
+  searchTerm: String!
+  sort: ChinaInvoiceTransfersSort!
+  filters: [ChinaInvoiceTransfersFilter]!
+}
+
+input EditInventoryChinaDiusSeaTransferSkusInput {
+  sku: SkuInput!
+  damaged: Int
+  missing: Int
+}
+
+input EditInventoryChinaDiusSeaTransferInput {
+  id: ID!
+  otherCost: Float!
+  customs: Float
+  fromPortToWarehouseCost: Float
+  skus: [EditInventoryChinaDiusSeaTransferSkusInput]!
+}
+
+input ChinaFollowReorderSortInput {
+  columnName: ChinaFollowReorderSortableColumns!
+  sortBy: SortBy!
+}
+
+input ChinaFollowReorderFilterInput {
+  columnName: ChinaFollowReorderFilterableColumns!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input InventoryChinaFollowReorderInput {
+  searchTerm: String!
+  archived: Boolean!
+  warehouseId: ID!
+  sort: ChinaFollowReorderSortInput!
+  filters: [ChinaFollowReorderFilterInput]!
+}
+
+input SkuPurchaseHistorySortInput {
+  columnName: SkuPurchaseHistorySortableColumns!
+  sortBy: SortBy!
+}
+
+input SkuPurchaseHistoryFilterInput {
+  columnName: SkuPurchaseHistoryFilterableColumns!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input SkuPurchaseHistoryInput {
+  searchTerm: String!
+  sort: SkuPurchaseHistorySortInput!
+  filters: [SkuPurchaseHistoryFilterInput]!
+}
+
+input PostLaunchSortInput {
+  columnName: PostLaunchSortableColumns!
+  sortBy: SortBy!
+}
+
+input PostLaunchFilterInput {
+  columnName: PostLaunchFilterableColumns!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input PostLaunchInput {
+  searchTerm: String!
+  sort: PostLaunchSortInput!
+  filters: [PostLaunchFilterInput]!
+}
+
+input BeforeLaunchSortInput {
+  columnName: BeforeLaunchSortableColumns!
+  sortBy: SortBy!
+}
+
+input BeforeLaunchFilterInput {
+  columnName: BeforeLaunchFilterableColumns!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input BeforeLaunchInput {
+  searchTerm: String!
+  queryType: BeforeLaunchQueryType!
+  priorityFilter: [BeforeLaunchLocationStatus]!
+  sort: BeforeLaunchSortInput!
+  filters: [BeforeLaunchFilterInput]!
+}
+
+input LaunchColumnObjectInput {
+  status: LaunchStatus
+  note: String
+}
+
+input EditBeforeLaunchInput {
+  id: ID!
+  calculatedBreakEven: LaunchColumnObjectInput!
+  titleAndBackend: LaunchColumnObjectInput!
+  descriptionAndBulletPoint: LaunchColumnObjectInput!
+  picsAndDescriptive: LaunchColumnObjectInput!
+  targetCampaigns: LaunchColumnObjectInput!
+  keywordCampaigns: LaunchColumnObjectInput!
+  brandCampaigns: LaunchColumnObjectInput!
+  videoCampaigns: LaunchColumnObjectInput!
+  aPlus: LaunchColumnObjectInput!
+  finalCheck: LaunchColumnObjectInput!
+  dateOfOnTheSea: DateShort
+  descriptiveText: LaunchColumnObjectInput!
+  isMoved: Boolean!
+  isLaunched: Boolean!
+  locationStatus: BeforeLaunchLocationStatus
+  importToAPlusPremium: LaunchColumnObjectInput!
+}
+
+input LaunchTargetNoteInput {
+  quantity: Int
+  price: Float
+}
+
+input LaunchTargetColumnObjectInput {
+  status: LaunchStatus
+  note: LaunchTargetNoteInput!
+}
+
+input EditLaunchInput {
+  id: ID!
+  dateOfLaunch: DateShort
+  successfulTarget: LaunchTargetColumnObjectInput!
+  fairTarget: LaunchTargetColumnObjectInput!
+  setPrice: LaunchColumnObjectInput!
+  addToVineList: LaunchColumnObjectInput!
+  editName: LaunchColumnObjectInput!
+  addKeywords: LaunchColumnObjectInput!
+  checkOtherAccount: LaunchColumnObjectInput!
+  finalCheck: LaunchColumnObjectInput!
+  addToGiveaway: LaunchColumnObjectInput!
+}
+
+input EditBeforeLaunchNoteInput {
+  id: ID!
+  note: String!
+  columnName: BeforeLaunchColumnsEnum!
+}
+
+input LaunchSortInput {
+  columnName: LaunchSortableColumns!
+  sortBy: SortBy!
+}
+
+input LaunchInput {
+  searchTerm: String!
+  sort: LaunchSortInput!
+}
+
+input EditLaunchNoteInput {
+  id: ID!
+  note: String!
+  columnName: LaunchColumnsEnum!
+}
+
+input EditLaunchTargetNoteInput {
+  id: ID!
+  quantity: Int!
+  price: Float!
+  columnName: LaunchTargetColumns!
+}
+
+input NewCogsAndInventoryFilterInput {
+  columnName: NewCogsAndInventoryFilterableColumns!
+  dateIndex: Int
+  biggerThan: Float
+  lessThan: Float
+}
+
+input NewCogsAndInventorySortInput {
+  columnName: NewCogsAndInventorySortableColumns!
+  dateIndex: Int
+  sortBy: SortBy!
+}
+
+input NewCogsAndInventoryInput {
+  searchTerm: String!
+  fromDate: DateShort!
+  toDate: DateShort!
+  sort: NewCogsAndInventorySortInput!
+  storeId: ID!
+  filters: [NewCogsAndInventoryFilterInput]!
+}
+
+input TotalNewCogsAndInventoryInput {
+  fromDate: DateShort!
+  toDate: DateShort!
+  storeId: ID!
+}
+
+input ShipmentFulfillmentDetails {
+  sku: String!
+  asin: String!
+  totalInv: Int!
+  availableInv: Int!
+}
+
+input ShipmentSalesDetails {
+  sku: String!
+  asin: String!
+  orders: Int!
+  items: Int!
+}
+
+input NewShipmentDirectContainerDetails {
+  sku: String!
+  units: Int!
+}
+
+input RequestShipmentDetailsInput {
+  id: ID
+  mutationMethod: NewShipmentMutationMethod!
+  fulfillmentDetails: [ShipmentFulfillmentDetails]
+  salesDetails: [ShipmentSalesDetails]
+  directContainerDetails: [NewShipmentDirectContainerDetails]
+  businessReportSuggestion: [ShipmentSalesDetails]
+  salesDays: Int!
+  days: Int!
+  businessReportSuggestionDays: Int
+  available: Int!
+  carrier: String!
+  transitionType: TransitionType!
+  city: String!
+  internalShipmentId: String
+}
+
+input EditShipmentSku {
+  id: ID
+  skuId: ID!
+  sku: String!
+  unitsPerBox: Int!
+  boxes: Int!
+  boxPerPallet: Int!
+  adalproSuggestion: Int
+}
+
+input EditNewShipmentSkusInput {
+  id: ID!
+  skus: [EditShipmentSku!]!
+}
+
+input NewShipmentLogSortInput {
+  columnName: NewShipmentLogSortableColumns!
+  sortBy: SortBy!
+}
+
+input NewShipmentLogInput {
+  searchTerm: String!
+  sort: NewShipmentLogSortInput!
+}
+
+input AddTransferToShipmentWarehouseInput {
+  id: ID
+  name: String!
+}
+
+input AddTransferToShipmentInput {
+  id: ID!
+  fromWarehouse: AddTransferToShipmentWarehouseInput!
+  toWarehouse: AddTransferToShipmentWarehouseInput!
+  note: String
+}
+
+input GetNewShipmentDownloadLinkInput {
+  id: ID!
+  fileName: NewShipmentFileNames!
+}
+
+input CreateManualNewShipmentInput {
+  id: ID
+  mutationMethod: NewShipmentMutationMethod!
+  transitionType: TransitionType!
+  internalShipmentId: String
+  carrier: String!
+  city: String!
+  skus: [EditShipmentSku!]!
+}
+
+input ChinaProductSizeSortInput {
+  columnName: ChinaProductSizeSortableColumns!
+  sortBy: SortBy!
+}
+
+input ChinaProductSizeFilterInput {
+  columnName: ChinaProductSizeFilterableColumns!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input InventoryProductSizeInput {
+  searchTerm: String!
+  warehouseId: ID!
+  sort: ChinaProductSizeSortInput!
+  filters: [ChinaProductSizeFilterInput]!
+}
+
+input EditChinaProductSizeInput {
+  id: ID!
+  skuId: ID!
+  unitsPerBox: Int
+  boxWeight: Float
+  boxLength: Float
+  boxWidth: Float
+  boxHeight: Float
+  productWeight: Float
+  productLength: Float
+  productWidth: Float
+  productHeight: Float
+  leadTime: Int
+}
+
+input DateSortType {
+  dateIndex: Int!
+  dateSortType: String!
+}
+
+input DateFilterType {
+  dateIndex: Int!
+  dateFilterType: String!
+}
+
+input DownloadSalesDataFilterInput {
+  columnName: String!
+  dateFilterInfo: DateFilterType!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input DownloadSalesDataSortInput {
+  columnName: String!
+  dateSortInfo: DateSortType!
+  sortBy: SortBy!
+}
+
+input DownloadSalesDataInput {
+  reportType: SalesReportType!
+  searchTerm: String!
+  storeId: ID!
+  marketplaceId: MarketplaceIds!
+  sort: DownloadSalesDataSortInput!
+  date: DateShort!
+  salesFilter: SalesFilter!
+  filters: [DownloadSalesDataFilterInput]!
+  chartPeriod: SalesCharPeriod!
+  fluctuationMinMaxThreshold: Float!
+  fluctuationAvgThreshold: Float!
+  fluctuationChartPeriod: SalesCharPeriod!
+  fluctuationChartThreshold: Float!
+}
+
+input WarehousesSortInput {
+  columnName: WarehousesSortableColumns!
+  sortBy: SortBy!
+}
+
+input WarehousesInput {
+  searchTerm: String!
+  sort: WarehousesSortInput!
+}
+
+input TransfersSortInput {
+  columnName: TransfersSortableColumns!
+  sortBy: SortBy!
+}
+
+input TransfersFilterInput {
+  columnName: TransfersFilterableColumns!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input TransferWarehouseFilter {
+  fromWarehouseId: ID
+  toWarehouseId: ID
+  containBoth: Boolean!
+}
+
+input TransfersInput {
+  fromDate: DateShort!
+  toDate: DateShort!
+  searchTerm: String!
+  sort: TransfersSortInput!
+  filters: [TransfersFilterInput]!
+  transferWarehouseFilter: TransferWarehouseFilter!
+}
+
+input PurchasesSortInput {
+  columnName: PurchasesSortableColumns!
+  sortBy: SortBy!
+}
+
+input PurchasesFilterInput {
+  columnName: PurchasesFilterableColumns!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input PurchasesInput {
+  searchTerm: String!
+  fromDate: DateShort
+  toDate: DateShort
+  sort: PurchasesSortInput!
+  filters: [PurchasesFilterInput]!
+}
+
+input DownloadCogsAndInventorySortInput {
+  columnName: String!
+  sortBy: SortBy!
+}
+
+input DownloadCogsAndInventoryFilterInput {
+  columnName: String!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input DownloadCogsAndInventory {
+  fromDate: DateShort!
+  toDate: DateShort!
+  searchTerm: String!
+  sort: DownloadCogsAndInventorySortInput!
+  filters: [DownloadCogsAndInventoryFilterInput]!
+}
+
+input RiskySkusSortInput {
+  columnName: RiskySkusSortableColumns!
+  transferIndex: Int
+  sortBy: SortBy!
+}
+
+input RiskySkusFilterInput {
+  columnName: RiskySkusFilterableColumns!
+  transferIndex: Int
+  biggerThan: Float
+  lessThan: Float
+}
+
+input RiskySkusInput {
+  searchTerm: String!
+  sort: RiskySkusSortInput!
+  filters: [RiskySkusFilterInput]!
+}
+
+input DownloadFbaFeeConflictSortInput {
+  columnName: FbaFeeConflictSortableColumns!
+  sortBy: SortBy!
+}
+
+input DownloadFbaFeeConflictFilterInput {
+  columnName: FbaFeeConflictFilterableColumns!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input DownloadFbaFeeConflictInput {
+  searchTerm: String!
+  sort: DownloadFbaFeeConflictSortInput!
+  filters: [DownloadFbaFeeConflictFilterInput]!
+}
+
+input ShipmentSortInput {
+  columnName: ShipmentSortableColumns!
+  sortBy: SortBy!
+}
+
+input ShipmentFilterInput {
+  columnName: ShipmentFilterableColumns!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input ShipmentInput {
+  fromDate: DateShort!
+  toDate: DateShort!
+  searchTerm: String!
+  sort: ShipmentSortInput!
+  filters: [ShipmentFilterInput]!
+}
+
+input TrendsSortInput {
+  columnName: TrendsSortableColumns!
+  sortBy: SortBy!
+}
+
+input TrendsFilterInput {
+  columnName: TrendsFilterableColumns!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input TrendsInput {
+  date: DateShort!
+  searchTerm: String!
+  sort: TrendsSortInput!
+  filters: [TrendsFilterInput]!
+}
+
+input DashboardDetailsInput {
+  fromDate: DateShort!
+  toDate: DateShort!
+  storeId: ID!
+  marketplaceId: MarketplaceIds!
+  suggestedDays: Int!
+  optionalDays: Int!
+}
+
+input EditDashboardProfileInput {
+  id: ID!
+  name: String!
+  setting: [String]!
+}
+
+input DownloadDashboardSortInput {
+  columnName: String!
+  sortBy: SortBy!
+}
+
+input DownloadDashboardFilterInput {
+  columnName: String!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input DownloadDashboardInput {
+  setting: [String]!
+  fromDate: DateShort!
+  toDate: DateShort!
+  storeId: ID!
+  marketplaceId: MarketplaceIds!
+  suggestedDays: Int!
+  optionalDays: Int!
+  searchTerm: String!
+  sort: DownloadDashboardSortInput!
+  filters: [DownloadDashboardFilterInput]
+}
+
+input WarehouseUsersSortInput {
+  columnName: WarehouseUsersSortableColumns!
+  sortBy: SortBy!
+}
+
+input WarehouseUsersInput {
+  searchTerm: String!
+  sort: WarehouseUsersSortInput!
+}
+
+input EditFbaFeeConflictInput {
+  id: ID!
+  caseDate: DateShort
+}
+
+input AddOtherInventoryChinaPurchaseInput {
+  skuId: ID!
+  piNumber: String!
+  orderDate: DateShort!
+  price: Float!
+  units: Int!
+  note: String
+  warehouseId: ID!
+}
+
+input EditOtherInventoryChinaPurchaseInput {
+  id: ID!
+  piNumber: String!
+  orderDate: DateShort!
+  price: Float!
+  units: Int!
+  note: String
+}
+
+input OtherInventoryChinaPurchasesSortInput {
+  columnName: OtherInventoryChinaPurchasesSortableColumns!
+  sortBy: SortBy!
+}
+
+input OtherInventoryChinaPurchasesInput {
+  fromDate: DateShort
+  toDate: DateShort
+  searchTerm: String!
+  warehouseId: ID!
+  onlyNewPacks: Boolean!
+  sort: OtherInventoryChinaPurchasesSortInput!
+}
+
+input PriceChangeLogFilterInput {
+  columnName: PriceChangeLogFilterableColumns!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input PriceChangeLogSortInput {
+  columnName: PriceChangeLogSortableColumns!
+  sortBy: SortBy!
+}
+
+input PriceChangeLogInput {
+  date: DateShort!
+  searchTerm: String!
+  sort: PriceChangeLogSortInput!
+  filters: [PriceChangeLogFilterInput]!
+}
+
+input EditPriceChangeLogInput {
+  id: ID!
+  date: DateShort!
+  targetPrice: String
+  targetPriceStatus: TargetPriceStatus
+}
+
+input PriceChangeInput {
+  id: ID!
+  price: Float
+}
+
+input SubmitPriceChangeLogInput {
+  date: DateShort!
+  changes: [PriceChangeInput!]!
+}
+
+input EditPriceChangeLogStartDateInput {
+  id: ID!
+  date: DateShort!
+  startDate: DateShort
+}
+
+input OptimizeFilterInput {
+  columnName: OptimizeFilterableColumns!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input OptimizeSortInput {
+  columnName: OptimizeSortableColumns!
+  sortBy: SortBy!
+}
+
+input OptimizeInput {
+  date: DateShort!
+  searchTerm: String!
+  sort: OptimizeSortInput!
+  filters: [OptimizeFilterInput]!
+}
+
+input EditDateOfOptimizeInput {
+  id: ID!
+  date: DateShort!
+  dateOfOptimize: DateShort
+}
+
+input EditOptimizeListInput {
+  id: ID!
+  date: DateShort!
+  optimizeList: String
+}
+
+input DownloadFinancialFilterInput {
+  columnName: DownloadFinancialFilterableColumns!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input DownloadFinancialSortInput {
+  columnName: DownloadFinancialSortableColumns!
+  sortBy: SortBy!
+}
+
+input DownloadFinancialInput {
+  searchTerm: String!
+  sort: DownloadFinancialSortInput!
+  filters: [DownloadFinancialFilterInput]!
+}
+
+input SearchInventoryChinaTransferSkusInput {
+  searchTerm: String!
+  storeId: ID!
+  transferId: ID!
+  transferMethod: TransferMethod!
+}
+
+input SalesReportSortInput {
+  columnName: SalesReportSortableColumns!
+  sortBy: SortBy!
+}
+
+input SalesReportFilterInput {
+  columnName: SalesReportFilterableColumns!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input SalesReportInput {
+  reportType: SalesReportType!
+  storeId: ID!
+  marketplaceId: MarketplaceIds!
+  date: DateShort!
+  salesFilter: SalesFilter!
+  chartPeriod: SalesCharPeriod!
+  fluctuationMinMaxThreshold: Float!
+  fluctuationAvgThreshold: Float!
+  fluctuationChartPeriod: SalesCharPeriod!
+  fluctuationChartThreshold: Float!
+}
+
+input SalesWithChartInput {
+  reportType: SalesReportType!
+  storeId: ID!
+  marketplaceId: MarketplaceIds!
+  date: DateShort!
+  selectedChartPeriod: SalesCharPeriod!
+  searchTerm: String!
+  dateSortType: SalesDateSortType!
+  purchaseDateFilter: Boolean!
+  sort: SalesReportSortInput!
+  filters: [SalesReportFilterInput]!
+}
+
+input ShippingLabelsPackingDetailsInput {
+  sku: String!
+  unitsPerBox: Int!
+  numberOfBoxes: Int!
+  isFragile: Boolean!
+  rework: Boolean!
+  caseBarcode: String
+}
+
+input ProductPricesFilterInput {
+  columnName: ProductPricesFilterableColumns!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input ProductPricesSortInput {
+  columnName: ProductPricesSortableColumns!
+  sortBy: SortBy!
+}
+
+input ProductPricesInput {
+  storeId: ID!
+  searchTerm: String!
+  sort: ProductPricesSortInput!
+  filters: [ProductPricesFilterInput]!
+}
+
+input EditProductPriceInput {
+  id: ID!
+  salesPrice: Float
+  standardPrice: Float
+  businessPrice: Float
+  listPrice: Float
+  salesPriceStartDate: DateShort
+  salesPriceEndDate: DateShort
+}
+
+input ProductPriceStatusChangeSortInput {
+  columnName: ProductPriceStatusChangeSortableColumns!
+  sortBy: SortBy!
+}
+
+input ProductPriceStatusChangeInput {
+  storeId: ID!
+  searchTerm: String!
+  sort: ProductPriceStatusChangeSortInput!
+}
+
+input DashboardHistoryInput {
+  date: DateShort!
+  storeId: ID!
+}
+
+input DownloadDashboardHistoryInput {
+  date: DateShort!
+  storeId: ID!
+  setting: [String]!
+  searchTerm: String!
+  sort: DownloadDashboardSortInput!
+  filters: [DownloadDashboardFilterInput]!
+}
+
+input ChinaSupplierScoresSortInput {
+  columnName: ChinaSupplierScoresSortableColumns!
+  sortBy: SortBy!
+}
+
+input ChinaSupplierScoresFilterInput {
+  columnName: ChinaSupplierScoresFilterableColumns!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input ChinaSupplierScoresInput {
+  date: DateShort!
+  searchTerm: String!
+  sort: ChinaSupplierScoresSortInput!
+  filters: [ChinaSupplierScoresFilterInput]!
+}
+
+input EditSalesOptimizationDateInput {
+  id: ID!
+  optimizationDate: DateShort
+  storeId: ID!
+  marketplaceId: MarketplaceIds!
+  salesFilter: SalesFilter!
+  date: DateShort!
+  chartPeriod: SalesCharPeriod!
+  fluctuationMinMaxThreshold: Float!
+  fluctuationAvgThreshold: Float!
+  fluctuationChartPeriod: SalesCharPeriod!
+  fluctuationChartThreshold: Float!
+}
+
+input GetSkuOtherMarketplacesInput {
+  sku: String!
+  storeId: ID!
+  actionType: GetSkuOtherMarketplacesActionType!
+}
+
+input HiddenSkusSortInput {
+  columnName: HiddenSkusSortableColumns!
+  sortBy: SortBy!
+}
+
+input HiddenSkusInput {
+  storeId: ID!
+  searchTerm: String!
+  sort: HiddenSkusSortInput!
+}
+
+input InventoryChinaTransferSkuActivePurchasesInput {
+  transferId: ID
+  skuId: ID!
+  warehouseId: ID!
+  transferMethod: ChinaTransferMethod
+}
+
+input EditChinaOtherMonthCostInput {
+  id: ID!
+  storeId: ID
+  otherMonthCost: Float
+  otherMonthCostNote: String
+}
+
+input ChinaInvoiceTransfersTotalCostsInput {
+  date: DateShort!
+  warehouseId: ID!
+  storeId: ID
+}
+
+input ProductHistorySortInput {
+  columnName: ProductHistorySortableColumns!
+  sortBy: SortBy!
+}
+
+input ProductHistoryInput {
+  searchTerm: String!
+  sort: ProductHistorySortInput!
+  decisionFilter: String
+  seasonalFilter: ProductHistorySeason
+}
+
+input ProductHistoryChangeInput {
+  id: ID
+  date: DateShort
+  decision: String!
+  decisionNumber: String!
+  note: String
+}
+
+input EditProductHistoryInput {
+  skuId: ID!
+  decisionFilter: String
+  seasonalFilter: ProductHistorySeason
+  productHistoryChanges: [ProductHistoryChangeInput!]!
+}
+
+input InventoryChinaAirTransferDetailsInput {
+  id: ID!
+  warehouseId: ID!
+  storeId: ID
+}
+
+input InventoryChinaSeaTransferDetailsInput {
+  id: ID!
+  warehouseId: ID!
+  storeId: ID
+}
+
+input InventoryInUSByDateFilterInput {
+  columnName: InventoryInUSByDateFilterableColumns!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input InventoryInUSByDateSortInput {
+  columnName: InventoryInUSByDateSortableColumns!
+  sortBy: SortBy!
+}
+
+input InventoryInUSByDateInput {
+  searchTerm: String!
+  date: DateShort!
+  storeId: ID!
+  sort: InventoryInUSByDateSortInput!
+  filters: [InventoryInUSByDateFilterInput]!
+}
+
+input EditInventoryFollowReorderInput {
+  id: ID!
+  realDate: DateShort
+  ppSampleDate: DateShort
+}
+
+input RiskyUnder200DaysFilterInput {
+  columnName: RiskyUnder200DaysFilterableColumns!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input RiskyUnder200DaysSortInput {
+  columnName: RiskyUnder200DaysSortableColumns!
+  sortBy: SortBy!
+}
+
+input RiskyUnder200DaysInput {
+  riskyDays: Int!
+  searchTerm: String!
+  sort: RiskyUnder200DaysSortInput!
+  filters: [RiskyUnder200DaysFilterInput]!
+}
+
+input ChinaInventoryCheckFilterInput {
+  columnName: ChinaInventoryCheckFilterableColumns!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input ChinaInventoryCheckSortInput {
+  columnName: ChinaInventoryCheckSortableColumns!
+  sortBy: SortBy!
+}
+
+input ChinaInventoryCheckInput {
+  searchTerm: String!
+  sort: ChinaInventoryCheckSortInput!
+  filters: [ChinaInventoryCheckFilterInput]!
+}
+
+input USInventoryCheckFilterInput {
+  columnName: USInventoryCheckFilterableColumns!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input USInventoryCheckSortInput {
+  columnName: USInventoryCheckSortableColumns!
+  sortBy: SortBy!
+}
+
+input USInventoryCheckInput {
+  searchTerm: String!
+  sort: USInventoryCheckSortInput!
+  filters: [USInventoryCheckFilterInput]!
+}
+
+input RatingConflictsFilterInput {
+  columnName: RatingConflictsFilterableColumns!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input RatingConflictsSortInput {
+  columnName: RatingConflictsSortableColumns!
+  giveawayIndex: Int
+  sortBy: SortBy!
+}
+
+input RatingConflictsInput {
+  searchTerm: String!
+  sort: RatingConflictsSortInput!
+  filters: [RatingConflictsFilterInput]!
+}
+
+input EditRatingConflictsGiveaway {
+  id: ID
+  dateOfLastGiveaway: DateShort
+  dateOfPreLaunchGiveaway: DateShort
+  keywords: String
+  linkOfGiveaway: String
+}
+
+input EditRatingConflictsInput {
+  skuId: ID!
+  giveaways: [EditRatingConflictsGiveaway!]!
+}
+
+input EditRiskyReordersInput {
+  id: ID!
+  supplierLeadTime: Int
+  fromDate: DateShort!
+  toDate: DateShort!
+  selectedDays: Int!
+}
+
+input AmazonNewProductsFilterInput {
+  columnName: AmazonNewProductsFilterableColumns!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input AmazonNewProductsSortInput {
+  columnName: AmazonNewProductsSortableColumns!
+  sortBy: SortBy!
+}
+
+input AmazonNewProductsInput {
+  searchTerm: String!
+  sort: AmazonNewProductsSortInput!
+  filters: [AmazonNewProductsFilterInput]!
+}
+
+input GetFbaFeeAndShippingFromChinaToAmazonInput {
+  length: Float!
+  width: Float!
+  height: Float!
+  weight: Float!
+  measurementSystem: MeasurementSystems!
+}
+
+input AddAmazonNewProductInput {
+  sku: String!
+  salesPrice: Float!
+  fob: Float!
+  shippingFromChinaToAmazon: Float!
+  customRate: Float!
+  customFee: Float!
+  refund: Float!
+  refunds: Float!
+  fbaFee: Float!
+  advertisingPercentage: Float!
+  advertisingCost: Float!
+  storageFee: Float!
+  referralFee: Float!
+  referralFeePercentage: Float!
+  total: Float!
+  breakevenPrice: Float!
+  profitMargin: Float!
+  roi: Float!
+  salesPriceTenProfit: Float!
+  salesPriceTwentyProfit: Float!
+  salesPriceFiftyRoi: Float!
+  targetPriceFiftyRoi: Float!
+  worstTargetPrice: Float!
+  bestTargetPrice: Float!
+  length: Float!
+  width: Float!
+  height: Float!
+  weight: Float!
+  measurementSystem: MeasurementSystems!
+}
+
+input EditAmazonNewProductInput {
+  id: ID!
+  sku: String!
+  salesPrice: Float!
+  fob: Float!
+  shippingFromChinaToAmazon: Float!
+  customRate: Float!
+  customFee: Float!
+  refund: Float!
+  refunds: Float!
+  fbaFee: Float!
+  advertisingPercentage: Float!
+  advertisingCost: Float!
+  storageFee: Float!
+  referralFee: Float!
+  referralFeePercentage: Float!
+  total: Float!
+  breakevenPrice: Float!
+  profitMargin: Float!
+  roi: Float!
+  salesPriceTenProfit: Float!
+  salesPriceTwentyProfit: Float!
+  salesPriceFiftyRoi: Float!
+  targetPriceFiftyRoi: Float!
+  worstTargetPrice: Float!
+  bestTargetPrice: Float!
+  length: Float!
+  width: Float!
+  height: Float!
+  weight: Float!
+  measurementSystem: MeasurementSystems!
+}
+
+input InventoryUsersSortInput {
+  columnName: InventoryUsersSortableColumns!
+  sortBy: SortBy!
+}
+
+input InventoryUsersInput {
+  searchTerm: String!
+  sort: InventoryUsersSortInput!
+}
+
+input InventoryUserScreenPermissionInput {
+  screenName: InventoryScreensNames!
+  accessLevel: InventoryAccessLevel!
+  screenCategory: InventoryMainCategories!
+}
+
+input SignUpInventoryUserInput {
+  name: String!
+  email: String!
+  username: String!
+  password: String!
+  applyToAllStores: Boolean!
+  permissions: [InventoryUserScreenPermissionInput!]!
+}
+
+input EditInventoryUserPermissionsInput {
+  id: ID!
+  applyToAllStores: Boolean!
+  permissions: [InventoryUserScreenPermissionInput]!
+}
+
+input InventoryUserHeaderbarSubItemInput {
+  screenName: InventoryScreensNames!
+}
+
+input InventoryUserHeaderbarItemInput {
+  screenName: InventoryScreensNames!
+  subItems: [InventoryUserHeaderbarSubItemInput]
+}
+
+input InventoryUserHeaderbarItemsInput {
+  applyToAllStores: Boolean!
+  headerbarItems: [InventoryUserHeaderbarItemInput!]!
+}
+
+input EditSnlInput {
+  id: ID!
+  snlDate: DateShort!
+  storeId: ID!
+  marketplaceId: MarketplaceIds!
+  salesFilter: SalesFilter!
+  date: DateShort!
+  chartPeriod: SalesCharPeriod!
+  fluctuationMinMaxThreshold: Float!
+  fluctuationAvgThreshold: Float!
+  fluctuationChartPeriod: SalesCharPeriod!
+  fluctuationChartThreshold: Float!
+}
+
+input ApproveInventoryChinaSeaTransferCustomsSku {
+  id: ID!
+  chinaCustoms: Float!
+}
+
+input ApproveInventoryChinaSeaTransferCustomsInput {
+  id: ID!
+  skus: [ApproveInventoryChinaSeaTransferCustomsSku]!
+}
+
+input InventoryChinaFastBoatTransferSku {
+  sku: SkuInput!
+  unitsPerBox: Int!
+  totalUnits: Int!
+  newPacked: Boolean!
+  purchases: [ChinaTransferPurchase]!
+  boxLength: Float!
+  boxWidth: Float!
+  boxHeight: Float!
+  boxWeight: Float!
+  numberOfBoxes: Int!
+}
+
+input EditInventoryChinaFastBoatTransferInput {
+  id: ID!
+  invoiceNumber: String!
+  etd: DateShort!
+  eta: DateShort!
+  trackingNumber: String!
+  containerNumber: String!
+  trackingLink: String!
+  transferor: String
+  port: String!
+  fastBoatShippingCost: Float!
+  otherCost: Float!
+  customs: Float
+  fromPortToWarehouseCost: Float
+  other: Float
+  skus: [InventoryChinaFastBoatTransferSku]!
+  companyId: ID
+  warehouseId: ID!
+  editType: ChinaPurchaseEditType!
+  carrierEmail: String
+  carrierPhone: String
+  otherCarrierContactInfo: String
+  comesOnPallet: Boolean
+}
+
+input RejectInventoryChinaFastBoatTransferInput {
+  id: ID!
+  invoiceNumber: String!
+  etd: DateShort!
+  eta: DateShort!
+  trackingNumber: String!
+  containerNumber: String!
+  trackingLink: String!
+  port: String!
+  fastBoatShippingCost: Float!
+  otherCost: Float!
+  skus: [InventoryChinaFastBoatTransferSku]!
+  warehouseId: ID!
+  rejectionNote: String!
+  carrierEmail: String
+  carrierPhone: String
+  otherCarrierContactInfo: String
+  comesOnPallet: Boolean
+}
+
+input RejectInventoryChinaDiusFastBoatTransferInput {
+  id: ID!
+  invoiceNumber: String!
+  etd: DateShort!
+  eta: DateShort!
+  trackingNumber: String!
+  containerNumber: String!
+  trackingLink: String!
+  port: String!
+  fastBoatShippingCost: Float!
+  otherCost: Float!
+  customs: Float
+  fromPortToWarehouseCost: Float
+  other: Float
+  skus: [InventoryChinaFastBoatTransferSku]!
+  warehouseId: ID!
+  rejectionNote: String!
+  transferor: String!
+  carrierEmail: String
+  carrierPhone: String
+  otherCarrierContactInfo: String
+  comesOnPallet: Boolean
+}
+
+input ChinaFastBoatTransferApprovePreReceivingScheduleInput {
+  id: ID!
+  warehouseId: ID!
+}
+
+input InventoryAvaialbleStoresInput {
+  transferId: ID!
+  transferMethod: ChinaActivePurchasesTransferMethod!
+}
+
+input EditInventoryUserProfileInput {
+  defaultLoginStore: ID
+}
+
+input LaunchedProductsPnLInput {
+  selectedYear: Int
+  selectedMonth: Int
+}
+
+input DownloadLaunchedProductsPnLFilterInput {
+  columnName: String!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input DownloadLaunchedProductsPnLSortInput {
+  columnName: String!
+  sortBy: SortBy!
+}
+
+input DownloadLaunchedProductsPnLInput {
+  selectedMonth: Int
+  selectedYear: Int
+  searchTerm: String!
+  sort: DownloadLaunchedProductsPnLSortInput!
+  filters: [DownloadLaunchedProductsPnLFilterInput]!
+}
+
+input ChangeWarehouseUserPasswordInput {
+  userId: ID!
+  oldPassword: String!
+  newPassword: String!
+}
+
+input ProductHistorySeasonalDecisionInput {
+  id: ID
+  season: ProductHistorySeason!
+  oldPrice: Float
+  newPriceDate: DateShort
+  newPrice: Float
+  startRaisingPriceDate: DateShort
+  maxPrice: Float
+  newAfterPriceDate: DateShort
+  newAfterPrice: Float
+  unitSold: Int
+  oosDays: Int
+  bestSeller: Boolean
+}
+
+input EditProductHistorySeasonalDecisionsInput {
+  skuId: ID!
+  decisionFilter: String
+  seasonalFilter: ProductHistorySeason
+  seasonalDecisions: [ProductHistorySeasonalDecisionInput]!
+}
+
+input InventoryNotificationsSortInput {
+  columnName: InventoryNotificationsSortableColumns!
+  sortBy: SortBy!
+}
+
+input InventoryNotificationsInput {
+  fromDate: DateShort!
+  toDate: DateShort!
+  searchTerm: String!
+  notificationTypeFilter: InventoryNotificationType
+  sort: InventoryNotificationsSortInput!
+}
+
+input NotificationsAccessInput {
+  notificationType: InventoryNotificationType!
+  notificationReceiveMethod: InventoryNotificationReceiveMethod!
+}
+
+input EditInventoryUserNotificationAccessInput {
+  id: ID!
+  applyToAllStores: Boolean!
+  notificationsAccess: [NotificationsAccessInput]!
+}
+
+input ReportDateRangeInput {
+  fromDate: DateShort!
+  toDate: DateShort!
+}
+
+input CreateAllAmazonReportsInput {
+  dashboardDateRange: ReportDateRangeInput!
+  cogsDateRange: ReportDateRangeInput!
+  newCogsDateRange: ReportDateRangeInput!
+  inventoryInUSDateRange: ReportDateRangeInput!
+  inventoryInUSByDate: DateShort!
+  turnOverRatioReferenceDate: DateShort!
+}
+
+input MarketTrackersSortInput {
+  columnName: MarketTrackersSortableColumns!
+  sortBy: SortBy!
+}
+
+input MarketTrackersInput {
+  searchTerm: String!
+  sort: MarketTrackersSortInput!
+}
+
+input CreateMarketTrackerInput {
+  name: String!
+  marketplaceId: MarketplaceIds!
+  ownProduct: SkuInput
+  keywords: [String!]!
+  competitorsAsins: [String]!
+}
+
+input EditMarketTrackerDetailsInput {
+  id: ID!
+  name: String!
+  keywords: [String!]!
+}
+
+input AddCustomAsinToMarketTrackerInput {
+  id: ID!
+  asin: String!
+}
+
+input AddOwnProductToMarketTrackerInput {
+  marketTrackerId: ID!
+  skuId: ID!
+}
+
+input RemoveAsinFromTrackingInput {
+  marketTrackerId: ID!
+  trackingProductId: ID!
+  ownProduct: Boolean!
+}
+
+input AddSuggestedProductToTrackingInput {
+  marketTrackerId: ID!
+  keywordProductId: ID!
+}
+
+input AddRivalForSkuInput {
+  skuId: ID!
+  asin: String!
+  storeId: ID!
+  marketplaceId: MarketplaceIds!
+  date: DateShort!
+  salesFilter: SalesFilter!
+  chartPeriod: SalesCharPeriod!
+  fluctuationMinMaxThreshold: Float!
+  fluctuationAvgThreshold: Float!
+  fluctuationChartPeriod: SalesCharPeriod!
+  fluctuationChartThreshold: Float!
+}
+
+input RemoveSkuRivalInput {
+  skuId: ID!
+  storeId: ID!
+  marketplaceId: MarketplaceIds!
+  date: DateShort!
+  salesFilter: SalesFilter!
+  fluctuationMinMaxThreshold: Float!
+  fluctuationAvgThreshold: Float!
+  fluctuationChartPeriod: SalesCharPeriod!
+  fluctuationChartThreshold: Float!
+}
+
+input InventoryChinaDashboardSortInput {
+  columnName: ChinaDashboardSortableColumns!
+  sortBy: SortBy!
+}
+
+input InventoryChinaDashboardFilterInput {
+  columnName: ChinaDashboardFilterableColumns!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input MarketProductChartDetailsInput {
+  trackingProductId: ID!
+  ownProduct: Boolean!
+}
+
+input InventoryChinaDashboardInput {
+  searchTerm: String!
+  warehouseId: ID!
+  sort: InventoryChinaDashboardSortInput!
+  filters: [InventoryChinaDashboardFilterInput]!
+}
+
+input InventoryChinaSkuActivePurchasesInput {
+  skuId: ID!
+  warehouseId: ID!
+}
+
+input AirbnbHousesSortInput {
+  columnName: AirbnbHousesSortableColumns!
+  sortBy: SortBy!
+}
+
+input AirbnbHousesInput {
+  searchTerm: String!
+  sort: AirbnbHousesSortInput!
+}
+
+input AddOrEditAirbnbHouseInput {
+  id: ID!
+  name: String!
+}
+
+input AirbnbPriceHistoryInput {
+  selectedDate: DateShort!
+  houseId: ID!
+}
+
+input AddAirbnbPriceListInput {
+  price: Float!
+  priceDate: DateShort!
+}
+
+input AddAirbnbPriceHistoryInput {
+  startDate: DateShort!
+  endDate: DateShort!
+  houseId: ID!
+  title: String
+  openPrice: Float
+  openPriceDate: DateShort
+  bookedPrice: Float
+  bookedPriceDate: DateShort
+  priceList: [AddAirbnbPriceListInput]!
+}
+
+input EditAirbnbPriceListInput {
+  id: ID
+  price: Float!
+  priceDate: DateShort!
+}
+
+input EditAirbnbPriceHistoryInput {
+  date: DateShort!
+  startDate: DateShort!
+  endDate: DateShort!
+  houseId: ID!
+  title: String
+  openPrice: Float
+  openPriceDate: DateShort
+  bookedPrice: Float
+  bookedPriceDate: DateShort
+  priceList: [EditAirbnbPriceListInput]!
+}
+
+input UploadAirbnbHousePriceHistoryDetailsInput {
+  file: Upload!
+  houseId: ID!
+}
+
+input UploadAirbnbHousePriceListInput {
+  file: Upload!
+  date: DateShort!
+  houseId: ID!
+}
+
+input AirbnbDashboardInput {
+  selectedDate: DateShort!
+  houseId: ID!
+}
+
+input AirbnbSelectedYearPriceHistoryInput {
+  houseId: ID!
+  date: DateShort!
+}
+
+input SumOfInventoryInUSByDateInput {
+  date: DateShort!
+  storeId: ID!
+}
+
+input InventoryAuditReportSortInput {
+  columnName: InventoryAuditReportSortableColumns!
+  sortBy: SortBy!
+}
+
+input InventoryAuditReportFilertInput {
+  columnName: InventoryAuditReportFilterableColumns!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input InventoryAuditReportInput {
+  searchTerm: String!
+  fromDate: DateShort!
+  toDate: DateShort!
+  sort: InventoryAuditReportSortInput!
+  filters: [InventoryAuditReportFilertInput]!
+}
+
+input GetTotalFinancialInput {
+  searchTerm: String!
+  fromDate: DateShort!
+  toDate: DateShort!
+}
+
+input LaunchedProductsReorderSortInput {
+  columnName: LaunchedProductsReorderSortableColumns!
+  sortBy: SortBy!
+}
+
+input LaunchedProductsReorderFilertInput {
+  columnName: LaunchedProductsReorderFilterableColumns!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input LaunchedProductsReorderInput {
+  searchTerm: String!
+  sort: LaunchedProductsReorderSortInput!
+  selectedMonth: Int
+  selectedYear: Int
+  filters: [LaunchedProductsReorderFilertInput]!
+}
+
+input GetTotalReorderlaunchedProductsReorderInput {
+  selectedMonth: Int
+  selectedYear: Int
+}
+
+input UploadAirbnbHouseOpenPriceInput {
+  file: Upload!
+  houseId: ID!
+}
+
+input SendNewShipmentToOutboundInput {
+  id: ID!
+  shippingScheduleId: ID
+  applyPackingList: Boolean!
+}
+
+input CanadaShipmentLogInput {
+  searchTerm: String!
+}
+
+input MarkNotificationAsReadInput {
+  id: ID!
+  notificationTypeFilter: InventoryNotificationType
+}
+
+input AddShipmentIdToCanadaShipmentInput {
+  id: ID!
+  shipmentId: String!
+}
+
+input CanadaShipmentDownloadLinkInput {
+  id: ID!
+  fileName: CanadaShipmentFileNames!
+}
+
+input CanadaShipmentSkuTransferTypeInput {
+  id: ID!
+  transferType: CanadaShipmentSkuTransferType!
+}
+
+input EditCanadaShipmentSkusTransferTypeInput {
+  id: ID!
+  skus: [CanadaShipmentSkuTransferTypeInput]!
+}
+
+input EditCanadaShipmentShippingAddressInput {
+  id: ID!
+  shippingCompany: String!
+  shippingName: String!
+  shippingAddress: String!
+  shippingState: String!
+}
+
+input GetNewShipmentShippingLabelsUploadLinkInput {
+  shipmentId: ID!
+  fileType: String!
+  fileExention: String!
+}
+
+input DownloadNewShipmentModifiedShippingLabelsPackingListInput {
+  skuId: ID!
+  sku: String!
+  unitsPerBox: Int!
+  boxes: Int!
+}
+
+input DownloadNewShipmentModifiedShippingLabelsInput {
+  shipmentId: ID!
+  packingList: [DownloadNewShipmentModifiedShippingLabelsPackingListInput]!
+}
+
+input AmazonLockToSendSkusSortInput {
+  columnName: AmazonLockToSendSkusSortableColumns!
+  sortBy: SortBy!
+}
+
+input AmazonLockToSendSkusInput {
+  searchTerm: String!
+  sort: AmazonLockToSendSkusSortInput!
+}
+
+input FinancialInput {
+  searchTerm: String!
+}
+
+input EditCanadaShipmentSkusShipToSkuInput {
+  id: ID!
+  shipTo: String!
+}
+
+input EditCanadaShipmentSkusShipToAddressInput {
+  id: ID!
+  skus: [EditCanadaShipmentSkusShipToSkuInput]!
+}
+
+input AmazonTTMSortInput {
+  columnName: AmazonTTMSortableColumns!
+  sortBy: SortBy!
+}
+
+input AmazonTTMFilertInput {
+  columnName: AmazonTTMFilterableColumns!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input AmazonTTMLaunchDateFilter {
+  fromDate: DateShort
+  toDate: DateShort
+}
+
+input AmazonTTMInput {
+  searchTerm: String!
+  selectedYear: Int!
+  launchDateFilter: AmazonTTMLaunchDateFilter
+  sort: AmazonTTMSortInput!
+  filters: [AmazonTTMFilertInput]!
+}
+
+input TaskManagementEmployeesScoresFilterInput {
+  columnName: TaskManagementEmployeeScoresFilterableInput!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input TaskManagementEmployeesScoresSortInput {
+  columnName: TaskManagementEmployeesScoresSortableColumns!
+  sortBy: SortBy!
+}
+
+input TaskManagementEmployeesScoresInput {
+  searchTerm: String!
+  fromDate: ISO8601
+  toDate: ISO8601
+  sort: TaskManagementEmployeesScoresSortInput!
+  filters: [TaskManagementEmployeesScoresFilterInput]!
+}
+
+input TaskManagementEmployeeScoresFilterInput {
+  columnName: TaskManagementEmployeesScoresFilterableColumns!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input TaskManagementEmployeeScoresSortInput {
+  columnName: TaskManagementEmployeeScoresSortableColumns!
+  sortBy: SortBy!
+}
+
+input TaskManagementEmployeeScoresInput {
+  searchTerm: String!
+  fromDate: ISO8601
+  toDate: ISO8601
+  sort: TaskManagementEmployeeScoresSortInput!
+  filters: [TaskManagementEmployeeScoresFilterInput]!
+}
+
+type NumericCursorPageInfo @shareable {
+  hasNextPage: Boolean!
+  endCursor: Int!
+}
+
+type SearchProductsConnection {
+  edges: [SearchProductsEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type SearchProductsEdge {
+  cursor: String!
+  node: Product!
+}
+
+type Product {
+  id: ID!
+  sku: String!
+  asin: String!
+  name: String!
+  image: ImageType!
+  fbaTier: FbaTier!
+  unitsPerCase: Int!
+}
+
+type UploadShipmentResponse {
+  id: ID!
+  sku: String!
+  asin: String!
+  name: String!
+  image: ImageType!
+  fbaTier: FbaTier!
+  unitsPerCase: Int!
+  numberOfCases: Int!
+  totalUnits: Int!
+}
+
+type TransfersConnection {
+  edges: [TransfersEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type TransfersEdge {
+  cursor: String!
+  node: Transfers!
+}
+
+type TransferWarehouseDetails {
+  id: ID
+  name: String!
+}
+
+type Transfers {
+  id: ID!
+  sku: String!
+  date: DateShort!
+  amountOfTransferred: Int
+  notes: String
+  fromWarehouse: TransferWarehouseDetails!
+  toWarehouse: TransferWarehouseDetails!
+}
+
+type PurchasesConnection {
+  edges: [PurchasesEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type PurchasesEdge {
+  cursor: String!
+  node: Purchase!
+}
+
+type Purchase {
+  id: ID!
+  vendorEmails: [String]!
+  vendorName: String!
+  sku: String!
+  amount: Int!
+  date: DateShort!
+  image: ImageType!
+  unitPrice: Float!
+  totalPrice: Float!
+  invoiceNumber: String!
+  status: PurchaseStatus!
+  notes: String!
+  etd: DateShort
+}
+
+type ShipmentDetails {
+  shipmentInfo: ShipmentInfo!
+  shipmentProductList: [ShipmentProductList]!
+}
+
+type ShipmentInfo {
+  id: ID!
+  shipmentId: String!
+  name: String!
+  shipmentStatus: ShipmentStatus!
+  packingType: PackingType!
+  labelPrepOwner: String!
+  shipFrom: Address!
+  shipTo: Address!
+  destination: String!
+  distance: String!
+  driveTime: String!
+}
+
+type ShipmentProductList {
+  id: ID!
+  name: String!
+  sku: String!
+  asin: String!
+  image: ImageType!
+  fbaTier: FbaTier!
+  unitsPerCase: Int!
+  numberOfCases: Int!
+  totalUnits: Int!
+}
+
+type createDashboardResult {
+  id: ID!
+  name: String!
+  setting: [String]!
+}
+
+type PageInfo @shareable {
+  hasNextPage: Boolean!
+  endCursor: String!
+}
+
+type DashboardConnection {
+  edges: [DashboardEdge]!
+  pageInfo: NumericCursorPageInfo!
+  maximumNumberOfBoxInfo: Int!
+}
+
+type DashboardEdge {
+  cursor: String!
+  node: Dashboard!
+}
+
+type Dashboard {
+  id: ID!
+  sku: String!
+  asin: String!
+  name: String!
+  image: ImageType!
+  amzAvailableInv: Int
+  amzTotalInv: Int
+  warehouses: [DashboardWarehouse]
+  USInventory: Int
+  totalInv: Int
+  sales: salesDashboard
+  daysInvAvailableAmz: Int
+  daysTotalInvAmz: Int
+  daysInvUS: Int
+  USOutOfStockDate: DateShort
+  daysTotalInv: Int
+  totalOutofStock: DateShort
+  suggestedOrderQuantity: Float
+  costOfUnit: Float
+  costOfUnitUS: Float
+  costOfSuggestedOrderQuantity: Float
+  productVolume: Float
+  length: Float
+  height: Float
+  width: Float
+  weight: Float
+  custom: Float
+  customFee: Float
+  shippingCostFromChina: Float
+  shippingCostToAmazon: Float
+  shippingCostWithAir: Float
+  fbaFee: Float
+  referralFee: Float
+  referralPercentage: Float
+  breakevenPrice: Float
+  boxUpc: [boxUPC]
+  suggestedInvToSendToAmz: Int
+  productId: String
+  invTosendToAmz: Int
+  numberOfBoxesToSendToAmz: Int
+  storageFee: Float
+  costOfStoragePerItemSold: Float
+  risky: Int
+  costInvUS: Float
+  costTotalInv: Float
+  comments: String
+  editables: [String]
+  unitLength: Float
+  unitWidth: Float
+  unitHeight: Float
+  unitVolume: Float
+  unitWeight: Float
+  singleBoxUpc: String
+  outerBoxLength: Float
+  outerBoxWidth: Float
+  outerBoxHeight: Float
+  outerBoxVolume: Float
+  outerBoxWeight: Float
+  unitPerOuterBox: Int
+  unitPerInnerBox: Int
+  boxPerPallet: Int
+  breakevenPriceWithAdsCost: Float
+  breakevenPriceWithTotalCost: Float
+  breakevenDifferencePercentage: Float
+  price: Float
+  bulkSalesPrice: Float
+  refundedOrders: Float
+  returnedOrders: Float
+  advertisingCost: Float
+  advertisingCostPercentage: Float
+  realFbaFee: Float
+  roi: Float
+  profitPercentage: Float
+  fbaTier: FbaTier
+  realFbaTier: FbaTier
+  realFbaFeeFbaFeeDifference: Float
+  realFbaFeeFbaFeeDifferencePercentage: Float
+  costOfStoragePerUnit: Float
+  grossProfit: Float
+  isFragile: Boolean
+  customUpc: String
+  averagePriceInTheUS: Float
+  averageBreakevenPrice: Float
+  caseBarcodeLink: String
+  rework: Boolean
+  walmartTotalInv: Int
+  otherCountriesInv: [OtherCountriesInv]
+  upc: String
+  containerCost: Float
+  otherCost: Float
+  leadTime: Int
+  supplierLeadTime: Int
+  shippingCostWithAirByVolume: Float
+  fastBoatShippingCostWeight: Float
+  fastBoatShippingCostVolume: Float
+  beanFactoryFastBoatShippingCostWeight: Float
+  beanFactoryFastBoatShippingCostVolume: Float
+  priceInTheUSByFastBoat: Float
+  lockToSend: Boolean
+  dateOfLaunch: DateShort
+  storageMultiple: Float
+  defaultChinaSupplierWarehouseId: ID
+}
+
+type OtherCountriesInv {
+  name: String!
+  availableInv: Int!
+  totalInv: Int!
+}
+
+type boxUPC {
+  boxUpc: String
+  outerBoxLength: Float
+  outerBoxWidth: Float
+  outerBoxHeight: Float
+  outerBoxVolume: Float
+  outerBoxWeight: Float
+  unitPerOuterBox: Int
+  unitPerInnerBox: Int
+  boxPerPallet: Int
+}
+
+type WarehousesConnection {
+  edges: [WarehousesEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type WarehousesEdge {
+  cursor: String!
+  node: Warehouse!
+}
+
+type Warehouse @shareable {
+  id: ID!
+  name: String!
+  street1: String!
+  street2: String!
+  city: String!
+  state: String!
+  country: String!
+  zip: String!
+  contactName: String!
+  contactEmail: String!
+  contactPhone: String!
+}
+
+type salesDashboard {
+  items: Int
+  orders: Int
+}
+
+type DashboardWarehouse {
+  id: String
+  name: String
+  inventory: Int
+  warehouseId: String
+}
+
+type user {
+  user_type: String!
+  username: String!
+}
+
+type TotalInventorySupply {
+  available: Int!
+  inbound: Int!
+  reserved: Int!
+  total: Int!
+}
+
+type InboundQuantity {
+  working: Int!
+  shipped: Int!
+  receiving: Int!
+  total: Int!
+}
+
+type ReservedQuantity {
+  customerOrder: Int!
+  fcTransfer: Int!
+  fcProcessing: Int!
+  total: Int!
+}
+
+type SalesConnection {
+  edges: [SalesEdge]!
+  pageInfo: NumericCursorPageInfo!
+  dateList: [String]!
+}
+
+type SalesEdge {
+  cursor: String!
+  node: Sales!
+}
+
+type RivalProductDetails {
+  asin: String
+  price: Float
+}
+
+type AmazonProductBestSellerDetails {
+  category: String!
+  link: String!
+}
+
+type Sales {
+  id: ID!
+  sku: String!
+  asin: String!
+  details: [SalesDetails]!
+  totalInv: Int!
+  breakevenPrice: Float!
+  image: ImageType!
+  isRisky: Boolean!
+  breakevenPriceWithAdsCost: Float!
+  breakevenPriceWithTotalCost: Float!
+  benefitPercentage: Float!
+  roi: Float!
+  hasLowRate: Boolean!
+  breakevenIsBigger: Boolean!
+  breakevenDifferencePercentage7Days: Float!
+  breakevenDifferencePercentageYesterday: Float!
+  smallAndLightDate: DateShort
+  chartDetails: [SalesChartDetails]!
+  chartGradient: Float!
+  chartIntercept: Float!
+  totalInventorySupply: TotalInventorySupply!
+  inboundQuantity: InboundQuantity!
+  reservedQuantity: ReservedQuantity!
+  optimizationDate: DateShort
+  usInventory: Int!
+  rivalProduct: RivalProductDetails!
+  fluctuationReasons: [SalesFluctuationReason]
+  bestSellerBadge: AmazonProductBestSellerDetails
+  dateOfLaunch: DateShort
+  health: Float!
+  isSmallAndLight: Boolean!
+}
+
+type SalesWithChartConnection {
+  edges: [SalesWithChartEdge]!
+  pageInfo: NumericCursorPageInfo!
+  dateList: [String]!
+}
+
+type SalesWithChartEdge {
+  cursor: String!
+  node: SalesWithChart!
+}
+
+type SalesWithChart {
+  id: ID!
+  sku: String!
+  asin: String!
+  details: [SalesDetails]!
+  totalInv: Int!
+  breakevenPrice: Float!
+  image: ImageType!
+  isRisky: Boolean!
+  breakevenPriceWithAdsCost: Float!
+  breakevenPriceWithTotalCost: Float!
+  benefitPercentage: Float!
+  roi: Float!
+  hasLowRate: Boolean!
+  breakevenIsBigger: Boolean!
+  breakevenDifferencePercentage7Days: Float!
+  breakevenDifferencePercentageYesterday: Float!
+  smallAndLightDate: DateShort
+  oneYearChartDetails: [SalesChartDetails]!
+  oneYearChartGradient: Float!
+  oneYearChartIntercept: Float!
+  threeMonthChartDetails: [SalesChartDetails]!
+  threeMonthChartGradient: Float!
+  threeMonthChartIntercept: Float!
+  oneMonthChartDetails: [SalesChartDetails]!
+  oneMonthChartGradient: Float!
+  oneMonthChartIntercept: Float!
+  totalInventorySupply: TotalInventorySupply!
+  inboundQuantity: InboundQuantity!
+  reservedQuantity: ReservedQuantity!
+  optimizationDate: DateShort
+}
+
+type OtherSalesChartDetails {
+  oneMonthChartDetails: [SalesChartDetails]!
+  oneMonthChartGradient: Float!
+  oneMonthChartIntercept: Float!
+  threeMonthChartDetails: [SalesChartDetails]!
+  threeMonthChartGradient: Float!
+  threeMonthChartIntercept: Float!
+  oneYearChartDetails: [SalesChartDetails]!
+  oneYearChartGradient: Float!
+  oneYearChartIntercept: Float!
+  productHistoryChanges: [ProductHistoryChange]!
+}
+
+type SalesChartDetails @shareable {
+  date: DateShort!
+  orders: Int!
+  trendLine: Float!
+  price: Float!
+}
+
+type SalesDetails @shareable {
+  items: Int!
+  orders: Int!
+  rate: Float!
+  price: Float!
+  totalOrdersDaysRemaining: Float!
+  availableOrdersDaysRemaining: Float!
+  date: DateShort!
+}
+
+type Profile {
+  id: ID!
+  name: String!
+  setting: [String]!
+}
+
+type TrendsConnection {
+  edges: [TrendsEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type TrendsEdge {
+  cursor: String!
+  node: Trend!
+}
+
+type Trend {
+  id: ID!
+  asin: String!
+  sku: String!
+  image: ImageType!
+  average: Int!
+  lastWeek: TrendsDetails!
+  week1: TrendsDetails!
+  week2: TrendsDetails!
+  week3: TrendsDetails!
+  week4: TrendsDetails!
+}
+
+type TrendsDetails {
+  items: Int!
+  orders: Int!
+  itemsPercent: Int!
+  ordersPercent: Int!
+  date: DateShort!
+}
+
+type chartResponse {
+  date: String!
+  averageTotal: Int!
+  orders: Int!
+}
+
+type UserProps {
+  id: ID!
+  userType: String!
+  userName: String!
+  name: String!
+  shopName: String!
+  containerCost: Float
+  airShippingCost: Float
+  containerVolume: Float
+  amazonCommission: Float
+  palletLength: Float
+  palletWidth: Float
+  adsAuthorized: Boolean!
+  containerCostGoingToAmazon: Float
+  containerVolumeGoingToAmazon: Float
+  isMainStore: Boolean!
+  fastBoatShippingCost: Float
+  fastBoatToBeanFactory: Float
+  notificationEmails: [String]!
+  currencyToUSDollarRate: Float
+}
+
+type ShipmentConnection {
+  edges: [ShipmentEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type ShipmentEdge {
+  cursor: String!
+  node: Shipment!
+}
+
+type Shipment {
+  id: ID!
+  shipmentId: String!
+  name: String!
+  packingType: String!
+  date: DateShort!
+  skusCount: Int!
+  units: Int!
+  cases: Int!
+  shipFrom: String!
+  destination: String!
+  status: String!
+}
+
+type ShipAddress {
+  City: String!
+  CountryCode: String!
+  PostalCode: String!
+  Name: String!
+  AddressLine1: String!
+  StateOrProvinceCode: String!
+}
+
+type ImageType @shareable {
+  smallImage: String!
+  bigImage: String!
+}
+
+type RiskySkusConnection {
+  edges: [RiskySkusEdge]!
+  pageInfo: NumericCursorPageInfo!
+  totalSeaTransfers: Int!
+  totalDirectTransfers: Int!
+}
+
+type RiskySkusEdge {
+  cursor: String!
+  node: RiskySku!
+}
+
+type RiskySeaTransfer {
+  id: ID!
+  units: Int!
+  invoiceNumber: String!
+  mbl: String!
+}
+
+type RiskyDirectTransfer {
+  id: ID!
+  units: Int!
+  invoiceNumber: String!
+  transferType: RiskyDirectTransferType!
+}
+
+type RiskySku {
+  id: ID!
+  sku: String!
+  image: ImageType!
+  salesPerDay: Int!
+  weeklySales: Float!
+  totalAmazon: Int!
+  secondStoreTotal: Int!
+  onTheAir1: Int!
+  dateOnAir1: DateShort
+  onTheAir2: Int!
+  dateOnAir2: DateShort
+  warehouse: Int!
+  usInventory: Int!
+  daysRemainingUSAir: Float!
+  lastWeekDaysRemainingUSAir: Float!
+  onTheSea: Int!
+  totalOnTheSea: Int!
+  seaTransfers: [RiskySeaTransfer]!
+  directTransfers: [RiskyDirectTransfer]!
+}
+
+type EditRiskySkusResponse {
+  totalSeaTransfers: Int!
+  totalDirectTransfers: Int!
+  riskySku: RiskySku!
+}
+
+type RiskyWarehouseAndStore {
+  warehouse: WarehouseInfo
+  store: StoreInfo
+}
+
+type WarehouseInfo {
+  id: ID!
+  name: String!
+}
+
+type StoreInfo {
+  id: ID!
+  name: String!
+}
+
+type RiskyWarehouseType {
+  name: String
+  inventoryName: String
+}
+
+type CogsAndInventoryConnection {
+  edges: [CogsAndInventoryEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type CogsAndInventoryEdge {
+  cursor: String!
+  node: CogsAndInventory!
+}
+
+type CogsAndInventory {
+  id: ID!
+  sku: String!
+  sales: salesDashboard
+  image: ImageType!
+  totalUSInv: Int!
+  costOfUnit: Float!
+  costOfUnitInUS: Float!
+  costOfUnitInUSAverage: Float!
+  inventoryInUS: Float!
+  inventoryInUSAverage: Float!
+  inventoryInUSWarehouse: Float!
+  cogsFOB: Float!
+  cogsFOBAverage: Float!
+  cogsWarehouse: Float!
+  editables: [String]
+}
+
+type HiddenSkusConnection {
+  edges: [HiddenSkusEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type HiddenSkusEdge {
+  cursor: String!
+  node: HiddenSku!
+}
+
+type HiddenSku {
+  id: ID!
+  sku: String!
+  name: String!
+  asin: String!
+  image: ImageType!
+}
+
+type StoresResult {
+  id: ID!
+  name: String!
+}
+
+type ShipmentPlanResult {
+  id: ID!
+  destination: String!
+  address: Address!
+  shipments: [ShipmentPlans]!
+}
+
+type ShipmentPlans {
+  shipmentId: String!
+  skuList: [SkuList]
+}
+
+type SkuList {
+  sku: String!
+  totalUnits: Int!
+}
+
+type Address @shareable {
+  id: String
+  name: String!
+  address1: String!
+  address2: String!
+  city: String!
+  state: String!
+  countryCode: CountryCode!
+  postalCode: String!
+}
+
+type WarehouseUsersConnection {
+  edges: [WarehouseUsersEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type WarehouseUsersEdge {
+  cursor: String!
+  node: WarehouseUser!
+}
+
+type WarehouseUser {
+  id: ID!
+  name: String!
+  email: String
+  privilegeLevel: PrivilegeLevel!
+}
+
+type RiskyReordersConnection {
+  edges: [RiskyReordersEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type RiskyReordersEdge {
+  cursor: String!
+  node: RiskyReorders!
+}
+
+type RiskyReorders {
+  id: ID!
+  sku: String!
+  image: ImageType!
+  amazonUnitsPerDay: Float!
+  walmartUnitsPerDay: Float!
+  sumUnitsPerDay: Float!
+  amazonMonthlyUnitsPerDay: Float!
+  walmartMonthlyUnitsPerDay: Float!
+  sumMonthlyUnitsPerDay: Float!
+  amazonAnnuallyUnitsPerDay: Float!
+  walmartAnnuallyUnitsPerDay: Float!
+  sumAnnuallyUnitsPerDay: Float!
+  amazonAverageUnitsPerDay: Float!
+  walmartAverageUnitsPerDay: Float!
+  sumAverageUnitsPerDay: Float!
+  amazonUnitsfor270Days: Float!
+  walmartUnitsfor270Days: Float!
+  sumUnitsfor270Days: Float!
+  amazonTotalInv: Int!
+  walmartTotalInv: Int!
+  sumTotalInv: Int!
+  amazonReorder: Float!
+  walmartReorder: Float!
+  sumReorder: Float!
+  chinaPreparationDays: Int
+  supplierLeadTime: Int
+  draftPurchases: Int
+}
+
+type MultipleAccountDashboardConnection {
+  edges: [MultipleAccountDashboardEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type MultipleAccountDashboardEdge {
+  cursor: String!
+  node: MultipleAccountDashboard!
+}
+
+type MultipleAccountDashboard {
+  id: ID!
+  skus: String!
+  otherSkus: String!
+  asin: String!
+  image: ImageType!
+  amazonAvailableInv: Int!
+  amazonTotalInv: Int!
+}
+
+type MultipleAccountStore {
+  id: ID!
+  name: String!
+}
+
+type MultipleAccountSalesConnection {
+  edges: [MultipleAccountSalesEdge]!
+  pageInfo: NumericCursorPageInfo!
+  dateList: [String]!
+}
+
+type MultipleAccountSalesEdge {
+  cursor: String!
+  node: MultipleAccountSales!
+}
+
+type MultipleAccountSales {
+  id: ID!
+  skus: String!
+  otherSkus: String!
+  asin: String!
+  details: [SalesDetails]!
+  amazonAvailableInv: Int!
+  amazonTotalInv: Int!
+  totalInv: Int!
+  image: ImageType!
+}
+
+type SkusConnection @shareable {
+  edges: [SkusEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type SkusEdge @shareable {
+  cursor: String!
+  node: Sku!
+}
+
+type Sku @shareable {
+  id: ID!
+  sku: String!
+}
+
+type ChinaSupplier {
+  id: ID!
+  name: String!
+  email: String!
+  warehouse: GeneralInfo!
+}
+
+type UploadShippingPackageDetails {
+  sku: String!
+  unitsPerBox: Int!
+  numberOfBoxes: Int!
+  isFragile: Boolean!
+  rework: Boolean!
+  caseBarcode: String
+}
+
+type WarehouseSkusConnection {
+  edges: [WarehouseSkusEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type WarehouseSkusEdge {
+  cursor: String!
+  node: WarehouseSku!
+}
+
+type WarehouseSku {
+  id: ID!
+  sku: String!
+  asin: String!
+  image: ImageType!
+  store: String!
+}
+
+type ChinaPurchasesConnection @shareable {
+  edges: [ChinaPurchasesEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type ChinaPurchasesEdge @shareable {
+  cursor: String!
+  node: ChinaPurchase!
+}
+
+type InventoryPurchase @shareable {
+  id: ID!
+  sku: String!
+  date: DateShort!
+  amount: Int!
+}
+
+type ChinaPurchase @shareable {
+  id: ID!
+  sku: Sku!
+  piNumber: String!
+  orderDate: DateShort!
+  price: Float!
+  units: Int!
+  boxes: Int!
+  estimateDate: DateShort!
+  note: String
+  status: ChinaProcessStatus!
+  editable: Boolean!
+  latestPurchasePrice: Float!
+  inventoryPurchase: InventoryPurchase
+  image: ImageType!
+  totalPrice: Float!
+  isNewPack: Boolean!
+}
+
+type SearchSkuDraftPurchasesConnection {
+  edges: [SearchSkuDraftPurchasesEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type SearchSkuDraftPurchasesEdge {
+  cursor: String!
+  node: SearchSkuDraftPurchase!
+}
+
+type SearchSkuDraftPurchase {
+  id: ID!
+  sku: String!
+  date: DateShort!
+  amount: Int!
+}
+
+type GeneralInfo {
+  id: ID!
+  name: String!
+}
+
+type ChinaAirTransfersConnection @shareable {
+  edges: [ChinaAirTransfersEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type ChinaAirTransfersEdge @shareable {
+  cursor: String!
+  node: ChinaAirTransfer!
+}
+
+type ChinaAirTransfer @shareable {
+  id: ID!
+  sku: String!
+  units: Int!
+  airNumber: String!
+  date: DateShort!
+  status: ChinaProcessStatus!
+}
+
+type InventoryChinaSeaTransfersConnection {
+  edges: [InventoryChinaSeaTransfersEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type InventoryChinaSeaTransfersEdge {
+  cursor: String!
+  node: InventoryChinaSeaTransfer!
+}
+
+union InventoryChinaSeaTransfer =
+    InventoryChinaRegularSeaTransfer
+  | InventoryChinaFastBoatTransfer
+
+type InventoryChinaRegularSeaTransfer {
+  id: ID!
+  sku: String!
+  units: Int!
+  invoiceNumber: String!
+  etd: DateShort!
+  eta: DateShort!
+  mbl: String!
+  containerNumber: String!
+  port: String!
+  seaStatus: InventoryChinaSeaTransferStatus!
+  transferType: TransferType!
+  customsAgent: ChinaCustomsAgent!
+  receivingScheduleStatus: ChinaReceivingSheduleStatus!
+}
+
+type InventoryChinaFastBoatTransfer {
+  id: ID!
+  sku: String!
+  units: Int!
+  invoiceNumber: String!
+  etd: DateShort!
+  eta: DateShort!
+  trackingNumber: String!
+  containerNumber: String!
+  port: String!
+  fastBoatStatus: InventoryChinaFastBoatTransferStatus!
+  transferType: TransferType!
+  receivingScheduleStatus: ChinaReceivingSheduleStatus!
+}
+
+type SearchChinaTransferSkusConnection @shareable {
+  edges: [SearchChinaTransferSkusEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type SearchChinaTransferSkusEdge @shareable {
+  cursor: String!
+  node: SearchChinaTransferSku!
+}
+
+type SearchChinaTransferSku @shareable {
+  id: ID!
+  sku: String!
+  asin: String!
+  units: Int!
+  onTheSea: Int!
+  unitsPerBox: Int!
+  dimensions: String!
+  weight: Float!
+  newPacked: Boolean!
+  custom: Float!
+}
+
+type ChinaTransferSkuActivePurchasesConnection @shareable {
+  edges: [ChinaTransferSkuActivePurchasesEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type ChinaTransferSkuActivePurchasesEdge @shareable {
+  cursor: String!
+  node: ChinaTransferSkuActivePurchase!
+}
+
+type ChinaTransferSkuActivePurchase @shareable {
+  id: ID!
+  piNumber: String!
+  remainingUnits: Int!
+  price: Float!
+  units: Int
+  note: String
+  isActive: Boolean!
+}
+
+type InventoryChinaTransferDetailsSkuDetails {
+  id: ID!
+  sku: String!
+  asin: String!
+  units: Int!
+  onTheSea: Int!
+  unitsPerBox: Int!
+  dimensions: String!
+  weight: Float!
+  newPacked: Boolean!
+  purchases: [ChinaTransferSkuActivePurchase]!
+  unitPrice: Float!
+  gw: Float!
+  nw: Float!
+  vol: Float!
+}
+
+type InventoryChinaAirTransferDetails {
+  id: ID!
+  airNumber: String!
+  airFreightCost: Float!
+  otherCost: Float!
+  etd: DateShort!
+  skus: [InventoryChinaTransferDetailsSkuDetails]!
+}
+
+type InventoryChinaSeaTransferSkuDetails {
+  id: ID!
+  sku: String!
+  asin: String!
+  units: Int!
+  onTheSea: Int!
+  unitsPerBox: Int!
+  dimensions: String!
+  weight: Float!
+  newPacked: Boolean!
+  custom: Float!
+  missing: Int
+  damaged: Int
+  totalUnits: Int!
+  chinaCustoms: Float
+  purchases: [ChinaTransferSkuActivePurchase]!
+  unitPrice: Float!
+  gw: Float!
+  nw: Float!
+  vol: Float!
+}
+
+type CompanyDetails {
+  id: ID
+  name: String
+}
+
+type InventoryChinaOtherSeaTransfer {
+  id: ID!
+  warehouseId: ID!
+  invoiceNumber: String!
+  mbl: String!
+  status: InventoryChinaSeaTransferStatus!
+}
+
+union InventoryChinaSeaTransferDetails =
+    InventoryChinaRegularSeaTransferDetails
+  | InventoryChinaFastBoatTransferDetails
+
+type InventoryChinaRegularSeaTransferDetails {
+  id: ID!
+  invoiceNumber: String!
+  mbl: String!
+  containerNumber: String!
+  etd: DateShort!
+  eta: DateShort!
+  trackingLink: String!
+  port: String!
+  seaFreightCost: Float!
+  otherCost: Float!
+  transferor: String
+  customs: Float
+  fromPortToWarehouseCost: Float
+  other: Float
+  transferType: TransferType!
+  chinaCustomsAgent: ChinaCustomsAgent!
+  company: CompanyDetails!
+  skus: [InventoryChinaSeaTransferSkuDetails]!
+  otherTransfers: [InventoryChinaOtherSeaTransfer]!
+  carrierEmail: String
+  carrierPhone: String
+  otherCarrierContactInfo: String
+  comesOnPallet: Boolean
+}
+
+type InventoryChinaFastBoatTransferDetailsSkuDetails {
+  id: ID!
+  sku: String!
+  asin: String!
+  units: Int!
+  onTheSea: Int!
+  unitsPerBox: Int!
+  newPacked: Boolean!
+  boxLength: Float!
+  boxWidth: Float!
+  boxHeight: Float!
+  boxWeight: Float!
+  missing: Int
+  damaged: Int
+  numberOfBoxes: Int!
+  totalUnits: Int!
+  unitPrice: Float!
+  custom: Float!
+  purchases: [ChinaTransferSkuActivePurchase]!
+}
+
+type InventoryChinaFastBoatTransferDetails {
+  id: ID!
+  invoiceNumber: String!
+  trackingNumber: String!
+  containerNumber: String!
+  etd: DateShort!
+  eta: DateShort!
+  trackingLink: String!
+  port: String!
+  fastBoatShippingCost: Float!
+  otherCost: Float!
+  transferor: String
+  customs: Float
+  fromPortToWarehouseCost: Float
+  other: Float
+  company: CompanyDetails!
+  transferType: TransferType!
+  skus: [InventoryChinaFastBoatTransferDetailsSkuDetails]!
+  otherTransfers: [InventoryChinaOtherSeaTransfer]!
+  carrierEmail: String
+  carrierPhone: String
+  otherCarrierContactInfo: String
+  comesOnPallet: Boolean
+}
+
+type ChinaInvoiceTransfersConnection {
+  edges: [ChinaInvoiceTransfersEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type ChinaInvoiceTransfersEdge {
+  cursor: String!
+  node: ChinaInvoiceTransfer!
+}
+
+type ChinaInvoiceTransfer {
+  id: ID!
+  invoiceNumber: String!
+  freightCost: Float!
+  otherCost: Float!
+  etd: DateShort!
+  transferMethod: TransferMethod!
+  productCost: Float!
+  otherMonthCost: Float
+  otherMonthCostNote: String
+  totalNewPacksCost: Float!
+  totalCost: Float!
+  newPackSkusRatio: Float!
+  newPackSkusCostRatio: Float!
+}
+
+type WarehouseCompaniesConnection {
+  edges: [WarehouseCompaniesEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type WarehouseCompaniesEdge {
+  cursor: String!
+  node: GeneralInfo!
+}
+
+type ChinaFollowReorderConnection @shareable {
+  edges: [ChinaFollowReorderEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type ChinaFollowReorderEdge @shareable {
+  cursor: String!
+  node: ChinaFollowReorder!
+}
+
+type ChinaFollowReorder @shareable {
+  id: ID!
+  piNumber: String!
+  sku: String!
+  units: Int!
+  orderDate: DateShort!
+  estimateDate: DateShort!
+  realDate: DateShort
+  ppSampleDate: DateShort
+  onTheSea: Int!
+  note: String
+  color: ChinaFollowReorderColors!
+}
+
+type ChinaFollowReorderDetailsConnection @shareable {
+  edges: [ChinaFollowReorderDetailsEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type ChinaFollowReorderDetailsEdge @shareable {
+  cursor: String!
+  node: ChinaFollowReorderDetails!
+}
+
+type ChinaFollowReorderDetails @shareable {
+  id: ID!
+  invoiceNumber: String!
+  units: Int!
+}
+
+type PriceChange {
+  lastToFirstChange: Float!
+  lastToPreviousChange: Float!
+}
+
+type SkuPurchase {
+  date: DateShort!
+  price: Float!
+}
+
+type SkuPurchaseHistoryConnection {
+  edges: [SkuPurchaseHistoryEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type SkuPurchaseHistoryEdge {
+  cursor: String!
+  node: SkuPurchaseHistory!
+}
+
+type SkuPurchaseHistory {
+  id: ID!
+  sku: String!
+  asin: String!
+  priceChange: PriceChange!
+  image: ImageType!
+  purchases: [SkuPurchase]!
+}
+
+type SalesInfoDates {
+  salesInfo1: DateShort!
+  salesInfo2: DateShort!
+  salesInfo3: DateShort!
+  salesInfo4: DateShort!
+  salesInfo5: DateShort!
+  salesInfo6: DateShort!
+  salesInfo7: DateShort!
+}
+
+type PostLaunchConnection {
+  edges: [PostLaunchEdge]!
+  pageInfo: NumericCursorPageInfo!
+  salesInfoDates: SalesInfoDates!
+}
+
+type PostLaunchEdge {
+  cursor: String!
+  node: PostLaunch!
+}
+
+type PostLaunchSalesInfo {
+  units: Int!
+  orders: Int!
+  price: Float!
+  convergentRate: Float!
+}
+
+type CampaignInfo {
+  acos: Float!
+  clicks: Int!
+  orders: Int!
+}
+
+type PostLaunch {
+  id: ID!
+  skuId: ID!
+  sku: String!
+  asin: String!
+  image: ImageType!
+  salesInfo1: PostLaunchSalesInfo!
+  salesInfo2: PostLaunchSalesInfo!
+  salesInfo3: PostLaunchSalesInfo!
+  salesInfo4: PostLaunchSalesInfo!
+  salesInfo5: PostLaunchSalesInfo!
+  salesInfo6: PostLaunchSalesInfo!
+  salesInfo7: PostLaunchSalesInfo!
+  keywordCampaign: CampaignInfo!
+  targetCampaign: CampaignInfo!
+  brandCampaign: CampaignInfo!
+  videoCampaign: CampaignInfo!
+  totalOrders: Int!
+  ncxOrders: Int!
+  rate: Float!
+  totalReviews: Int!
+  dateOfLaunch: DateShort
+}
+
+type BeforeLaunchConnection {
+  edges: [BeforeLaunchEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type BeforeLaunchEdge {
+  cursor: String!
+  node: BeforeLaunch!
+}
+
+type LaunchColumnObject {
+  status: LaunchStatus
+  note: String
+}
+
+type BeforeLaunch {
+  id: ID!
+  skuId: String!
+  sku: String!
+  asin: String!
+  image: ImageType!
+  dateOfOnTheSea: DateShort
+  calculatedBreakEven: LaunchColumnObject!
+  titleAndBackend: LaunchColumnObject!
+  descriptionAndBulletPoint: LaunchColumnObject!
+  picsAndDescriptive: LaunchColumnObject!
+  targetCampaigns: LaunchColumnObject!
+  keywordCampaigns: LaunchColumnObject!
+  brandCampaigns: LaunchColumnObject!
+  videoCampaigns: LaunchColumnObject!
+  aPlus: LaunchColumnObject!
+  finalCheck: LaunchColumnObject!
+  descriptiveText: LaunchColumnObject!
+  isMoved: Boolean!
+  isLaunched: Boolean!
+  locationStatus: BeforeLaunchLocationStatus
+  importToAPlusPremium: LaunchColumnObject!
+  amazonAvailableInv: Int!
+  inboundQuantity: Int!
+  reservedQuantity: Int!
+}
+
+type LaunchTargetNote {
+  quantity: Int
+  price: Float
+}
+
+type LaunchTargetColumnObject {
+  status: LaunchStatus
+  note: LaunchTargetNote!
+}
+
+type LaunchConnection {
+  edges: [LaunchEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type LaunchEdge {
+  cursor: String!
+  node: Launch!
+}
+
+type Launch {
+  id: ID!
+  skuId: String!
+  sku: String!
+  asin: String!
+  image: ImageType!
+  dateOfLaunch: DateShort
+  finalCheck: LaunchColumnObject!
+  successfulTarget: LaunchTargetColumnObject!
+  fairTarget: LaunchTargetColumnObject!
+  setPrice: LaunchColumnObject!
+  addToVineList: LaunchColumnObject!
+  editName: LaunchColumnObject!
+  addKeywords: LaunchColumnObject!
+  checkOtherAccount: LaunchColumnObject!
+  addToGiveaway: LaunchColumnObject!
+}
+
+type TotalNewCogsAndInventory {
+  date: DateShort!
+  totalCogs: Float!
+  totalUnitsSold: Int!
+}
+
+type NewCogsAndInventoryConnection {
+  edges: [NewCogsAndInventoryEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type NewCogsAndInventoryEdge {
+  cursor: String!
+  node: NewCogsAndInventory!
+}
+
+type CogsDetails {
+  date: DateShort!
+  unitsSold: Int!
+  cogs: Float!
+}
+
+type NewCogsAndInventory {
+  id: ID!
+  sku: String!
+  cogsDetails: [CogsDetails]!
+}
+
+type UploadFulfillmentReport {
+  sku: String!
+  asin: String!
+  totalInv: Int!
+  availableInv: Int!
+}
+
+type UploadSalesReport {
+  sku: String!
+  asin: String!
+  orders: Int!
+  items: Int!
+}
+
+type UploadDirectContainerReport {
+  sku: String!
+  units: Int!
+}
+
+type RequestShipmentDetailsConnection {
+  edges: [RequestShipmentDetailsEdge]!
+  pageInfo: NumericCursorPageInfo!
+  id: ID!
+}
+
+type RequestShipmentDetailsEdge {
+  cursor: String!
+  node: RequestShipmentDetails!
+}
+
+type RequestShipmentDetails {
+  id: ID!
+  skuId: ID!
+  sku: String!
+  asin: String!
+  selectedUnitsPerBox: Int!
+  unitsPerBox: [Int]!
+  boxes: Int!
+  selectedBoxPerPallet: Int!
+  boxPerPallet: [Int]!
+  amazonTotalInv: Int!
+  beanfactoryInv: Int!
+  lockToSend: Boolean!
+  adalproSuggestion: Int
+  warehouseBoxes: [SearchNewShipmentSkuWarehouseInfo]!
+}
+
+type NewShipmentLogConnection {
+  edges: [NewShipmentLogEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type NewShipmentLogEdge {
+  cursor: String!
+  node: NewShipmentLog!
+}
+
+type NewShipmentLog {
+  id: ID!
+  internalShipmentId: String
+  transitionType: TransitionType!
+  shipmentId: String
+  carrier: String!
+  city: String!
+  status: NewShipmentStatus!
+}
+
+type SearchNewShipmentSkuConnection {
+  edges: [SearchNewShipmentSkuEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type SearchNewShipmentSkuEdge {
+  cursor: String!
+  node: SearchNewShipmentSku!
+}
+
+type SearchNewShipmentSkuWarehouseInfo @shareable {
+  unitsPerBox: Int!
+  boxes: Int!
+}
+
+type SearchNewShipmentSku {
+  id: ID
+  skuId: ID!
+  sku: String!
+  asin: String!
+  selectedUnitsPerBox: Int
+  unitsPerBox: [Int]!
+  boxes: Int!
+  selectedBoxPerPallet: Int
+  boxPerPallet: [Int]!
+  amazonTotalInv: Int!
+  beanfactoryInv: Int!
+  lockToSend: Boolean!
+  warehouseBoxes: [SearchNewShipmentSkuWarehouseInfo]!
+}
+
+type ShipmentWarehouse {
+  id: ID
+  name: String!
+}
+
+type NewShipmentShippingSchedule {
+  id: ID
+  name: String
+}
+
+type NewShipmentDetails {
+  id: ID!
+  internalShipmentId: String
+  transitionType: TransitionType!
+  shipmentId: String
+  carrier: String!
+  city: String!
+  shipmentMethod: ShipmentMethod!
+  salesDays: Int!
+  days: Int!
+  businessReportSuggestionDays: Int
+  available: Int!
+  fromWarehouse: ShipmentWarehouse
+  toWarehouse: ShipmentWarehouse
+  hasOutbounded: Boolean!
+  skus: [RequestShipmentDetails]!
+  shippingSchedule: NewShipmentShippingSchedule!
+  applyPackingList: Boolean!
+}
+
+type FbaFeeConflictConnection {
+  edges: [FbaFeeConflictEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type FbaFeeConflictEdge {
+  cursor: String!
+  node: FbaFeeConflict!
+}
+
+type FbaFeeChangeDetails {
+  date: DateShort!
+  oldFbaFee: Float!
+  newFbaFee: Float!
+}
+
+type FbaFeeChanges {
+  change1: FbaFeeChangeDetails
+  change2: FbaFeeChangeDetails
+  change3: FbaFeeChangeDetails
+  change4: FbaFeeChangeDetails
+  change5: FbaFeeChangeDetails
+  change6: FbaFeeChangeDetails
+  change7: FbaFeeChangeDetails
+  change8: FbaFeeChangeDetails
+  change9: FbaFeeChangeDetails
+  change10: FbaFeeChangeDetails
+}
+
+type FbaFeeConflict {
+  id: ID!
+  sku: String!
+  asin: String!
+  image: ImageType!
+  fbaFee: Float!
+  realFbaFee: Float!
+  fbaTier: FbaTier!
+  realFbaTier: FbaTier!
+  realFbaFeeFbaFeeDifference: Float!
+  realFbaFeeFbaFeeDifferencePercentage: Float!
+  fbaFeeChanges: FbaFeeChanges!
+  caseDate: DateShort
+}
+
+type ChinaProductSizeConnection @shareable {
+  edges: [ChinaProductSizeEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type ChinaProductSizeEdge @shareable {
+  cursor: String!
+  node: ChinaProductSize!
+}
+
+type ChinaProductSize @shareable {
+  id: ID!
+  skuId: ID!
+  sku: String!
+  unitsPerBox: Int
+  boxWeight: Float
+  boxLength: Float
+  boxWidth: Float
+  boxHeight: Float
+  productWeight: Float
+  productLength: Float
+  productWidth: Float
+  productHeight: Float
+  leadTime: Int
+}
+
+type NewShipmentWarehouseShippingSchedules {
+  id: ID!
+  name: String!
+}
+
+type OtherChinaPurchasesConnection {
+  edges: [OtherChinaPurchasesEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type OtherChinaPurchasesEdge {
+  cursor: String!
+  node: OtherChinaPurchase!
+}
+
+type OtherChinaPurchase {
+  id: ID!
+  sku: Sku!
+  image: ImageType!
+  piNumber: String!
+  orderDate: DateShort!
+  price: Float!
+  units: Int!
+  note: String
+  status: ChinaProcessStatus!
+  latestPurchasePrice: Float!
+  isNewPack: Boolean!
+}
+
+type PriceChangeLogConnection {
+  edges: [PriceChangeLogEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type PriceChangeLogEdge {
+  cursor: String!
+  node: PriceChangeLog!
+}
+
+type SalesInfo {
+  items: Int!
+  orders: Int!
+  price: Float!
+}
+
+type PriceChangeLog {
+  id: ID!
+  sku: String!
+  asin: String!
+  image: ImageType!
+  startDate: DateShort
+  targetPrice: String
+  targetPriceStatus: TargetPriceStatus
+  price: Float
+  hasPriceChanged: Boolean!
+  salesInfo1: SalesInfo!
+  salesInfo2: SalesInfo!
+  salesInfo3: SalesInfo!
+  salesInfo4: SalesInfo!
+  salesInfo5: SalesInfo!
+  salesInfo6: SalesInfo!
+  salesInfo7: SalesInfo!
+  salesInfo8: SalesInfo!
+  salesInfo9: SalesInfo!
+  salesInfo10: SalesInfo!
+}
+
+type OptimizeConnection {
+  edges: [OptimizeEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type OptimizeEdge {
+  cursor: String!
+  node: Optimize!
+}
+
+type OptimizeSalesInfo {
+  items: Int!
+  orders: Int!
+  price: Float!
+  rate: Float!
+}
+
+type Optimize {
+  id: ID!
+  sku: String!
+  asin: String!
+  image: ImageType!
+  dateOfOptimize: DateShort
+  optimizeList: String
+  daysBeforeOptimize: SalesInfo!
+  salesInfo1: SalesInfo!
+  salesInfo2: SalesInfo!
+  salesInfo3: SalesInfo!
+  salesInfo4: SalesInfo!
+  salesInfo5: SalesInfo!
+  salesInfo6: SalesInfo!
+  salesInfo7: SalesInfo!
+  salesInfo8: SalesInfo!
+  salesInfo9: SalesInfo!
+  salesInfo10: SalesInfo!
+}
+
+type FinancialConnection @shareable {
+  edges: [FinancialEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type FinancialEdge @shareable {
+  cursor: String!
+  node: Financial!
+}
+
+type FinancialDetails @shareable {
+  salesItems: Int!
+  salesOrders: Int!
+  salesPrice: Float!
+  financial: Float!
+  totalDailyAds: Float!
+  dailyAdsPerUnit: Float!
+  financialPerUnit: Float!
+  totalFinancial: Float!
+}
+
+type Financial @shareable {
+  id: ID!
+  sku: String!
+  asin: String!
+  image: ImageType!
+  breakevenPrice: Float!
+  financialDetails1: FinancialDetails!
+  financialDetails2: FinancialDetails!
+  financialDetails3: FinancialDetails!
+  financialDetails4: FinancialDetails!
+  financialDetails5: FinancialDetails!
+  financialDetails6: FinancialDetails!
+  financialDetails7: FinancialDetails!
+  financialDetails8: FinancialDetails!
+  financialDetails9: FinancialDetails!
+  financialDetails10: FinancialDetails!
+}
+
+type GetAllStoresAndMarketplacesConnection {
+  edges: [GetAllStoresAndMarketplacesEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type GetAllStoresAndMarketplacesEdge {
+  cursor: String!
+  node: GetAllStoresAndMarketplaces!
+}
+
+type GetAllStoresAndMarketplaces {
+  id: ID!
+  marketplaceId: MarketplaceIds!
+  countryName: String!
+  tld: String!
+}
+
+type ProductPricesConnection {
+  edges: [ProductPricesEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type ProductPricesEdge {
+  cursor: String!
+  node: ProductPrices!
+}
+
+type ProductPrices {
+  id: ID!
+  sku: String!
+  asin: String!
+  image: ImageType!
+  salesPrice: Float
+  standardPrice: Float
+  businessPrice: Float
+  listPrice: Float
+  salesPriceStartDate: DateShort
+  salesPriceEndDate: DateShort
+  editable: Boolean!
+}
+
+type ProductPriceStatusChangeConnection {
+  edges: [ProductPriceStatusChangeEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type ProductPriceStatusChangeEdge {
+  cursor: String!
+  node: ProductPriceStatusChange!
+}
+
+type ProductPriceStatusChange {
+  id: ID!
+  changeDate: DateShort!
+  skus: [String!]!
+  status: ReportTypeStatus!
+  failedSkus: [String]!
+}
+
+type ChinaSupplierScoresConnection {
+  edges: [ChinaSupplierScoresEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type ChinaSupplierScoresEdge {
+  cursor: String!
+  node: ChinaSupplierScores!
+}
+
+type ChinaSupplierScores {
+  id: ID!
+  supplierName: String!
+  estimateScore: Float
+  realScore: Float
+}
+
+type GetSkuOtherMarketplaces {
+  skuId: ID!
+  marketplaceId: String!
+  countryName: String!
+}
+
+type ChinaInvoiceTransfersTotalCosts {
+  sumFrieghtCost: Float!
+  sumOtherCost: Float!
+  sumTotalCost: Float!
+  sumProductCost: Float!
+  sumNewPackSkusCost: Float!
+  sumNewPackSkusRatio: Float!
+  sumNewPackSkusCostRatio: Float!
+  sumOtherMonthCost: Float!
+}
+
+type ProductHistoryChange {
+  id: ID!
+  date: DateShort!
+  decision: String!
+  decisionNumber: String!
+  note: String
+}
+
+type ProductHistorySeasonalDecision {
+  id: ID!
+  season: ProductHistorySeason!
+  oldPrice: Float
+  newPriceDate: DateShort
+  newPrice: Float
+  startRaisingPriceDate: DateShort
+  maxPrice: Float
+  newAfterPriceDate: DateShort
+  newAfterPrice: Float
+  unitSold: Int
+  oosDays: Int
+  bestSeller: Boolean
+}
+
+type ProductHistoryConnection {
+  edges: [ProductHistoryEdge]!
+  pageInfo: NumericCursorPageInfo!
+  totalColumns: Int!
+}
+
+type ProductHistoryEdge {
+  cursor: String!
+  node: ProductHistory!
+}
+
+type ProductHistory {
+  id: ID!
+  sku: String!
+  asin: String
+  image: ImageType!
+  latestUpdateDate: DateShort
+  productHistoryChanges: [ProductHistoryChange]!
+  seasonalDecisions: [ProductHistorySeasonalDecision]!
+}
+
+type EditProductHistoryResponse {
+  totalColumns: Int!
+  productHistory: ProductHistory!
+}
+
+type ChinaSuppliersWarehouses {
+  id: ID!
+  name: String!
+}
+
+type InventoryInUSDateList {
+  date: DateShort!
+  sumPrices: Float!
+  sumInventory: Int!
+}
+
+type InventoryInUSConncetion {
+  edges: [InventoryInUSEdge]!
+  pageInfo: NumericCursorPageInfo!
+  dateList: [InventoryInUSDateList]!
+}
+
+type InventoryInUSEdge {
+  cursor: String!
+  node: InventoryInUS!
+}
+
+type InventoryInUSDetails {
+  date: DateShort!
+  availableInventory: Int!
+  totalPrice: Float!
+}
+
+type InventoryInUS {
+  id: ID!
+  sku: String!
+  inventoryInUSDetails: [InventoryInUSDetails]!
+}
+
+type InventoryInUSByDateConncetion {
+  edges: [InventoryInUSByDateEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type InventoryInUSByDateEdge {
+  cursor: String!
+  node: InventoryInUSByDate!
+}
+
+type InventoryInUSByDate {
+  id: ID!
+  sku: String!
+  asin: String!
+  name: String!
+  amazonInventory: Int!
+  warehouseInventory: Int!
+  usInventory: Int!
+  amazonTotalPrice: Float!
+  warehouseTotalPrice: Float!
+  usTotalPrice: Float!
+}
+
+type SumOfInventoryInUSByDate {
+  sumAmazonInventory: Int!
+  sumWarehouseInventory: Int!
+  sumUSInventory: Int!
+  sumAmazonTotalPrice: Float!
+  sumWarehouseTotalPrice: Float!
+  sumUSTotalPrice: Float!
+}
+
+type RiskyUnder200DaysConnection {
+  edges: [RiskyUnder200DaysEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type RiskyUnder200DaysEdge {
+  cursor: String!
+  node: RiskyUnder200Days!
+}
+
+type RiskyUnder200Days {
+  id: ID!
+  sku: String!
+  asin: String!
+  amazonTotalInv: Int!
+  beanfactoryInv: Int!
+  onTheSeaUnits: Int!
+  average7DaysOrders: Int!
+  riskyRate: Int!
+  chinaUnits: Int!
+  toSend: Int!
+}
+
+type ChinaInventoryCheckConnection {
+  edges: [ChinaInventoryCheckEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type ChinaInventoryCheckEdge {
+  cursor: String!
+  node: ChinaInventoryCheck!
+}
+
+type ChinaInventoryCheck {
+  id: ID!
+  sku: String!
+  asin: String!
+  amazonTotalInv: Int!
+  beanfactoryInv: Int!
+  onTheSeaUnits: Int!
+  sumUSAndOnTheSea: Int!
+  lastYearSales: Int!
+  toSend: Int!
+}
+
+type USInventoryCheckConnection {
+  edges: [USInventoryCheckEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type USInventoryCheckEdge {
+  cursor: String!
+  node: USInventoryCheck!
+}
+
+type USInventoryCheck {
+  id: ID!
+  sku: String!
+  asin: String!
+  amazonTotalInv: Int!
+  beanfactoryInv: Int!
+  onTheSeaUnits: Int!
+  lastYearSales: Int!
+  daysInAmazon: Int!
+  toSend: Int!
+}
+
+type RatingConflictsConnection {
+  edges: [RatingConflictsEdge]!
+  pageInfo: NumericCursorPageInfo!
+  totalGiveaways: Int!
+}
+
+type RatingConflictsEdge {
+  cursor: String!
+  node: RatingConflicts!
+}
+
+type RatingConflictGiveaway {
+  id: ID!
+  dateOfLastGiveaway: DateShort
+  dateOfPreLaunchGiveaway: DateShort
+  keywords: String
+  linkOfGiveaway: String
+}
+
+type RatingChanges {
+  changeDate: DateShort!
+  oldRate: Float!
+  newRate: Float!
+}
+
+type RatingConflicts {
+  id: ID!
+  sku: String!
+  asin: String!
+  image: ImageType!
+  rate: Float!
+  totalReviews: Int!
+  giveaways: [RatingConflictGiveaway]!
+  ratingChanges: [RatingChanges]!
+}
+
+type EditRatingConflictsResponse {
+  totalGiveaways: Int!
+  ratingConflicts: RatingConflicts!
+}
+
+type AmazonNewProductsConnection {
+  edges: [AmazonNewProductsEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type AmazonNewProductsEdge {
+  cursor: String!
+  node: AmazonNewProduct!
+}
+
+type AmazonNewProduct {
+  id: ID!
+  sku: String!
+  salesPrice: Float!
+  fob: Float!
+  shippingFromChinaToAmazon: Float!
+  customRate: Float!
+  customFee: Float!
+  refund: Float!
+  refunds: Float!
+  fbaFee: Float!
+  advertisingPercentage: Float!
+  advertisingCost: Float!
+  storageFee: Float!
+  referralFee: Float!
+  referralFeePercentage: Float!
+  total: Float!
+  breakevenPrice: Float!
+  profitMargin: Float!
+  roi: Float!
+  salesPriceTenProfit: Float!
+  salesPriceTwentyProfit: Float!
+  salesPriceFiftyRoi: Float!
+  targetPriceFiftyRoi: Float!
+  worstTargetPrice: Float!
+  bestTargetPrice: Float!
+  length: Float!
+  width: Float!
+  height: Float!
+  weight: Float!
+}
+
+type GetFbaFeeAndShippingFromChinaToAmazon {
+  fbaFee: Float
+  shippingFromChinaToAmazon: Float
+}
+
+type InventoryUsersConnection {
+  edges: [InventoryUsersEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type InventoryUsersEdge {
+  cursor: String!
+  node: InventoryUser!
+}
+
+type InventoryUserScreenPermission @shareable {
+  id: ID!
+  screenName: InventoryScreensNames!
+  accessLevel: InventoryAccessLevel!
+  screenCategory: InventoryMainCategories!
+  accessibleColumns: [String]
+}
+
+type InventoryUserNotificationAccess {
+  id: ID!
+  notificationType: InventoryNotificationType!
+  notificationReceiveMethod: InventoryNotificationReceiveMethod!
+}
+
+type InventoryUser {
+  id: ID!
+  name: String!
+  username: String!
+  email: String!
+  permissions: [InventoryUserScreenPermission!]!
+  notificationsAccess: [InventoryUserNotificationAccess]!
+}
+
+type InventoryUserHeaderbarSubItem @shareable {
+  id: ID!
+  screenName: InventoryScreensNames!
+}
+
+type InventoryUserHeaderbarItem @shareable {
+  id: ID!
+  screenName: InventoryScreensNames!
+  subItems: [InventoryUserHeaderbarSubItem]
+}
+
+type InventoryUserProfileInfo {
+  defaultLoginStore: StoreInfo
+}
+
+type LaunchedProductsPnLConnection {
+  edges: [LaunchedProductsPnLEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type LaunchedProductsPnLEdge {
+  cursor: String!
+  node: LaunchedProductsPnL!
+}
+
+type LaunchedProductsPnL {
+  id: ID!
+  sku: String!
+  asin: String!
+  image: ImageType!
+  breakevenPrice: Float!
+  dateOfLaunch: DateShort!
+  numberOfDays: Int!
+  financialPerDay: FinancialDetails!
+  financialTotal: FinancialDetails!
+}
+
+type InventoryNotificationsConnection {
+  edges: [InventoryNotificationsEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type InventoryNotificationsEdge {
+  cursor: String!
+  node: InventoryNotification!
+}
+
+union InventoryNotification =
+    BasicInventoryNotification
+  | ChangeImageInventoryNotification
+  | ChangeFbaFeeInventoryNotification
+
+type BasicInventoryNotification {
+  id: ID!
+  sku: String!
+  asin: String!
+  date: ISO8601!
+  description: String!
+  notificationType: InventoryNotificationType!
+  hasRead: Boolean!
+  image: ImageType!
+}
+
+type ChangeImageInventoryNotification {
+  id: ID!
+  sku: String!
+  asin: String!
+  date: ISO8601!
+  description: String!
+  hasRead: Boolean!
+  image: ImageType!
+  oldImage: ImageType!
+  newImage: ImageType!
+}
+
+type ChangeFbaFeeInventoryNotification {
+  id: ID!
+  sku: String!
+  asin: String!
+  date: ISO8601!
+  description: String!
+  hasRead: Boolean!
+  image: ImageType!
+  realFbaFee: Float!
+}
+
+type MarketTrackersConnection {
+  edges: [MarketTrackersEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type MarketTrackersEdge {
+  cursor: String!
+  node: MarketTracker!
+}
+
+type MarketTracker {
+  id: ID!
+  name: String!
+  dateOfCreation: DateShort!
+  marketplaceId: MarketplaceIds!
+}
+
+type MarketTrackerTrackingProduct {
+  id: ID!
+  asin: String!
+  name: String!
+  rate: Float!
+  globalRating: Int!
+  price: Float!
+  bsr: Int!
+  image: ImageType!
+  ownProduct: Boolean!
+}
+
+type MarketTrackerSuggestedProduct {
+  id: ID!
+  asin: String!
+  name: String!
+  rate: Float!
+  globalRating: Int!
+  price: Float!
+  alreadyTracked: Boolean!
+  image: ImageType!
+}
+
+type MarketTrackerKeyword {
+  id: ID!
+  keyword: String!
+}
+
+type MarketTrackerCompetitorFluctuationDetails {
+  asin: String!
+  name: String!
+  fluctuation: Float!
+}
+
+type MarketTrackerFluctuationItemDetails {
+  increasingData: [MarketTrackerCompetitorFluctuationDetails]!
+  decreasingData: [MarketTrackerCompetitorFluctuationDetails]!
+  increasingIsMarket: Boolean!
+  decreasingIsMarket: Boolean!
+}
+
+type MarketTrackerFluctuationTableDetails {
+  cpf: MarketTrackerFluctuationItemDetails
+  crf: MarketTrackerFluctuationItemDetails
+  crf7Days: MarketTrackerFluctuationItemDetails
+  crf28Days: MarketTrackerFluctuationItemDetails
+  rd28Days: MarketTrackerFluctuationItemDetails
+  rd84Days: MarketTrackerFluctuationItemDetails
+}
+
+type MarketTrackerDetails {
+  id: ID!
+  name: String!
+  dateOfCreation: DateShort!
+  marketplaceId: MarketplaceIds!
+  keywords: [MarketTrackerKeyword!]!
+  alreadyTrackingProducts: [MarketTrackerTrackingProduct]!
+  suggestedProducts: [MarketTrackerSuggestedProduct]!
+  trackedProductsChartDetails: [MarketProductChartDetails]!
+  trackedProductsRelativeChartDetails: [MarketProductRelativeChartDetails]!
+  chartDateList: [DateShort]!
+  fluctuationTableDetails: MarketTrackerFluctuationTableDetails!
+}
+
+type MarketProductRelativeChartDetails {
+  asinPair: String!
+  rbChartDetails: [MarketChartDetails]!
+  rdChartDetails: [MarketChartDetails]!
+}
+
+type MarketChartDetails {
+  date: DateShort!
+  value: Float!
+}
+
+type MarketBsrChartDetails {
+  date: DateShort!
+  value: Float!
+  outOfStock: Boolean!
+}
+
+type MarketProductChartDetails {
+  asin: String!
+  bsrChartDetails: [MarketBsrChartDetails]!
+  priceChartDetails: [MarketChartDetails]!
+  rateChartDetails: [MarketChartDetails]!
+  globalRatingChartDetails: [MarketChartDetails]!
+  ownProduct: Boolean!
+}
+
+type ChinaDashboardConnection @shareable {
+  edges: [ChinaDashboardEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type ChinaDashboardEdge @shareable {
+  cursor: String!
+  node: ChinaDashboard!
+}
+
+type ChinaDashboard @shareable {
+  id: ID!
+  sku: Sku!
+  asin: String!
+  upc: String!
+  productId: String!
+  chinaUnit: Int!
+  onTheSea: Int!
+  hasChina: Boolean!
+  hasOnTheSea: Boolean!
+  caseBarcodeLink: String
+}
+
+type ChinaSkuActivePurchase @shareable {
+  id: ID!
+  piNumber: String!
+  orderDate: DateShort!
+  units: Int!
+  inProductUnits: Int!
+  onTheSea: Int!
+}
+
+type OnTheSeaSkuActiveTransfer @shareable {
+  id: ID!
+  invoiceNumber: String!
+  etd: DateShort!
+  eta: DateShort!
+  units: Int!
+  mbl: String!
+  trackingLink: String!
+}
+
+type AirbnbHousesConnection {
+  edges: [AirbnbHousesEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type AirbnbHousesEdge {
+  cursor: String!
+  node: AirbnbHouse!
+}
+
+type AirbnbHouse {
+  id: ID!
+  name: String!
+}
+
+type AirbnbPriceList {
+  id: ID!
+  price: Float!
+  priceDate: DateShort!
+}
+
+type AirbnbPriceHistory {
+  date: DateShort!
+  startDate: DateShort
+  endDate: DateShort
+  dateRangeIndex: Int
+  title: String
+  openPrice: Float
+  openPriceDate: DateShort
+  bookedPrice: Float
+  bookedPriceDate: DateShort
+  priceList: [AirbnbPriceList]!
+}
+
+type AirbnbDashboard {
+  date: DateShort!
+  title: String
+  openPrice: Float
+}
+
+type AirbnbSelectedYearPriceHistory {
+  title: String
+  bookedPrice: Float
+  bookedPriceDate: DateShort
+}
+
+type InventoryAuditReportConnection {
+  edges: [InventoryAuditReportEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type InventoryAuditReportEdge {
+  cursor: String!
+  node: InventoryAuditReport!
+}
+
+type InventoryAuditReport {
+  id: ID!
+  invoiceNumber: String!
+  total: Float!
+  freightCost: Float
+  etd: DateShort
+  supplier: GeneralInfo!
+  deletable: Boolean!
+}
+
+type LaunchedProductsReorderConnection {
+  edges: [LaunchedProductsReorderEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type LaunchedProductsReorderEdge {
+  cursor: String!
+  node: LaunchedProductsReorder!
+}
+
+type LaunchedProductsReorder {
+  id: ID!
+  sku: String!
+  asin: String!
+  image: ImageType!
+  dateOfLaunch: DateShort!
+  firstOrderDate: DateShort
+  numberOfReorder: Int!
+  firstOrderUnits: Int!
+  averageReorderUnits: Int!
+  totalReorderUnits: Int!
+  firstOrderPrice: Float!
+  averageReorderPrice: Float!
+  totalReorderPrice: Float!
+  averagePrice: Float!
+}
+
+type TotalReorderlaunchedProductsReorder {
+  totalReorderCost: Float!
+  averageReorderCost: Float!
+}
+
+type CreateOrUpdateCanadaShipment {
+  id: ID!
+  skus: [CanadaShipmentSkuDetails]!
+}
+
+type CanadaShipmentSkuDetails {
+  id: ID!
+  skuId: ID!
+  sku: String!
+  asin: String!
+  selectedUnitsPerBox: Int!
+  unitsPerBox: [Int]!
+  boxes: Int!
+  selectedBoxPerPallet: Int!
+  boxPerPallet: [Int]!
+  amazonTotalInv: Int!
+  beanfactoryInv: Int!
+  lockToSend: Boolean!
+  adalproSuggestion: Int
+  warehouseBoxes: [SearchNewShipmentSkuWarehouseInfo]!
+  chinaInv: Int!
+  transferType: CanadaShipmentSkuTransferType!
+  shipToAddress: String
+}
+
+type SearchCanadaShipmentSkuConnection {
+  edges: [SearchCanadaShipmentSkuEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type SearchCanadaShipmentSkuEdge {
+  cursor: String!
+  node: SearchCanadaShipmentSku!
+}
+
+type SearchCanadaShipmentSku {
+  id: ID
+  skuId: ID!
+  sku: String!
+  asin: String!
+  selectedUnitsPerBox: Int
+  unitsPerBox: [Int]!
+  boxes: Int!
+  selectedBoxPerPallet: Int
+  boxPerPallet: [Int]!
+  amazonTotalInv: Int!
+  beanfactoryInv: Int!
+  lockToSend: Boolean!
+  warehouseBoxes: [SearchNewShipmentSkuWarehouseInfo]!
+  chinaInv: Int!
+}
+
+type CanadaShipmentShippingAddress {
+  company: String!
+  name: String!
+  address: String!
+  state: String!
+}
+
+type CanadaShipmentDetails {
+  id: ID!
+  internalShipmentId: String
+  transitionType: TransitionType!
+  shipmentId: String
+  carrier: String!
+  city: String!
+  shipmentMethod: ShipmentMethod!
+  salesDays: Int!
+  days: Int!
+  businessReportSuggestionDays: Int
+  available: Int!
+  fromWarehouse: ShipmentWarehouse
+  toWarehouse: ShipmentWarehouse
+  hasOutbounded: Boolean!
+  skus: [CanadaShipmentSkuDetails]!
+  shippingSchedule: NewShipmentShippingSchedule!
+  applyPackingList: Boolean!
+  shippingAddress: CanadaShipmentShippingAddress!
+}
+
+type NewShipmentPackingList {
+  id: ID!
+  sku: String!
+  skuId: ID!
+  unitsPerBox: Int!
+  boxes: Int!
+}
+
+type AmazonLockToSendSkusConnection {
+  edges: [AmazonLockToSendSkuEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type AmazonLockToSendSkuEdge {
+  cursor: String!
+  node: AmazonLockToSendSku!
+}
+
+type AmazonLockToSendSku {
+  id: ID!
+  sku: String!
+  lockToSendDate: DateShort
+}
+
+type AmazonTTMConnection {
+  edges: [AmazonTTMEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type AmazonTTMEdge {
+  cursor: String!
+  node: AmazonTTM!
+}
+
+type AmazonTTMMonthDetails {
+  date: DateShort!
+  items: Int!
+  orders: Int!
+}
+
+type AmazonTTM {
+  id: ID!
+  sku: String!
+  asin: String
+  image: ImageType!
+  itemsSlope: Float!
+  ordersSlope: Float!
+  launchDate: DateShort
+  month1: AmazonTTMMonthDetails!
+  month2: AmazonTTMMonthDetails!
+  month3: AmazonTTMMonthDetails!
+  month4: AmazonTTMMonthDetails!
+  month5: AmazonTTMMonthDetails!
+  month6: AmazonTTMMonthDetails!
+  month7: AmazonTTMMonthDetails!
+  month8: AmazonTTMMonthDetails!
+  month9: AmazonTTMMonthDetails!
+  month10: AmazonTTMMonthDetails!
+  month11: AmazonTTMMonthDetails!
+  month12: AmazonTTMMonthDetails!
+}
+
+type AmazonTotalTTMDetails {
+  date: DateShort!
+  totalItems: Int!
+}
+
+type AmazonTotalTTM {
+  month1: AmazonTotalTTMDetails!
+  month2: AmazonTotalTTMDetails!
+  month3: AmazonTotalTTMDetails!
+  month4: AmazonTotalTTMDetails!
+  month5: AmazonTotalTTMDetails!
+  month6: AmazonTotalTTMDetails!
+  month7: AmazonTotalTTMDetails!
+  month8: AmazonTotalTTMDetails!
+  month9: AmazonTotalTTMDetails!
+  month10: AmazonTotalTTMDetails!
+  month11: AmazonTotalTTMDetails!
+  month12: AmazonTotalTTMDetails!
+}
+
+type TaskManagementEmployeesScoresConnection {
+  edges: [TaskManagementEmployeesScoresEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type TaskManagementEmployeesScoresEdge {
+  cursor: String!
+  node: TaskManagementEmployeesScores!
+}
+
+type TaskManagementEmployeesScores {
+  id: ID!
+  name: String!
+  score: Int!
+}
+
+type TaskManagementEmployeeScoresConnection {
+  edges: [TaskManagementEmployeesScoresEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type TaskManagementEmployeesScoresEdge {
+  cursor: String!
+  node: TaskManagementEmployeesScores!
+}
+
+type TaskManagementEmployeesScores {
+  id: ID!
+  description: String!
+  score: Int!
+  finishedOn: ISO8601!
+  activatedOn: ISO8601!
+  dueDate: ISO8601!
+}
+
+enum TaskManagementEmployeeScoresFilterableInput {
+  SCORE
+}
+
+enum TaskManagementEmployeeScoresSortableColumns {
+  SCORE
+  FINISHED_ON
+  ACTIVATED_ON
+  DUE_DATE
+}
+
+enum TaskManagementEmployeesScoresFilterableColumns {
+  SCORE
+}
+
+enum TaskManagementEmployeesScoresSortableColumns {
+  NAME
+  SCORE
+}
+
+enum AmazonTTMSortableColumns {
+  SKU
+  SLOPE
+  LAUNCH_DATE
+  MONTH_1
+  MONTH_2
+  MONTH_3
+  MONTH_4
+  MONTH_5
+  MONTH_6
+  MONTH_7
+  MONTH_8
+  MONTH_9
+  MONTH_10
+  MONTH_11
+  MONTH_12
+}
+
+enum AmazonTTMFilterableColumns {
+  SLOPE
+  MONTH_1
+  MONTH_2
+  MONTH_3
+  MONTH_4
+  MONTH_5
+  MONTH_6
+  MONTH_7
+  MONTH_8
+  MONTH_9
+  MONTH_10
+  MONTH_11
+  MONTH_12
+}
+
+enum AmazonLockToSendSkusSortableColumns {
+  SKU
+  LOCK_TO_SEND_DATE
+}
+
+enum CanadaShipmentFileNames {
+  TO_SEND
+  SHIPMENT_PRO
+  AMAZON_SHIPMENT
+  AMAZON_SHIPMENT_WITH_DATE
+  PACKING_LIST
+  AMAZON_TEMPLATE
+  CHINA_TEMPLATE
+  NUMBER_SEVEN
+  NUMBER_ONE
+  NUMBER_EIGHT
+}
+
+enum CanadaShipmentSkuTransferType {
+  CHINA
+  USA
+}
+
+enum LaunchedProductsReorderSortableColumns {
+  SKU
+  DATE_OF_LAUNCH
+  FIRST_ORDER_DATE
+  NUMBER_OF_REORDER
+  FIRST_ORDER_UNITS
+  AVERAGE_REORDER_UNITS
+  TOTAL_REORDER_UNITS
+  FIRST_ORDER_PRICE
+  AVERAGE_REORDER_PRICE
+  TOTAL_REORDER_PRICE
+  AVERAGE_PRICE
+}
+
+enum LaunchedProductsReorderFilterableColumns {
+  NUMBER_OF_REORDER
+  FIRST_ORDER_UNITS
+  AVERAGE_REORDER_UNITS
+  TOTAL_REORDER_UNITS
+  FIRST_ORDER_PRICE
+  AVERAGE_REORDER_PRICE
+  TOTAL_REORDER_PRICE
+  AVERAGE_PRICE
+}
+
+enum InventoryAuditReportFilterableColumns {
+  TOTAL
+  FREIGHT_COST
+}
+
+enum InventoryAuditReportSortableColumns {
+  INVOICE_NUMBER
+  TOTAL
+  FREIGHT_COST
+  ETD
+  SUPPLIER
+}
+
+enum AirbnbHousesSortableColumns {
+  ID
+  NAME
+}
+
+enum ChinaDashboardSortableColumns {
+  SKU
+  ASIN
+  UPC
+  PRODUCT_ID
+  CHINA_UNITS
+  ON_THE_SEA_UNITS
+}
+
+enum ChinaDashboardFilterableColumns {
+  CHINA_UNITS
+  ON_THE_SEA_UNITS
+}
+
+enum SalesFluctuationReason {
+  REASON_1
+  REASON_2
+  REASON_3
+  REASON_4
+  REASON_5
+  REASON_6
+}
+
+enum SalesFilter {
+  REMOVE_HIDDEN_SKUS
+  LAST_WEEK_PURCHASED
+  SALES_FLUCTUATION
+  NONE
+}
+
+enum MarketTrackersSortableColumns {
+  NAME
+  DATE_OF_CREATION
+  MARKETPLACE_ID
+}
+
+enum RiskyDirectTransferType {
+  SEA
+  FAST_BOAT
+}
+
+enum InventoryNotificationReceiveMethod {
+  APP
+  EMAIL_APP
+}
+
+enum InventoryNotificationsSortableColumns {
+  SKU
+  ASIN
+  DATE
+  NOTIFICATION_TYPE
+  READ_STATUS
+}
+
+enum InventoryNotificationType {
+  PRODUCT_DETAILS_CHANGE
+  PRODUCT_CATEGORY_CHANGE
+  BUY_BOX
+  CART_BUTTON
+  PRICE_CHANGE
+  FBA_STOCK
+  IMAGE_CHANGE
+  LISTING_SUSPENSION
+  STAR_RATE_CHANGE
+  LOST_AMAZON_PRIME_BADGE
+  LOST_BEST_SELLER_BADGE
+  FBA_FEE_CHANGE
+  NUMBER_OF_SELLER_CHANGE
+  SEARCH_RESULT_SUPPRESSION
+}
+
+enum ProductHistorySeason {
+  BACK_TO_SCHOOL
+  CHRISTMAS
+  SUMMER
+  EASTER
+  FOURTH_OF_JULY
+}
+
+enum ChinaTransferMethod {
+  SEA
+  AIR
+  FAST_BOAT
+}
+
+enum ChinaCustomsAgent {
+  USA
+  CHINA
+}
+
+enum InventoryUsersSortableColumns {
+  NAME
+  EMAIL
+  USERNAME
+}
+
+enum InventoryAccessLevel {
+  VIEW
+  EDIT
+}
+
+enum MeasurementSystems {
+  METRIC
+  US_CUSTOMARY
+}
+
+enum AmazonNewProductsSortableColumns {
+  SKU
+  SALES_PRICE
+  FOB
+  SHIPPING_FROM_CHINA_TO_AMAZON
+  CUSTOM_RATE
+  CUSTOM_FEE
+  REFUND
+  REFUNDS
+  FBA_FEE
+  ADVERTISING_PERCENTAGE
+  ADVERTISING_COST
+  STORAGE_FEE
+  REFERRAL_FEE
+  REFERRAL_FEE_PERCENTAGE
+  TOTAL
+  BREAKEVEN_PRICE
+  PROFIT_MARGIN
+  ROI
+  SALES_PRICE_TEN_PROFIT
+  SALES_PRICE_TWENTY_PROFIT
+  SALES_PRICE_FIFTY_ROI
+  TARGET_PRICE_FIFTY_ROI
+  WORST_TARGET_PRICE
+  BEST_TARGET_PRICE
+  PRODUCT_HEIGHT
+  PRODUCT_LENGTH
+  PRODUCT_WIDTH
+  PRODUCT_WEIGHT
+}
+
+enum AmazonNewProductsFilterableColumns {
+  SALES_PRICE
+  FOB
+  SHIPPING_FROM_CHINA_TO_AMAZON
+  CUSTOM_RATE
+  CUSTOM_FEE
+  REFUND
+  REFUNDS
+  FBA_FEE
+  ADVERTISING_PERCENTAGE
+  ADVERTISING_COST
+  STORAGE_FEE
+  REFERRAL_FEE
+  REFERRAL_FEE_PERCENTAGE
+  TOTAL
+  BREAKEVEN_PRICE
+  PROFIT_MARGIN
+  ROI
+  SALES_PRICE_TEN_PROFIT
+  SALES_PRICE_TWENTY_PROFIT
+  SALES_PRICE_FIFTY_ROI
+  TARGET_PRICE_FIFTY_ROI
+  WORST_TARGET_PRICE
+  BEST_TARGET_PRICE
+  PRODUCT_HEIGHT
+  PRODUCT_LENGTH
+  PRODUCT_WIDTH
+  PRODUCT_WEIGHT
+}
+
+enum RatingConflictsSortableColumns {
+  SKU
+  RATE
+  REVIEWS
+  GIVEAWAY
+}
+
+enum RatingConflictsFilterableColumns {
+  RATE
+  REVIEWS
+}
+
+enum USInventoryCheckSortableColumns {
+  SKU
+  ASIN
+  AMAZON_TOTAL_INV
+  BEAN_FACTORY_INV
+  ON_THE_SEA_UNITS
+  DAYS_IN_AMAZON
+  LAST_YEAR_SALES
+  TO_SEND
+}
+
+enum USInventoryCheckFilterableColumns {
+  AMAZON_TOTAL_INV
+  BEAN_FACTORY_INV
+  ON_THE_SEA_UNITS
+  DAYS_IN_AMAZON
+  LAST_YEAR_SALES
+  TO_SEND
+}
+
+enum ChinaInventoryCheckSortableColumns {
+  SKU
+  ASIN
+  AMAZON_TOTAL_INV
+  BEAN_FACTORY_INV
+  ON_THE_SEA_UNITS
+  SUM_US_AND_ON_THE_SEA
+  LAST_YEAR_SALES
+  TO_SEND
+}
+
+enum ChinaInventoryCheckFilterableColumns {
+  AMAZON_TOTAL_INV
+  BEAN_FACTORY_INV
+  ON_THE_SEA_UNITS
+  SUM_US_AND_ON_THE_SEA
+  LAST_YEAR_SALES
+  TO_SEND
+}
+
+enum RiskyUnder200DaysSortableColumns {
+  SKU
+  ASIN
+  AMAZON_TOTAL_INV
+  BEAN_FACTORY_INV
+  ON_THE_SEA_UNITS
+  AVERAGE_ORDERS
+  RISKY_RATE
+  CHINA_UNITS
+  TO_SEND
+}
+
+enum RiskyUnder200DaysFilterableColumns {
+  AMAZON_TOTAL_INV
+  BEAN_FACTORY_INV
+  ON_THE_SEA_UNITS
+  AVERAGE_ORDERS
+  RISKY_RATE
+  CHINA_UNITS
+  TO_SEND
+}
+
+enum InventoryInUSByDateFilterableColumns {
+  AMAZON_INVENTORY
+  WAREHOUSE_INVENTORY
+  US_INVENTORY
+  AMAZON_TOTAL_PRICE
+  WAREHOUSE_TOTAL_PRICE
+  US_TOTAL_PRICE
+}
+
+enum InventoryInUSByDateSortableColumns {
+  SKU
+  ASIN
+  NAME
+  AMAZON_INVENTORY
+  WAREHOUSE_INVENTORY
+  US_INVENTORY
+  AMAZON_TOTAL_PRICE
+  WAREHOUSE_TOTAL_PRICE
+  US_TOTAL_PRICE
+}
+
+enum ProductHistorySortableColumns {
+  SKU
+  LATEST_UPDATE_DATE
+}
+
+enum ChinaActivePurchasesTransferMethod {
+  SEA
+  AIR
+}
+
+enum HiddenSkusSortableColumns {
+  SKU
+}
+
+enum GetSkuOtherMarketplacesActionType {
+  HIDE
+  UNHIDE
+}
+
+enum ChinaSupplierScoresSortableColumns {
+  SUPPLIER_NAME
+  ESTIMATED_SCORE
+  REAL_SCORE
+}
+
+enum ChinaSupplierScoresFilterableColumns {
+  ESTIMATED_SCORE
+  REAL_SCORE
+}
+
+enum BeforeLaunchLocationStatus {
+  ON_THE_SEA
+  IN_WAREHOUSE
+  FAST_BOAT
+  IN_PRODUCTION
+}
+
+enum SalesDateSortType {
+  ORDER
+  RATE
+}
+
+enum SalesReportSortableColumns {
+  SKU
+  DATE_1
+  DATE_2
+  DATE_3
+  DATE_4
+  DATE_5
+  DATE_6
+  DATE_7
+  DATE_8
+  DATE_9
+  DATE_10
+  AVAILABLE_INV
+  BREAKEVEN_PRICE
+  BENEFIT_PERCENTAGE
+  SMALL_AND_LIGHT_DATE
+  CHART
+  OPTIMIZATION_DATE
+}
+
+enum SalesReportFilterableColumns {
+  DATE_1
+  DATE_2
+  DATE_3
+  DATE_4
+  DATE_5
+  DATE_6
+  DATE_7
+  DATE_8
+  DATE_9
+  DATE_10
+  AVAILABLE_INV
+  BREAKEVEN_PRICE
+  BENEFIT_PERCENTAGE
+  CHART
+}
+
+enum SalesCharPeriod {
+  ONE_MONTH
+  THREE_MONTH
+  ONE_YEAR
+}
+
+enum BeforeLaunchQueryType {
+  BEFORE_LAUNCH
+  LAUNCHED_PRODUCTS
+}
+
+enum ProductPriceStatusChangeSortableColumns {
+  CHANGE_DATE
+  STATUS
+}
+
+enum ReportTypeStatus {
+  IN_PROGRESS
+  FATAL
+  CANCELLED
+  DONE
+}
+
+enum ProductPricesSortableColumns {
+  SKU
+  SALES_PRICE
+  STANDARD_PRICE
+  BUSINESS_PRICE
+  LIST_PRICE
+}
+
+enum ProductPricesFilterableColumns {
+  SALES_PRICE
+  STANDARD_PRICE
+  BUSINESS_PRICE
+  LIST_PRICE
+}
+
+enum DownloadFinancialSortableColumns {
+  SKU
+  BREAKEVEN_PRICE
+  FINANCIAL_DETAILS_1
+  FINANCIAL_DETAILS_2
+  FINANCIAL_DETAILS_3
+  FINANCIAL_DETAILS_4
+  FINANCIAL_DETAILS_5
+  FINANCIAL_DETAILS_6
+  FINANCIAL_DETAILS_7
+  FINANCIAL_DETAILS_8
+  FINANCIAL_DETAILS_9
+  FINANCIAL_DETAILS_10
+}
+
+enum DownloadFinancialFilterableColumns {
+  BREAKEVEN_PRICE
+  FINANCIAL_DETAILS_1
+  FINANCIAL_DETAILS_2
+  FINANCIAL_DETAILS_3
+  FINANCIAL_DETAILS_4
+  FINANCIAL_DETAILS_5
+  FINANCIAL_DETAILS_6
+  FINANCIAL_DETAILS_7
+  FINANCIAL_DETAILS_8
+  FINANCIAL_DETAILS_9
+  FINANCIAL_DETAILS_10
+}
+
+enum OptimizeSortableColumns {
+  SKU
+  DATE_OF_OPTIMIZE
+  DAYS_BEFORE_OPTIMIZE
+  DATE_1
+  DATE_2
+  DATE_3
+  DATE_4
+  DATE_5
+  DATE_6
+  DATE_7
+  DATE_8
+  DATE_9
+  DATE_10
+}
+
+enum OptimizeFilterableColumns {
+  DAYS_BEFORE_OPTIMIZE
+  DATE_1
+  DATE_2
+  DATE_3
+  DATE_4
+  DATE_5
+  DATE_6
+  DATE_7
+  DATE_8
+  DATE_9
+  DATE_10
+}
+
+enum PriceChangeLogSortableColumns {
+  SKU
+  START_DATE
+  TARGET_PRICE
+  PRICE
+  DATE_1
+  DATE_2
+  DATE_3
+  DATE_4
+  DATE_5
+  DATE_6
+  DATE_7
+  DATE_8
+  DATE_9
+  DATE_10
+}
+
+enum PriceChangeLogFilterableColumns {
+  PRICE
+  DATE_1
+  DATE_2
+  DATE_3
+  DATE_4
+  DATE_5
+  DATE_6
+  DATE_7
+  DATE_8
+  DATE_9
+  DATE_10
+}
+
+enum TargetPriceStatus {
+  YELLOW
+  GREEN
+  RED
+}
+
+enum OtherInventoryChinaPurchasesSortableColumns {
+  PI_NUMBER
+  SKU
+  STATUS
+  ORDER_DATE
+  NEW_PACK
+}
+
+enum WarehouseUsersSortableColumns {
+  NAME
+  EMAIL
+  PRIVILEGE_LEVEL
+}
+
+enum TrendsSortableColumns {
+  SKU
+  LAST_WEEK
+  WEEK_1
+  WEEK_2
+  WEEK_3
+  WEEK_4
+  AVERAGE
+}
+
+enum TrendsFilterableColumns {
+  LAST_WEEK
+  WEEK_1
+  WEEK_2
+  WEEK_3
+  WEEK_4
+  AVERAGE
+}
+
+enum ShipmentSortableColumns {
+  SHIPMENT_ID
+  NAME
+  PACKING_TYPE
+  DATE
+  SKUS_COUNT
+  UNITS
+  CASES
+  SHIP_FROM
+  DESTINATION
+  STATUS
+}
+
+enum ShipmentFilterableColumns {
+  SKUS_COUNT
+  UNITS
+  CASES
+}
+
+enum FbaFeeConflictSortableColumns {
+  SKU
+  CONFLICT_PERCENTAGE
+  FBA_FEE
+  REAL_FBA_FEE
+  FBA_TIER
+  REAL_FBA_TIER
+  CHANGE_1
+  CHANGE_2
+  CHANGE_3
+  CHANGE_4
+  CHANGE_5
+  CHANGE_6
+  CHANGE_7
+  CHANGE_8
+  CHANGE_9
+  CHANGE_10
+}
+
+enum FbaFeeConflictFilterableColumns {
+  CONFLICT_PERCENTAGE
+  FBA_FEE
+  REAL_FBA_FEE
+}
+
+enum RiskySkusSortableColumns {
+  SKU
+  SALES_PER_DAY
+  WEEKLY_SALES
+  TOTAL_AMAZON
+  TOTAL_SECOND_STORE
+  ON_THE_AIR_1
+  DATE_ON_AIR_1
+  ON_THE_AIR_2
+  DATE_ON_AIR_2
+  RISKY_WAREHOUSE
+  US_INVENTORY
+  US_DAYS
+  US_DAYS_LAST_WEEK
+  ON_THE_SEA
+  TOTAL_ON_THE_SEA
+  SEA_TRANSFERS
+  DIRECT_TRANSFERS
+}
+
+enum RiskySkusFilterableColumns {
+  SALES_PER_DAY
+  WEEKLY_SALES
+  TOTAL_AMAZON
+  TOTAL_SECOND_STORE
+  ON_THE_AIR_1
+  ON_THE_AIR_2
+  RISKY_WAREHOUSE
+  US_INVENTORY
+  US_DAYS
+  US_DAYS_LAST_WEEK
+  ON_THE_SEA
+  TOTAL_ON_THE_SEA
+  SEA_TRANSFERS
+  DIRECT_TRANSFERS
+}
+
+enum PurchasesSortableColumns {
+  SKU
+  DATE
+  STATUS
+  AMOUNT
+  TOTAL_PRICE
+  UNIT_PRICE
+  INVOICE_NUMBER
+  VENDOR_NAME
+  VENDOR_EMAIL
+  NOTE
+  ETD
+}
+
+enum PurchasesFilterableColumns {
+  TOTAL_PRICE
+  UNIT_PRICE
+  AMOUNT
+}
+
+enum TransfersSortableColumns {
+  SKU
+  DATE
+  FROM_WAREHOUSE
+  TO_WAREHOUSE
+  AMOUNT
+  NOTE
+}
+
+enum TransfersFilterableColumns {
+  AMOUNT
+}
+
+enum WarehousesSortableColumns {
+  NAME
+  COUNTRY
+  WAREHOUSE_STATE
+  CITY
+  STREET_1
+  STREET_2
+  ZIP_CODE
+  CONTACT_NAME
+  CONTACT_EMAIL
+  CONTACT_PHONE
+}
+
+enum ChinaReceivingSheduleStatus {
+  RECEIVED
+  NOT_RECEIVED
+  NOT_APPROVED
+}
+
+enum ChinaProductSizeSortableColumns {
+  SKU
+  UNITS_PER_BOX
+  BOX_WEIGHT
+  BOX_LENGTH
+  BOX_WIDTH
+  BOX_HEIGHT
+  PRODUCT_WEIGHT
+  PRODUCT_LENGTH
+  PRODUCT_WIDTH
+  PRODUCT_HEIGHT
+  LEAD_TIME
+}
+
+enum ChinaProductSizeFilterableColumns {
+  UNITS_PER_BOX
+  BOX_WEIGHT
+  BOX_LENGTH
+  BOX_WIDTH
+  BOX_HEIGHT
+  PRODUCT_WEIGHT
+  PRODUCT_LENGTH
+  PRODUCT_WIDTH
+  PRODUCT_HEIGHT
+  LEAD_TIME
+}
+
+enum NewShipmentMutationMethod {
+  UPDATE
+  CREATE
+}
+
+enum NewShipmentFileNames {
+  TO_SEND
+  SHIPMENT_PRO
+  AMAZON_SHIPMENT
+  AMAZON_SHIPMENT_WITH_DATE
+  PACKING_LIST
+  AMAZON_TEMPLATE
+}
+
+enum ShipmentMethod {
+  MANUAL
+  AUTOMATE
+}
+
+enum NewShipmentLogSortableColumns {
+  INTERNAL_SHIPMENT_ID
+  TRANSITION_TYPE
+  SHIPMENT_ID
+  CARRIER
+  CITY
+  STATUS
+}
+
+enum TransitionType {
+  FCL
+  UPS
+  LTL
+}
+
+enum NewShipmentStatus {
+  WORKING
+  OUTBOUND
+  TRANSFERRED
+}
+
+enum NewCogsAndInventorySortableColumns {
+  SKU
+  DATE
+}
+
+enum NewCogsAndInventoryFilterableColumns {
+  DATE
+}
+
+enum LaunchTemplateType {
+  BEFORE_LAUNCH
+  LAUNCH
+}
+
+enum LaunchSortableColumns {
+  SKU
+  DATE
+  SUCCESSFUL_TARGET
+  FAIR_TARGET
+  SET_PRICE
+  ADD_TO_VINE_LIST
+  EDIT_NAME
+  ADD_KEYWORD
+  CHECK_OTHER_ACCOUNT
+  FINAL_CHECK
+  ADD_TO_GIVEAWAY
+}
+
+enum LaunchColumnsEnum {
+  DATE
+  SET_PRICE
+  ADD_TO_VINE_LIST
+  EDIT_NAME
+  ADD_KEYWORD
+  CHECK_OTHER_ACCOUNT
+  FINAL_CHECK
+  ADD_TO_GIVEAWAY
+}
+
+enum LaunchTargetColumns {
+  SUCCESSFUL_TARGET
+  FAIR_TARGET
+}
+
+enum BeforeLaunchColumnsEnum {
+  CALCULATED_BREAKEVEN
+  TITLE_BACKEND
+  DESCRIPTION_BULLETPOINT
+  PICS_DESCRIPTION
+  TARGET_CAMPAIGNS
+  KEYWORD_CAMPAIGNS
+  BRAND_CAMPAIGNS
+  VIDEO_CAMPAIGNS
+  A_PLUS
+  FINAL_CHECK
+  DESCRIPTIVE_TEXT
+  IMPORT_TO_A_PLUS_PREMIUM
+}
+
+enum LaunchStatus {
+  FIRST_EDITION
+  NEED_TO_EDIT
+  CONFIRMED
+}
+
+enum BeforeLaunchFilterableColumns {
+  AMAZON_AVAILABLE_INV
+  INBOUND_QUANTITY
+  RESERVED_QUANTITY
+}
+
+enum BeforeLaunchSortableColumns {
+  SKU
+  CALCULATED_BREAKEVEN
+  TITLE_BACKEND
+  DESCRIPTION_BULLETPOINT
+  PICS_DESCRIPTION
+  TARGET_CAMPAIGNS
+  KEYWORD_CAMPAIGNS
+  BRAND_CAMPAIGNS
+  VIDEO_CAMPAIGNS
+  A_PLUS
+  FINAL_CHECK
+  DATE_OF_ON_THE_SEA
+  DESCRIPTIVE_TEXT
+  IMPORT_TO_A_PLUS_PREMIUM
+  AMAZON_AVAILABLE_INV
+  INBOUND_QUANTITY
+  RESERVED_QUANTITY
+  LOCATION_STATUS
+}
+
+enum SalesReportType {
+  SALES
+  SMALL_AND_LIGHT
+}
+
+enum PostLaunchSortableColumns {
+  SKU
+  DATE_1
+  DATE_2
+  DATE_3
+  DATE_4
+  DATE_5
+  DATE_6
+  DATE_7
+  KC
+  TC
+  BC
+  VC
+  TOTAL_ORDERS
+  TOTAL_REVIEWS
+  DATE_OF_LAUNCH
+}
+
+enum PostLaunchFilterableColumns {
+  DATE_1
+  DATE_2
+  DATE_3
+  DATE_4
+  DATE_5
+  DATE_6
+  DATE_7
+  KC
+  TC
+  BC
+  VC
+  TOTAL_ORDERS
+  TOTAL_REVIEWS
+}
+
+enum SkuPurchaseHistorySortableColumns {
+  SKU
+  PRICE_CHANGE
+}
+
+enum SkuPurchaseHistoryFilterableColumns {
+  PRICE_CHANGE
+}
+
+enum ChinaFollowReorderColors {
+  BLACK
+  RED
+  GREEN
+  YELLOW
+}
+
+enum ChinaFollowReorderFilterableColumns {
+  UNITS
+  ON_THE_SEA_UNITS
+}
+
+enum ChinaFollowReorderSortableColumns {
+  PI_NUMBER
+  SKU
+  UNITS
+  ORDER_DATE
+  ESTIMATE_DATE
+  REAL_DATE
+  PP_SAMPLE_DATE
+  ON_THE_SEA_UNITS
+}
+
+enum ChinaInvoiceTransfersFilterableColumns {
+  FREIGHT_COST
+  OTHER_COST
+  PRODUCT_COST
+  OTHER_MONTH_COST
+  TOTAL_NEW_PACK_COST
+  TOTAL_COST
+  NEW_PACK_RATIO
+  NEW_PACK_COST_RATIO
+}
+
+enum ChinaInvoiceTransfersSortableColumns {
+  INVOICE_NUMBER
+  ETD
+  FREIGHT_COST
+  OTHER_COST
+  PRODUCT_COST
+  TRANSFER_METHOD
+  OTHER_MONTH_COST
+  TOTAL_NEW_PACK_COST
+  TOTAL_COST
+  NEW_PACK_RATIO
+  NEW_PACK_COST_RATIO
+}
+
+enum TransferMethod {
+  DIUS
+  AMAZON
+  AIR
+}
+
+enum TransferType {
+  AMAZON
+  DIUS
+}
+
+enum ChinaAirTransfersSortableColumns {
+  SKU
+  UNITS
+  AIR_NUMBER
+  DATE
+  STATUS
+}
+
+enum ChinaAirTransfersFilterableColumns {
+  UNITS
+}
+
+enum ChinaSeaTransfersSortableColumns {
+  SKU
+  INVOICE_NUMBER
+  CONTAINER_NUMBER
+  UNITS
+  MBL
+  ETD
+  ETA
+  PORT
+  STATUS
+}
+
+enum ChinaSeaTransfersFilterableColumns {
+  UNITS
+}
+
+enum LabelPrepPreference {
+  SELLER_LABEL
+  AMAZON_LABEL_ONLY
+  AMAZON_LABEL_PREFERRED
+}
+
+enum ShipToCountryCode {
+  CA
+  MX
+  US
+  DE
+  ES
+  FR
+  GB
+  IT
+}
+
+enum Condition {
+  NEW_ITEM
+  NEW_WITH_WARRANTY
+  NEW_OEM
+  NEW_OPEN_BOX
+  USED_LIKE_NEW
+  USED_VERY_GOOD
+  USED_GOOD
+  USED_ACCEPTABLE
+  USED_POOR
+  USED_REFURBISHED
+  COLLECTIBLE_LIKE_NEW
+  COLLECTIBLE_VERY_GOOD
+  COLLECTIBLE_GOOD
+  COLLECTIBLE_ACCEPTABLE
+  COLLECTIBLE_POOR
+  REFURBISHED_WITH_WARRANTY
+  REFURBISHED
+  CLUB
+}
+
+enum FbaTier {
+  UNKNOWN
+  SMALL_STANDARD_SIZE
+  LARGE_STANDARD_SIZE
+  SMALL_OVERSIZE
+  MEDIUM_OVERSIZE
+  LARGE_OVERSIZE
+  SPECIAL_OVERSIZE
+}
+
+enum PackingType {
+  CASE
+  INDIVIDUAL
+}
+
+enum PrepInstruction {
+  POLYBAGGING
+  BUBBLE_WRAPPING
+  TAPING
+  BLACK_SHRINK_WRAPPING
+  LABELING
+  HANG_GARMENT
+}
+
+enum PrepOwner {
+  AMAZON
+  SELLER
+}
+
+enum ShipmentStatus {
+  WORKING
+  SHIPPED
+  RECEIVING
+  CANCELLED
+  DELETED
+  CLOSED
+  ERROR
+  IN_TRANSIT
+  DELIVERED
+  CHECKED_IN
+}
+
+enum PrivilegeLevel {
+  VIEW_ONLY
+  LEADERSHIP
+  MANAGEMENT
+  ACCOUNTANT
+}
+
+enum SortBy {
+  ASC
+  DESC
+}
+
+enum RiskyReorderSortableColumns {
+  SKU
+  UNITS_PER_DAY
+  MONTHLY_UNITS_PER_DAY
+  ANNUALY_UNITS_PER_DAY
+  AVERAGE_UNITS_PER_DAY
+  UNITS_FOR_270_DAYS
+  TOTAL_INV
+  REORDER
+  CHINA_PREPARATION_DAYS
+  SUPPLIER_LEAD_TIME
+}
+
+enum RiskyReorderFilterableColumns {
+  UNITS_PER_DAY
+  MONTHLY_UNITS_PER_DAY
+  ANNUALY_UNITS_PER_DAY
+  AVERAGE_UNITS_PER_DAY
+  UNITS_FOR_270_DAYS
+  TOTAL_INV
+  REORDER
+  CHINA_PREPARATION_DAYS
+  SUPPLIER_LEAD_TIME
+}
+
+enum MultipleAccountDashboardSortableColumns {
+  SKUS
+  ASIN
+  AMAZON_AVAILABLE_INV
+  AMAZON_TOTAL_INV
+}
+
+enum MultipleAccountSalesSortableColumns {
+  SKUS
+  AMAZON_AVAILABLE_INV
+  DATE_1
+  DATE_2
+  DATE_3
+  DATE_4
+  DATE_5
+  DATE_6
+  DATE_7
+  DATE_8
+  DATE_9
+  DATE_10
+}
+
+enum MultipleAccountSalesFilterableColumns {
+  AMAZON_AVAILABLE_INV
+  DATE_1
+  DATE_2
+  DATE_3
+  DATE_4
+  DATE_5
+  DATE_6
+  DATE_7
+  DATE_8
+  DATE_9
+  DATE_10
+}
+
+enum MultipleAccountDashboardFilterableColumns {
+  AMAZON_AVAILABLE_INV
+  AMAZON_TOTAL_INV
+}
+
+enum WarehouseSkusSortableColumns {
+  SKU
+  STORE
+  ASIN
+}
+
+enum PurchaseStatus {
+  APPROVED
+  CANCELLED
+  DRAFTED
+}
+
+enum ChinaPurchaseEditType {
+  APPROVE
+  CANCEL
+}
+
+enum InventoryChinaPurchasesFilterableColumns {
+  UNIT_PRICE
+  TOTAL_PRICE
+  UNITS
+}
+
+enum InventoryChinaPurchasesSortableColumns {
+  PI_NUMBER
+  SKU
+  STATUS
+  ORDER_DATE
+  ESTIMATE_DATE
+  UNIT_PRICE
+  TOTAL_PRICE
+  NEW_PACK
+  UNITS
+}
+
+enum InventoryChinaSeaTransferStatus {
+  COMPLETED
+  CUSTOMS_ADDED
+  IN_PROGRESS
+  APPROVED
+  CANCELLED
+  REJECTED
+}
+
+enum InventoryChinaFastBoatTransferStatus {
+  COMPLETED
+  IN_PROGRESS
+  APPROVED
+  CANCELLED
+  REJECTED
+}
+
+enum ChinaProcessStatus {
+  IN_PROGRESS
+  APPROVED
+  CANCELLED
+  REJECTED
+}
+
+enum MarketplaceIds {
+  A2Q3Y263D00KWC
+  A2EUQ1WTGCTBG2
+  A1AM78C64UM0Y8
+  ATVPDKIKX0DER
+  A1RKKUPIHCS9HS
+  A1F83G8C2ARO7P
+  A13V1IB3VIYZZH
+  A1805IZSGTT6HS
+  A1PA6795UKMFR9
+  APJ6JRA9NG5V4
+  A2NODRKZP88ZB9
+  A1C3SOZRARQ6R3
+  ARBP9OOSHTCHU
+  A33AVAJ2PDY3EV
+  A2VIGQ35RCS4UG
+  A21TJRUUN4KGV
+  A19VAU5U5O7RUS
+  A39IBJ37TRP1C6
+  A1VC38T7YXB528
+}
+
+enum CountryCode {
+  AF
+  AX
+  AL
+  DZ
+  AS
+  AD
+  AO
+  AI
+  AQ
+  AG
+  AN
+  AR
+  AM
+  AW
+  AU
+  AT
+  AZ
+  BH
+  BS
+  BD
+  BB
+  BY
+  BE
+  BZ
+  BJ
+  BM
+  BT
+  BO
+  BQ
+  BA
+  BW
+  BV
+  BR
+  IO
+  BN
+  BG
+  BF
+  BI
+  KH
+  CM
+  CA
+  CV
+  KY
+  CF
+  TD
+  CL
+  CN
+  CX
+  CC
+  CO
+  KM
+  CG
+  CD
+  CK
+  CR
+  CI
+  HR
+  CU
+  CW
+  CY
+  CZ
+  DK
+  DJ
+  DM
+  DO
+  EC
+  EG
+  SV
+  GQ
+  ER
+  EE
+  ET
+  FK
+  FO
+  FJ
+  FI
+  FR
+  GF
+  PF
+  TF
+  GA
+  GM
+  GE
+  DE
+  GH
+  GI
+  GR
+  GL
+  GD
+  GP
+  GU
+  GT
+  GG
+  GN
+  GW
+  GY
+  HT
+  HM
+  VA
+  HN
+  HK
+  HU
+  IS
+  IN
+  ID
+  IR
+  IQ
+  IE
+  IM
+  IL
+  IT
+  JM
+  JP
+  JE
+  JO
+  KZ
+  KE
+  KI
+  KP
+  KR
+  KW
+  KG
+  LA
+  LV
+  LB
+  LS
+  LR
+  LY
+  LI
+  LT
+  LU
+  MO
+  MK
+  MG
+  MW
+  MY
+  MV
+  ML
+  MT
+  MH
+  MQ
+  MR
+  MU
+  YT
+  MX
+  FM
+  MD
+  MC
+  MN
+  ME
+  MS
+  MA
+  MZ
+  MM
+  NA
+  NR
+  NP
+  NL
+  NC
+  NZ
+  NI
+  NE
+  NG
+  NU
+  NF
+  MP
+  NO
+  OM
+  PK
+  PW
+  PS
+  PA
+  PG
+  PY
+  PE
+  PH
+  PN
+  PL
+  PT
+  PR
+  QA
+  RE
+  RO
+  RU
+  RW
+  BL
+  SH
+  KN
+  LC
+  MF
+  PM
+  VC
+  WS
+  SM
+  ST
+  SA
+  SN
+  RS
+  SC
+  SL
+  SG
+  SX
+  SK
+  SI
+  SB
+  SO
+  ZA
+  GS
+  SS
+  ES
+  LK
+  SD
+  SR
+  SJ
+  SZ
+  SE
+  CH
+  SY
+  TW
+  TJ
+  TZ
+  TH
+  TL
+  TG
+  TK
+  TO
+  TT
+  TN
+  TR
+  TM
+  TC
+  TV
+  UG
+  UA
+  AE
+  GB
+  US
+  UM
+  UY
+  UZ
+  VU
+  VE
+  VN
+  VG
+  VI
+  WF
+  EH
+  YE
+  ZM
+  ZW
+}
+
+enum InventoryMainCategories {
+  OTHER
+  PROFILE
+  TASK_MANAGEMENT
+  INVENTORY
+  SALES_BUSINESS
+  EMPLOYEES
+  ACCOUNTING
+  AIRBNB
+}
+
+enum InventoryScreensNames {
+  DASHBOARD
+  DASHBOARD_HISTORY
+  MANAGE_STORES_COUNTRIES
+  BRANDS
+  OPTIMIZE
+  BEFORE_LAUNCH
+  LAUNCH
+  LAUNCHED_PRODUCTS
+  RISKY
+  WAREHOUSES
+  TRANSFERS
+  PURCHASES
+  SHIPMENT_LOG
+  WALMART_SHIPMENT_LOG
+  WAREHOUSE_SKUS
+  RISKY_REORDERS
+  SKU_GENERATOR
+  CHINA_SUPPLIERS
+  CHINA_PURCHASES
+  OTHER_CHINA_PURCHASES
+  CHINA_AIR_TRANSFERS
+  CHINA_SEA_TRANSFERS
+  DIUS_CHINA_SEA_TRANSFERS
+  CHINA_SUPPLIER_SCORE
+  FOLLOW_REORDER_SHEET
+  FOLLOW_REORDER_SHEET_ARCHIVES
+  PRODUCT_SIZE
+  RISKY_UNDER_200_DAYS
+  CHINA_INVENTORY_CHECK
+  US_INVENTORY_CHECK
+  SALES
+  SMALL_AND_LIGHT
+  FBA_FEE_CONFLICTS
+  AFTER_LAUNCH
+  PNL
+  BE_CALCULATOR
+  PRICING
+  PRICE
+  PRODUCT_HISTORY
+  RATING_CONFLICTS
+  WAREHOUSE_WORKERS
+  CHINA_INVOICES
+  PURCHASE_PRICE_HISTORY
+  COGS_NEW
+  INVENTORY_IN_US
+  INVENTORY_IN_US_BY_DATE
+  COGS_AND_INVENTORY
+  MULTIPLE_AMAZON_ACCOUNT_DASHBOARD
+  FBA_FEE_CONFLICTS_HIDDEN_SKUS
+  MULTIPLE_AMAZON_ACCOUNT_SALES
+  WALMART_DASHBOARD
+  WALMART_SALES
+  WALMART_WAREHOUSES
+  INVENTORY_USERS
+  WALMART_PNL
+  STORE_PROFILE
+  LAUNCHED_PRODUCTS_PNL
+  REPORTS
+  MARKET_TRACKER
+  CHINA_DASHBOARD
+  TASK_MANAGEMENT
+  AIRBNB_HOUSES
+  AIRBNB_DASHBOARD
+  AIRBNB_PRICE_HISTORY
+  AUDIT_REPORT
+  LAUNCHED_PRODUCT_REORDER
+  CANADA_SHIPMENT
+  LOCK_TO_SEND
+  TTM
+  SALES_FLUCTUATION
+  TASK_MANAGEMENT_EMPLOYEES_SCORES
+}
