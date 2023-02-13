@@ -36,6 +36,11 @@ type Query {
     after: Int!
     details: MamadRatingChangesInput!
   ): MamadRatingChangeConnection!
+  mamadWarehouseAvailableInventory(
+    first: Int!
+    after: Int!
+    details: MamadWarehouseAvailableInventoryInput!
+  ): MamadWarehouseAvailableInventoryConnection!
 }
 
 type Mutation {
@@ -198,6 +203,23 @@ input MamadRatingSortInput {
 
 input MamadRatingFilterInput {
   columnName: MamadRatingFilterableColumns!
+  biggerThan: Float
+  lessThan: Float
+}
+
+input MamadWarehouseAvailableInventoryInput {
+  searchTerm: String!
+  sort: MamadWarehouseAvailableInventorySortInput!
+  filters: [MamadWarehouseAvailableInventoryFilterInput]!
+}
+
+input MamadWarehouseAvailableInventorySortInput {
+  columnName: MamadWarehouseAvailableInventorySortableColumns!
+  sortBy: SortBy!
+}
+
+input MamadWarehouseAvailableInventoryFilterInput {
+  columnName: MamadWarehouseAvailableInventoryFilterableColumns!
   biggerThan: Float
   lessThan: Float
 }
@@ -423,6 +445,53 @@ type MamadRatingGiveAway {
   oldRating: Float!
   newRating: Float!
   date: DateShort!
+}
+
+type MamadWarehouseAvailableInventoryConnection {
+  edges: [MamadWarehouseAvailableInventoryEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type MamadWarehouseAvailableInventoryEdge {
+  cursor: String!
+  node: MamadWarehouseAvailableInventoryNode!
+}
+
+type MamadWarehouseAvailableInventoryNode {
+  id: ID!
+  location: String!
+  sku: String!
+  reveivingDate: DateShort
+  hall: String
+  numberOfBoxes: Int
+  unit: Int
+  total: Int
+  unitPrice: Float
+  totalPrice: Float
+  comment: String
+  storeName: String
+}
+
+enum MamadWarehouseAvailableInventoryFilterableColumns {
+  NUMBER_OF_BOXES
+  UNIT
+  TOTAL
+  UNIT_PRICE
+  TOTAL_PRICE
+}
+
+enum MamadWarehouseAvailableInventorySortableColumns {
+  LOCATION
+  SKU
+  REVEIVING_DATE
+  HALL
+  NUMBER_OF_BOXES
+  UNIT
+  TOTAL
+  UNIT_PRICE
+  TOTAL_PRICE
+  COMMENT
+  STORE_NAME
 }
 
 enum purchasesStatus {

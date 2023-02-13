@@ -48,6 +48,7 @@ import {
   getMamadFbaFeeConflictsSql,
   mamadGetAllCogsSql,
   getMamadRatingSql,
+  getMamadwarehouseAvailableInventorySql,
 } from '../SQL/Generator';
 import { emitKeypressEvents } from 'readline';
 
@@ -87,6 +88,27 @@ const getRatingGiveaways = (item: MamadRatingQueryResult) => {
 const generator: IResolvers = {
   // mapping
 
+  MamadWarehouseAvailableInventoryFilterableColumns: {
+    NUMBER_OF_BOXES: 'wai.number_of_boxes',
+    UNIT: 'wai.units_per_box',
+    TOTAL: 'wai.number_of_boxes * wai.units_per_box',
+    UNIT_PRICE: 'wai.unit_price',
+    TOTAL_PRICE: 'wai.number_of_boxes * wai.units_per_box * wai.unit_price',
+  },
+  MamadWarehouseAvailableInventorySortableColumns: {
+    LOCATION: 'wai.placement',
+    SKU: 'p.sku',
+    REVEIVING_DATE: 'wai.receiving_date',
+    HALL: 'wai.hall',
+    NUMBER_OF_BOXES: 'wai.number_of_boxes',
+    UNIT: 'wai.units_per_box',
+    TOTAL: 'wai.number_of_boxes * wai.units_per_box',
+    UNIT_PRICE: 'wai.unit_price',
+    TOTAL_PRICE: 'wai.number_of_boxes * wai.units_per_box * wai.unit_price',
+    COMMENT: ' wai.comments',
+    STORE_NAME: 's.name',
+  },
+
   MamadPurchasesSortableColumns: {
     SKU: 'pu.sku',
     NOTES: 'notes',
@@ -115,6 +137,81 @@ const generator: IResolvers = {
     PICS_AND_DESCRIPTIVE_NOTE: 'bl.pics_descriptive_note',
   },
   Query: {
+    mamadWarehouseAvailableInventory: async (
+      _parent,
+      {
+        first,
+        after,
+        details,
+      }: RelayInput<MamadWarehouseAvailableInventoryInput>,
+      { auth },
+      _info
+    ) => {
+      const user = await authenticateInventoryUser({
+        userToken: auth,
+        key: ACCESS_TOKEN,
+        screenDetails: {
+          access: 'VIEW',
+          name: new Set<ServerScreensNamesEnum>(['BRANDS']),
+        },
+      });
+      if (!user) {
+        throw new Error(accessTokenFailedMessage);
+      }
+
+      try {
+        const res =
+          await pool.query<MamadWarehouseAvailableInventoryQueryResult>(
+            getMamadwarehouseAvailableInventorySql({
+              first: first + 1,
+              after,
+              details,
+            }),
+            ['1']
+          );
+
+        const hasNextPage = res.rowCount === first + 1;
+
+        const result: MamadWarehouseAvailableInventoryResult = {
+          edges: [],
+          pageInfo: {
+            hasNextPage,
+            endCursor: first + after,
+          },
+        };
+
+        for (
+          let i = 0;
+          i < (hasNextPage ? res.rowCount - 1 : res.rowCount);
+          i++
+        ) {
+          const item = res.rows[i];
+
+          result.edges.push({
+            cursor: 'number',
+            node: {
+              id: item.id,
+              sku: item.sku,
+              unit: item.units_per_box,
+              comment: item.comments,
+              hall: item.hall,
+              location: item.placement,
+              numberOfBoxes: item.number_of_boxes,
+              reveivingDate: item.receiving_date,
+              storeName: item.name,
+              total: item.total,
+              totalPrice: item.total_price,
+              unitPrice: item.unit_price ?? 0,
+            },
+          });
+        }
+
+        return result;
+      } catch (error: any) {
+        console.log('error in mamadWarehouseAvailableInventory', error);
+        throw new Error(error);
+      }
+    },
     mamadRatingChanges: async (
       _parent,
       { first, after, details }: RelayInput<MamadRatingChangesInput>,
@@ -1453,6 +1550,64 @@ interface MamadRatingQueryResult {
   latest_global_rating: number | null;
   rate_change: MamadRatingGiveAway[] | null;
 }
+export interface MamadWarehouseAvailableInventoryInput {
+  searchTerm: string;
+  sort: SortInput<MamadWarehouseAvailableInventorySortableColumns>;
+  filters: FilterInput<MamadWarehouseAvailableInventoryFilterableColumns>[];
+}
+interface MamadWarehouseAvailableInventoryQueryResult {
+  id: string;
+  placement: string;
+  sku: string;
+  receiving_date: string | null;
+  hall: string | null;
+  number_of_boxes: number | null;
+  units_per_box: number | null;
+  total: number | null;
+  unit_price: number | null;
+  total_price: number | null;
+  comments: string | null;
+  name: string | null;
+  editable: boolean | null;
+}
+
+interface MamadWarehouseAvailableInventoryNode {
+  id: string;
+  location: string;
+  sku: string;
+  reveivingDate: string | null;
+  hall: string | null;
+  numberOfBoxes: number | null;
+  unit: number | null;
+  total: number | null;
+  unitPrice: number | null;
+  totalPrice: number | null;
+  comment: string | null;
+  storeName: string | null;
+}
+
+type MamadWarehouseAvailableInventoryResult =
+  RelayStyle<MamadWarehouseAvailableInventoryNode>;
+
+type MamadWarehouseAvailableInventoryFilterableColumns =
+  | 'NUMBER_OF_BOXES'
+  | 'UNIT'
+  | 'TOTAL'
+  | 'UNIT_PRICE'
+  | 'TOTAL_PRICE';
+
+type MamadWarehouseAvailableInventorySortableColumns =
+  | 'LOCATION'
+  | 'SKU'
+  | 'REVEIVING_DATE'
+  | 'HALL'
+  | 'NUMBER_OF_BOXES'
+  | 'UNIT'
+  | 'TOTAL'
+  | 'UNIT_PRICE'
+  | 'TOTAL_PRICE'
+  | 'COMMENT'
+  | 'STORE_NAME';
 
 type MamadRatingResult = RelayStyle<MamadRatingNode>;
 
