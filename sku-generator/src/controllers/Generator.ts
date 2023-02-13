@@ -91,9 +91,9 @@ const generator: IResolvers = {
   MamadWarehouseAvailableInventoryFilterableColumns: {
     NUMBER_OF_BOXES: 'wai.number_of_boxes',
     UNIT: 'wai.units_per_box',
-    TOTAL: 'wai.number_of_boxes * wai.units_per_box',
+    TOTAL: '(wai.number_of_boxes * wai.units_per_box)',
     UNIT_PRICE: 'wai.unit_price',
-    TOTAL_PRICE: 'wai.number_of_boxes * wai.units_per_box * wai.unit_price',
+    TOTAL_PRICE: '(wai.number_of_boxes * wai.units_per_box * wai.unit_price)',
   },
   MamadWarehouseAvailableInventorySortableColumns: {
     LOCATION: 'wai.placement',
@@ -102,9 +102,9 @@ const generator: IResolvers = {
     HALL: 'wai.hall',
     NUMBER_OF_BOXES: 'wai.number_of_boxes',
     UNIT: 'wai.units_per_box',
-    TOTAL: 'wai.number_of_boxes * wai.units_per_box',
+    TOTAL: '(wai.number_of_boxes * wai.units_per_box)',
     UNIT_PRICE: 'wai.unit_price',
-    TOTAL_PRICE: 'wai.number_of_boxes * wai.units_per_box * wai.unit_price',
+    TOTAL_PRICE: '(wai.number_of_boxes * wai.units_per_box * wai.unit_price)',
     COMMENT: ' wai.comments',
     STORE_NAME: 's.name',
   },
@@ -1590,24 +1590,24 @@ type MamadWarehouseAvailableInventoryResult =
   RelayStyle<MamadWarehouseAvailableInventoryNode>;
 
 type MamadWarehouseAvailableInventoryFilterableColumns =
-  | 'NUMBER_OF_BOXES'
-  | 'UNIT'
-  | 'TOTAL'
-  | 'UNIT_PRICE'
-  | 'TOTAL_PRICE';
+  | 'wai.number_of_boxes'
+  | 'wai.units_per_box'
+  | 'wai.number_of_boxes * wai.units_per_box'
+  | 'wai.unit_price'
+  | '(wai.number_of_boxes * wai.units_per_box * wai.unit_price)';
 
 type MamadWarehouseAvailableInventorySortableColumns =
-  | 'LOCATION'
-  | 'SKU'
-  | 'REVEIVING_DATE'
-  | 'HALL'
-  | 'NUMBER_OF_BOXES'
-  | 'UNIT'
-  | 'TOTAL'
-  | 'UNIT_PRICE'
-  | 'TOTAL_PRICE'
-  | 'COMMENT'
-  | 'STORE_NAME';
+  | 'wai.placement'
+  | 'p.sku'
+  | 'wai.receiving_date'
+  | 'wai.hall'
+  | 'wai.number_of_boxes'
+  | 'wai.units_per_box'
+  | 'wai.number_of_boxes * wai.units_per_box'
+  | 'wai.unit_price'
+  | '(wai.number_of_boxes * wai.units_per_box * wai.unit_price)'
+  | ' wai.comments'
+  | 's.name';
 
 type MamadRatingResult = RelayStyle<MamadRatingNode>;
 
