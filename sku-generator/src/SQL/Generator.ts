@@ -4,9 +4,74 @@ import {
   MamadCogsInput,
   MamadRatingChangesInput,
   MamadWarehouseAvailableInventoryInput,
+  mamadWarehouseInAndOutInput,
 } from '../controllers/Generator';
 import { BeforeLaunchBrandsInput } from '../controllers/Generator';
 import { MamadPurchasesInput } from '../controllers/Generator';
+
+export const MamadWarehouseInAndOutSql = ({
+  first,
+  after,
+  details,
+}: RelayInput<mamadWarehouseInAndOutInput>) => {
+  let sql = `WITH in_and_outs AS (
+                  SELECT sku_id,
+                  JSON_AGG(
+                    JSON_BUILD_OBJECT(
+                      'date', TO_CHAR(date_time, 'mm/dd/yyyy'),
+                      'inboundsOutbounds', inbound_outbound,
+                      'adjustments', adjustment
+                    )
+                  ) AS in_and_outs
+                  FROM warehouse_in_and_out
+                  WHERE date_time BETWEEN $2 AND $3
+                  GROUP BY sku_id
+                ),
+                total AS (
+                  SELECT sku_id, SUM(COALESCE(inbound_outbound,0)) + SUM(COALESCE(adjustment,0)) AS total
+                  FROM (
+                    SELECT sku_id, UNNEST(inbound_outbound) AS inbound_outbound,
+                    UNNEST(adjustment) AS adjustment
+                    FROM warehouse_in_and_out
+                    WHERE date_time BETWEEN $2 AND $3
+                  ) AS t
+                  GROUP BY sku_id
+                )
+                SELECT p.id, p.sku, iao.in_and_outs, t.total
+                FROM products AS p
+                LEFT JOIN in_and_outs AS iao
+                ON p.id = iao.sku_id
+                LEFT JOIN total AS t 
+                ON t.sku_id = p.id
+                WHERE store_id = $1
+              `;
+  if (details.searchTerm) {
+    sql += `AND (p.sku ILIKE '%${details.searchTerm}%'
+            `;
+  }
+
+  details.filters.forEach((item) => {
+    if (item.biggerThan !== null && item.lessThan !== null) {
+      sql += `AND ${item.columnName} BETWEEN ${item.biggerThan} AND ${item.lessThan}
+             `;
+    } else if (item.biggerThan !== null) {
+      sql += `AND ${item.columnName} >= ${item.biggerThan}
+             `;
+    } else {
+      sql += `AND ${item.columnName} <= ${item.lessThan}
+             `;
+    }
+  });
+
+  sql += `ORDER BY ${details.sort.columnName} ${details.sort.sortBy} NULLS LAST, p.id
+        `;
+
+  if (first !== null && after !== null) {
+    sql += `OFFSET ${after} ROWS FETCH FIRST ${first} ROWS ONLY `;
+  }
+
+  return sql;
+};
 
 export const getMamadwarehouseAvailableInventorySql = ({
   first,

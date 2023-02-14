@@ -41,6 +41,11 @@ type Query {
     after: Int!
     details: MamadWarehouseAvailableInventoryInput!
   ): MamadWarehouseAvailableInventoryConnection!
+  mamadWarehouseInAndOut(
+    first: Int!
+    after: Int!
+    details: mamadWarehouseInAndOutInput!
+  ): MamadWarehouseInAndOutConnection!
 }
 
 type Mutation {
@@ -223,6 +228,26 @@ input MamadWarehouseAvailableInventoryFilterInput {
   biggerThan: Float
   lessThan: Float
 }
+
+input mamadWarehouseInAndOutInput {
+  searchTerm: String!
+  startDate: DateShort!
+  endDate: DateShort!
+  sort: MamadWarehouseInAndOutSortInput!
+  filters: [MamadWarehouseInAndOutFilterInput]!
+}
+
+input MamadWarehouseInAndOutSortInput {
+  columnName: MamadWarehouseInAndOutSortableColumns!
+  sortBy: SortBy!
+}
+
+input MamadWarehouseInAndOutFilterInput {
+  columnName: MamadWarehouseInAndOutFilterableColumns!
+  biggerThan: Float
+  lessThan: Float
+}
+
 # ################## ################## ################## ################## #################
 
 type BeforeLaunchBrandsConnection {
@@ -470,6 +495,39 @@ type MamadWarehouseAvailableInventoryNode {
   totalPrice: Float
   comment: String
   storeName: String
+}
+
+type MamadWarehouseInAndOutConnection {
+  edges: [MamadWarehouseInAndOutEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type MamadWarehouseInAndOutEdge {
+  cursor: String!
+  node: MamadWarehouseInAndOutNode!
+}
+
+type MamadWarehouseInAndOutNode {
+  id: ID!
+  sku: String!
+  total: Int!
+  inAndOuts: [InAndOutsDetails]!
+}
+
+type InAndOutsDetails {
+  inboundsOutbounds: [Int]!
+  adjustments: [Int]!
+  date: DateShort!
+}
+
+enum MamadWarehouseInAndOutSortableColumns {
+  SKU
+  SKU_ID
+  TOTAL
+}
+
+enum MamadWarehouseInAndOutFilterableColumns {
+  TOTAL
 }
 
 enum MamadWarehouseAvailableInventoryFilterableColumns {

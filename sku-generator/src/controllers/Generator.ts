@@ -49,6 +49,7 @@ import {
   mamadGetAllCogsSql,
   getMamadRatingSql,
   getMamadwarehouseAvailableInventorySql,
+  MamadWarehouseInAndOutSql,
 } from '../SQL/Generator';
 import { emitKeypressEvents } from 'readline';
 
@@ -136,7 +137,109 @@ const generator: IResolvers = {
     PICS_AND_DESCRIPTIVE: 'bl.pics_descriptive',
     PICS_AND_DESCRIPTIVE_NOTE: 'bl.pics_descriptive_note',
   },
+
+  MamadWarehouseInAndOutSortableColumns: {
+    SKU: 'p.sku',
+    SKU_ID: 'p.id',
+    TOTAL: 't.total',
+  },
+  MamadWarehouseInAndOutFilterableColumns: {
+    TOTAL: 't.total',
+  },
+
   Query: {
+    mamadWarehouseInAndOut: async (
+      _parent,
+      { first, after, details }: RelayInput<mamadWarehouseInAndOutInput>,
+      { auth },
+      _info
+    ) => {
+      const user = await authenticateInventoryUser({
+        userToken: auth,
+        key: ACCESS_TOKEN,
+        screenDetails: {
+          access: 'VIEW',
+          name: new Set<ServerScreensNamesEnum>(['BRANDS']),
+        },
+      });
+
+      if (!user) {
+        throw new Error(accessTokenFailedMessage);
+      }
+
+      try {
+        const res = await pool.query<MamadWarehouseInAndOutSqlResult>(
+          MamadWarehouseInAndOutSql({
+            first: first + 1,
+            after,
+            details,
+          }),
+          [user.shopId, details.startDate, details.endDate]
+        );
+
+        const hasNextPage = res.rowCount === first + 1;
+
+        const result: MamadWarehouseInAndOutResult = {
+          edges: [],
+          pageInfo: {
+            hasNextPage,
+            endCursor: first + after,
+          },
+        };
+
+        for (
+          let i = 0;
+          i < (hasNextPage ? res.rowCount - 1 : res.rowCount);
+          i++
+        ) {
+          const item = res.rows[i];
+
+          // let total = 0;
+          const inAndOuts: InAndOutsDetails[] = [];
+          if (item.inAndOuts) {
+            for (let j = 0; j < item.inAndOuts.length; j++) {
+              const inAndOut = item.inAndOuts[j];
+
+              // if (inAndOut.inboundsOutbounds) {
+              //   for (let k = 0; k < inAndOut.inboundsOutbounds.length; k++) {
+              //     const element = inAndOut.inboundsOutbounds[k];
+              //     total += element;
+              //   }
+              // }
+
+              // if (inAndOut.adjustments) {
+              //   for (let l = 0; l < inAndOut.adjustments.length; l++) {
+              //     const element = inAndOut.adjustments[l];
+              //     total += element;
+              //   }
+              // }
+
+              inAndOuts.push({
+                date: inAndOut.date,
+                adjustments: inAndOut.adjustments ?? [],
+                inboundsOutbounds: inAndOut.inboundsOutbounds ?? [],
+              });
+            }
+          }
+
+          result.edges.push({
+            cursor: 'number',
+            node: {
+              id: item.id,
+              sku: item.sku,
+              inAndOuts,
+              total: item.total ?? 0,
+            },
+          });
+        }
+
+        return result;
+      } catch (error: any) {
+        console.log('Error in mamadWarehouseInAndOut: ', error);
+        throw new Error(error);
+      }
+    },
+
     mamadWarehouseAvailableInventory: async (
       _parent,
       {
@@ -202,6 +305,7 @@ const generator: IResolvers = {
               total: item.total,
               totalPrice: item.total_price,
               unitPrice: item.unit_price ?? 0,
+              editable: item.editable,
             },
           });
         }
@@ -1584,10 +1688,51 @@ interface MamadWarehouseAvailableInventoryNode {
   totalPrice: number | null;
   comment: string | null;
   storeName: string | null;
+  editable: boolean | null;
 }
 
 type MamadWarehouseAvailableInventoryResult =
   RelayStyle<MamadWarehouseAvailableInventoryNode>;
+
+type MamadWarehouseInAndOutSortableColumns = 'SKU' | 'SKU_ID' | 'TOTAL';
+
+type MamadWarehouseInAndOutFilterableColumns = 'TOTAL';
+
+export interface mamadWarehouseInAndOutInput {
+  searchTerm: string;
+  startDate: string;
+  endDate: string;
+  sort: SortInput<MamadWarehouseInAndOutSortableColumns>;
+  filters: FilterInput<MamadWarehouseInAndOutFilterableColumns>[];
+}
+
+interface MamadWarehouseInAndOutNode {
+  id: string;
+  sku: string;
+  total: number;
+  inAndOuts: InAndOutsDetails[];
+}
+
+interface InAndOutsDetails {
+  inboundsOutbounds: number[];
+  adjustments: number[];
+  date: string;
+}
+
+type MamadWarehouseInAndOutResult = RelayStyle<MamadWarehouseInAndOutNode>;
+
+interface MamadWarehouseInAndOutSqlResult {
+  id: string;
+  sku: string;
+  total: number | null;
+  inAndOuts: inAndOutsResult[] | null;
+}
+
+interface inAndOutsResult {
+  date: string;
+  inboundsOutbounds: number[] | null;
+  adjustments: number[] | null;
+}
 
 type MamadWarehouseAvailableInventoryFilterableColumns =
   | 'wai.number_of_boxes'
