@@ -3,11 +3,116 @@ import {
   BrandsInput,
   MamadCogsInput,
   MamadRatingChangesInput,
+  MamadTotalTTMQueryResult,
+  MamadTTMDateRange,
+  MamadTTMInput,
   MamadWarehouseAvailableInventoryInput,
   mamadWarehouseInAndOutInput,
 } from '../controllers/Generator';
 import { BeforeLaunchBrandsInput } from '../controllers/Generator';
 import { MamadPurchasesInput } from '../controllers/Generator';
+
+export const getMamadTotalTTMSql = ({
+  dates,
+}: {
+  dates: MamadTTMDateRange[];
+}) => {
+  let sql = `SELECT
+            `;
+  for (let i = 0; i < dates.length; i++) {
+    const element = dates[i];
+    sql += `SUM(CASE WHEN DATE(order_date) BETWEEN '${element.fromDate}' AND '${element.toDate}' 
+            `;
+    if (i < dates.length - 1) {
+      sql += `THEN os.amount END ) AS items_${i + 1},
+             `;
+    } else {
+      sql += `THEN os.amount END ) AS items_${i + 1}
+             `;
+    }
+  }
+
+  sql += `FROM orders_summary AS os 
+          WHERE store_id = $1`;
+
+  return sql;
+};
+
+export const MamadTTMSql = ({
+  first,
+  after,
+  details,
+  dates,
+}: RelayInput<MamadTTMInput, true, { dates: MamadTTMDateRange[] }>) => {
+  let sql = `WITH all_sales AS (	
+                  SELECT 	os.sku,
+                  `;
+
+  let columns = ``;
+
+  for (let index = 0; index < dates.length; index++) {
+    const date = dates[index];
+
+    sql += `SUM(CASE WHEN DATE(order_date) BETWEEN '${date.fromDate}' AND '${
+      date.toDate
+    }' THEN 
+            os.amount END ) AS items_${index + 1},
+            SUM(CASE WHEN DATE(order_date) BETWEEN '${date.fromDate}' AND '${
+      date.toDate
+    }' THEN 
+            ARRAY_LENGTH(os.list,1) END ) AS orders_${index + 1} `;
+
+    columns += `ass.items_${index + 1}, ass.orders_${index + 1} `;
+
+    if (index !== dates.length - 1) {
+      sql += ', ';
+      columns += ', ';
+    }
+  }
+
+  sql += `FROM orders_summary AS os 
+            WHERE store_id = $1
+            GROUP BY sku
+          )
+          SELECT p.id, p.sku,
+          `;
+
+  sql += columns;
+
+  sql += `FROM  products AS p
+          LEFT JOIN all_sales AS ass 
+          ON ass.sku = p.sku
+          WHERE store_id = $1
+          `;
+
+  //chera parantez baste nadare FIXED
+  if (details.searchTerm) {
+    sql += `AND (p.sku ILIKE '%${details.searchTerm}%')
+            `;
+  }
+
+  details.filters.forEach((item) => {
+    if (item.biggerThan !== null && item.lessThan !== null) {
+      sql += `AND ${item.columnName} BETWEEN ${item.biggerThan} AND ${item.lessThan}
+             `;
+    } else if (item.biggerThan !== null) {
+      sql += `AND ${item.columnName} >= ${item.biggerThan}
+             `;
+    } else {
+      sql += `AND ${item.columnName} <= ${item.lessThan}
+             `;
+    }
+  });
+
+  sql += `ORDER BY ${details.sort.columnName} ${details.sort.sortBy} NULLS LAST, p.id
+        `;
+
+  if (first !== null && after !== null) {
+    sql += `OFFSET ${after} ROWS FETCH FIRST ${first} ROWS ONLY `;
+  }
+
+  return sql;
+};
 
 export const MamadWarehouseInAndOutSql = ({
   first,
@@ -47,7 +152,7 @@ export const MamadWarehouseInAndOutSql = ({
               `;
   if (details.searchTerm) {
     sql += `AND (p.sku ILIKE '%${details.searchTerm}%'
-            `;
+           `;
   }
 
   details.filters.forEach((item) => {
@@ -64,7 +169,7 @@ export const MamadWarehouseInAndOutSql = ({
   });
 
   sql += `ORDER BY ${details.sort.columnName} ${details.sort.sortBy} NULLS LAST, p.id
-        `;
+         `;
 
   if (first !== null && after !== null) {
     sql += `OFFSET ${after} ROWS FETCH FIRST ${first} ROWS ONLY `;

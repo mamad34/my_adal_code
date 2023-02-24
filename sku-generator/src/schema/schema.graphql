@@ -46,6 +46,12 @@ type Query {
     after: Int!
     details: mamadWarehouseInAndOutInput!
   ): MamadWarehouseInAndOutConnection!
+  mamadTTM(
+    first: Int!
+    after: Int!
+    details: MamadTTMInput!
+  ): MamadTTMConnection!
+  getMamadTotalTTM(details: GetMamadTotalTTMInput): GetmamadTotalTTMDetails!
 }
 
 type Mutation {
@@ -246,6 +252,28 @@ input MamadWarehouseInAndOutFilterInput {
   columnName: MamadWarehouseInAndOutFilterableColumns!
   biggerThan: Float
   lessThan: Float
+}
+
+input MamadTTMInput {
+  searchTerm: String!
+  year: Int!
+  sort: MamadTTMSortInput!
+  filters: [MamadTTMFilterInput]!
+}
+
+input MamadTTMSortInput {
+  columnName: MamadTTMSortableColumns!
+  sortBy: SortBy!
+}
+
+input MamadTTMFilterInput {
+  columnName: MamadTTMFilterableColumns!
+  biggerThan: Int!
+  lessThan: Int!
+}
+
+input GetMamadTotalTTMInput {
+  year: Int!
 }
 
 # ################## ################## ################## ################## #################
@@ -518,6 +546,85 @@ type InAndOutsDetails {
   inboundsOutbounds: [Int]!
   adjustments: [Int]!
   date: DateShort!
+}
+
+type MamadTTMConnection {
+  edges: [MamadTTMEdge]!
+  pageInfo: NumericCursorPageInfo!
+}
+
+type MamadTTMEdge {
+  cursor: String!
+  node: MamadTTMNode!
+}
+
+type MamadTTMNode {
+  id: ID!
+  sku: String!
+  items1: Int
+  items2: Int
+  items3: Int
+  items4: Int
+  items5: Int
+  items6: Int
+  items7: Int
+  items8: Int
+  items9: Int
+  items10: Int
+  items11: Int
+  items12: Int
+  orders1: Int
+  orders2: Int
+  orders3: Int
+  orders4: Int
+  orders5: Int
+  orders6: Int
+  orders7: Int
+  orders8: Int
+  orders9: Int
+  orders10: Int
+  orders11: Int
+  orders12: Int
+}
+
+type GetmamadTotalTTMDetails {
+  info: [dateAndAmounts]!
+}
+
+type dateAndAmounts {
+  date: DateShort!
+  amount: Int!
+}
+
+# year chie inja gozashti FIXED
+enum MamadTTMFilterableColumns {
+  MONTH_1
+  MONTH_2
+  MONTH_3
+  MONTH_4
+  MONTH_5
+  MONTH_6
+  MONTH_7
+  MONTH_8
+  MONTH_9
+  MONTH_10
+  MONTH_11
+  MONTH_12
+}
+
+enum MamadTTMSortableColumns {
+  MONTH_1
+  MONTH_2
+  MONTH_3
+  MONTH_4
+  MONTH_5
+  MONTH_6
+  MONTH_7
+  MONTH_8
+  MONTH_9
+  MONTH_10
+  MONTH_11
+  MONTH_12
 }
 
 enum MamadWarehouseInAndOutSortableColumns {

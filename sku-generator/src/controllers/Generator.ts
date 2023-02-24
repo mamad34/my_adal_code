@@ -21,8 +21,6 @@ import { ServerScreensNamesEnum } from '@dius-workspace/shared/screens-categorie
 import { IResolvers } from '@graphql-tools/utils';
 import { DateTime } from 'luxon';
 import pgp from 'pg-promise';
-import { type } from 'os';
-import { Query } from 'pg';
 import { ACCESS_TOKEN } from '..';
 import { pool } from '../services/pg';
 import {
@@ -38,7 +36,6 @@ import {
   getChinaAirTrasferPurchaseSql,
   updateBrandBeforeLaunchSql,
   updateBrandSql,
-  getWarehouseReceivingItemSql,
   getWarehouseReceivingScheduleSql,
   getWarehouseReceivingItemLocationSql,
   addWarehouseReceivingScheduleSql,
@@ -50,8 +47,9 @@ import {
   getMamadRatingSql,
   getMamadwarehouseAvailableInventorySql,
   MamadWarehouseInAndOutSql,
+  MamadTTMSql,
+  getMamadTotalTTMSql,
 } from '../SQL/Generator';
-import { emitKeypressEvents } from 'readline';
 
 const getRandomInt = (min: number, max: number) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -147,7 +145,223 @@ const generator: IResolvers = {
     TOTAL: 't.total',
   },
 
+  MamadTTMSortableColumns: {
+    SKU: 'p.sku',
+    MONTH_1: 'items_1',
+    MONTH_2: 'items_2',
+    MONTH_3: 'items_3',
+    MONTH_4: 'items_4',
+    MONTH_5: 'items_5',
+    MONTH_6: 'items_6',
+    MONTH_7: 'items_7',
+    MONTH_8: 'items_8',
+    MONTH_9: 'items_9',
+    MONTH_10: 'items_10',
+    MONTH_11: 'items_11',
+    MONTH_12: 'items_12',
+  },
+  MamadTTMFilterableColumns: {
+    MONTH_1: 'items_1',
+    MONTH_2: 'items_2',
+    MONTH_3: 'items_3',
+    MONTH_4: 'items_4',
+    MONTH_5: 'items_5',
+    MONTH_6: 'items_6',
+    MONTH_7: 'items_7',
+    MONTH_8: 'items_8',
+    MONTH_9: 'items_9',
+    MONTH_10: 'items_10',
+    MONTH_11: 'items_11',
+    MONTH_12: 'items_12',
+  },
+
   Query: {
+    getMamadTotalTTM: async (
+      _parent,
+      { details }: { details: getMamadTotalTTMDetails },
+      { auth },
+      _info
+    ) => {
+      const user = await authenticateInventoryUser({
+        userToken: auth,
+        key: ACCESS_TOKEN,
+        screenDetails: {
+          access: 'VIEW',
+          name: new Set<ServerScreensNamesEnum>(['BRANDS']),
+        },
+      });
+      if (!user) {
+        throw new Error(accessTokenFailedMessage);
+      }
+      try {
+        const dates: MamadTTMToalDateRange[] = [];
+
+        const lastMonth =
+          details.year === DateTime.now().get('year')
+            ? DateTime.now().minus({ months: 1 }).set({
+                day: 1,
+              })
+            : DateTime.now().set({
+                day: 1,
+                month: 12,
+                year: details.year,
+              });
+
+        for (let index = 0; index < 12; index++) {
+          const startMonth = lastMonth.minus({ months: index });
+          const endMonth = startMonth.plus({ months: 1 }).minus({ days: 1 });
+
+          dates.push({
+            fromDate: startMonth.toFormat(dateShortFormat),
+            toDate: endMonth.toFormat(dateShortFormat),
+          });
+        }
+
+        console.log(
+          'dick to mamad: ',
+          pgp.as.format(getMamadTotalTTMSql({ dates }), [user.shopId])
+        );
+
+        const res = await pool.query<MamadTotalTTMQueryResult>(
+          getMamadTotalTTMSql({ dates }),
+          [user.shopId]
+        );
+
+        const result: MamadTotalTTMResult[] = [];
+        for (let j = 0; j < dates.length; j++) {
+          const date = dates[j];
+          // res.rows[0].items5 =  res.rows[0][`items${j + 1}` as keyof MamadTotalTTMQueryResult], ;
+          result.push({
+            amount:
+              res.rows[0][`items_${j + 1}` as keyof MamadTotalTTMQueryResult],
+            date: date.fromDate,
+          });
+        }
+
+        return result;
+      } catch (error: any) {
+        console.log('error in getMamadTotalTTM ' + error);
+        throw new Error(error);
+      }
+    },
+    mamadTTM: async (
+      _parent,
+      { first, after, details }: RelayInput<MamadTTMInput>,
+      { auth },
+      _info
+    ) => {
+      const user = await authenticateInventoryUser({
+        userToken: auth,
+        key: ACCESS_TOKEN,
+        screenDetails: {
+          access: 'VIEW',
+          name: new Set<ServerScreensNamesEnum>(['BRANDS']),
+        },
+      });
+      if (!user) {
+        throw new Error(accessTokenFailedMessage);
+      }
+
+      try {
+        const dates: MamadTTMDateRange[] = [];
+        const lastMonth = details.year
+          ? DateTime.now().minus({ months: 1 }).set({
+              day: 1,
+            })
+          : DateTime.now().set({
+              day: 1,
+              month: 12,
+              year: details.year,
+            });
+
+        for (let index = 0; index < 12; index++) {
+          const startMonth = lastMonth.minus({ months: index });
+          const endMonth = startMonth.plus({ months: 1 }).minus({ days: 1 });
+
+          dates.push({
+            fromDate: startMonth.toFormat(dateShortFormat),
+            toDate: endMonth.toFormat(dateShortFormat),
+          });
+        }
+
+        const res = await pool.query<MamadTTMQueryResult>(
+          MamadTTMSql({
+            first: first + 1,
+            after,
+            details,
+            dates,
+          }),
+          [user.shopId]
+        );
+
+        console.log(
+          'dick to mamad: ',
+          pgp.as.format(
+            MamadTTMSql({
+              details,
+              first: first + 1,
+              after,
+              dates,
+            }),
+            [user.shopId]
+          )
+        );
+
+        const hasNextPage = res.rowCount === first + 1;
+
+        const result: MamadTTMResult = {
+          edges: [],
+          pageInfo: {
+            hasNextPage,
+            endCursor: first + after,
+          },
+        };
+
+        for (
+          let i = 0;
+          i < (hasNextPage ? res.rowCount - 1 : res.rowCount);
+          i++
+        ) {
+          const item = res.rows[i];
+          result.edges.push({
+            cursor: 'number',
+            node: {
+              id: item.id,
+              sku: item.sku,
+              items1: item.items_1,
+              items2: item.items_2,
+              items3: item.items_3,
+              items4: item.items_4,
+              items5: item.items_5,
+              items6: item.items_6,
+              items7: item.items_7,
+              items8: item.items_8,
+              items9: item.items_9,
+              items10: item.items_10,
+              items11: item.items_11,
+              items12: item.items_12,
+              orders1: item.orders_1,
+              orders2: item.orders_2,
+              orders3: item.orders_3,
+              orders4: item.orders_4,
+              orders5: item.orders_5,
+              orders6: item.orders_6,
+              orders7: item.orders_7,
+              orders8: item.orders_8,
+              orders9: item.orders_9,
+              orders10: item.orders_10,
+              orders11: item.orders_11,
+              orders12: item.orders_12,
+            },
+          });
+        }
+
+        return result;
+      } catch (error: any) {
+        console.log('ERROR IN mamadTTM ', error);
+        throw new Error(error);
+      }
+    },
     mamadWarehouseInAndOut: async (
       _parent,
       { first, after, details }: RelayInput<mamadWarehouseInAndOutInput>,
@@ -196,9 +410,9 @@ const generator: IResolvers = {
 
           // let total = 0;
           const inAndOuts: InAndOutsDetails[] = [];
-          if (item.inAndOuts) {
-            for (let j = 0; j < item.inAndOuts.length; j++) {
-              const inAndOut = item.inAndOuts[j];
+          if (item.in_and_outs) {
+            for (let j = 0; j < item.in_and_outs.length; j++) {
+              const inAndOut = item.in_and_outs[j];
 
               // if (inAndOut.inboundsOutbounds) {
               //   for (let k = 0; k < inAndOut.inboundsOutbounds.length; k++) {
@@ -1725,7 +1939,7 @@ interface MamadWarehouseInAndOutSqlResult {
   id: string;
   sku: string;
   total: number | null;
-  inAndOuts: inAndOutsResult[] | null;
+  in_and_outs: inAndOutsResult[] | null;
 }
 
 interface inAndOutsResult {
@@ -1733,6 +1947,109 @@ interface inAndOutsResult {
   inboundsOutbounds: number[] | null;
   adjustments: number[] | null;
 }
+
+interface getMamadTotalTTMDetails {
+  year: number;
+}
+
+//mage to schema ba _ minvisim???
+type MamadTTMNode = {
+  id: string;
+  sku: string;
+} & MamadTTMItemsResult &
+  MamadTTMOrdersResult;
+
+type MamadTTMResult = RelayStyle<MamadTTMNode>;
+
+export interface MamadTTMInput {
+  searchTerm: string;
+  year: number;
+  sort: SortInput<MamadTTMSortableColumns>;
+  filters: FilterInput<MamadTTMFilterableColumns>[];
+}
+
+export interface MamadTTMDateRange {
+  fromDate: string | null;
+  toDate: string | null;
+}
+
+export interface MamadTotalTTMQueryResult {
+  items_1: number;
+  items_2: number;
+  items_3: number;
+  items_4: number;
+  items_5: number;
+  items_6: number;
+  items_7: number;
+  items_8: number;
+  items_9: number;
+  items_10: number;
+  items_11: number;
+  items_12: number;
+}
+
+export interface MamadTTMToalDateRange {
+  fromDate: string;
+  toDate: string;
+}
+
+interface MamadTotalTTMResult {
+  date: string;
+  amount: number;
+}
+
+type MamadTTMMonthNumbers = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+
+type MamadTTMItemsResult = {
+  [K in `items${MamadTTMMonthNumbers}`]: number | null;
+};
+
+type MamadTTMOrdersResult = {
+  [K in `orders${MamadTTMMonthNumbers}`]: number | null;
+};
+
+type MamadTTMItemsQueryResult = {
+  [K in `items_${MamadTTMMonthNumbers}`]: number | null;
+};
+
+type MamadTTMOrdersQueryResult = {
+  [K in `orders_${MamadTTMMonthNumbers}`]: number | null;
+};
+
+type MamadTTMQueryResult = {
+  id: string;
+  sku: string;
+} & MamadTTMItemsQueryResult &
+  MamadTTMOrdersQueryResult;
+
+type MamadTTMSortableColumns =
+  | 'SKU'
+  | 'MONTH_1'
+  | 'MONTH_2'
+  | 'MONTH_3'
+  | 'MONTH_4'
+  | 'MONTH_5'
+  | 'MONTH_6'
+  | 'MONTH_7'
+  | 'MONTH_8'
+  | 'MONTH_9'
+  | 'MONTH_10'
+  | 'MONTH_11'
+  | 'MONTH_12';
+
+type MamadTTMFilterableColumns =
+  | 'MONTH_1'
+  | 'MONTH_2'
+  | 'MONTH_3'
+  | 'MONTH_4'
+  | 'MONTH_5'
+  | 'MONTH_6'
+  | 'MONTH_7'
+  | 'MONTH_8'
+  | 'MONTH_9'
+  | 'MONTH_10'
+  | 'MONTH_11'
+  | 'MONTH_12';
 
 type MamadWarehouseAvailableInventoryFilterableColumns =
   | 'wai.number_of_boxes'
